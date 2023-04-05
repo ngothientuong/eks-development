@@ -1,3 +1,125 @@
+###################
+#     TO DO       #
+###################
+- Configure aws-load-balancer-controller (EKS NLB) to use tls secret 
+	from cert manager at the Ingress level
+- Install EKS ALB, enable certificate
+- Configure cross-zone load balancing
+- Look into AWS Private Link
+- Configure AWS EFS
+- Configure Horizonal Pod AutoScaler
+- Configure External DNS.
+- Look into AWS Managed Service Prometheus
+- Kiali needs Prometheus to store data
+- Jaeger requires ElasticSearch database
+- traefik
+- argocd
+- calio   [DONE]
+- datadog agent
+- datadog private location
+- external dns
+- goldilocks
+- loki
+- metric server
+- pghero
+- traefik
+- Look into fortio (load testing tool such as make 10 concurrent request or whatever)
+- Look into Mutus - multi network interface for pod: https://github.com/aws-samples/eks-install-guide-for-multus/blob/main/README.md
+- Install Seal Secrets
+
+#########################
+#   NEED TO WATCH OUT   #
+#########################
+add appropriate labels for AutoScaler to managed node group
+Add configmap before joining the node
+
+AWS CNI: Annotate was-node service account with
+eks.amazonaws.com/role-arn=arn:aws-us-gov::iam::1111122222233333:role/AmazonEKSCPCCNIRole
+
+Config requirement for LT and MN_NG
+https://docs.aws.amazon.com/eks/latest/userguide/launch-templates.html#launch-template-basics
+By default, Amazon EKS applies the cluster security group to the instances in your node group 
+If you need SSH access to the instances in your node group, include a security group that allows that access.
+The following fields can't be set in the API if you specify an AMI ID:
+
+amiType
+
+releaseVersion
+
+version
+
+
+## Step to have service account in k8s uses AWS resources
+1) deploy whatever addon
+2) Create OIDC provider for the cluster
+3a) Create a role with appropriate policy attachment that allow the user to interact with certain resources on AWS
+3b) The role created must have Trust Relationships containing the k8s service account as example below:
+	"oidc.eks.us-gove-west-1.amazonaws.com/id/ADCADOIJFIIJFPJAPIFJ:sub": "system:serviceaccount:<sa_namespace>:<sa name>
+3) Annotate the service account with:
+	eks.amazonaws.com/role-arn: arn:aws:iam::xxxxx:role/ROLE_NAME
+
+
+# External Snapshotter & EBS CSI
+EBS Link: https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi.html
+Snapshotter link: https://github.com/kubernetes-csi/external-snapshotter
+External Snapshotter has to be installed prior to EBS CSI
+External Snapshotter is install in the following order per EBS rule:
+Required:
+- CRD
+- RBAC
+- Controller deployment
+- Validating Webhook (see below)
+
+Recommended by External Snapshotter: 
+[Validating Webhook]: The cluster admin or Kubernetes distribution admin should install the webhook alongside the snapshot controllers and CRDs
+- Validating Webhook: to help snapshot controller label invalid snapshot objects which already exists.  
+	[dependencies]:
+		- Recommended cert manager.
+Validating Webhook install: https://github.com/kubernetes-csi/external-snapshotter/blob/master/deploy/kubernetes/webhook-example/README.md
+
+
+
+AWS IAM ASSUMED ROLE - HOW IT WORKS
+IAM user or SA or Node with certain AWS arn AAA tries to use a policies PPP attached to a certain role RRR, that role RRR will has to have trust policy
+with principal containing the arn AAA and  "Action": "sts:AssumeRole",  "Effect": "Allow", "Resource": "*"
+
+With that, IAM user or SA or Node will not need to have policies PPP attached directly to them directly but they can assume the role RRR to use the policies PPP.
+
+IAM ASSUMED ROLE VS IAM PASS ROLE
+AssumeRole is an API action that allows a principal to get temporary credentials that allows them to then make API calls as the assumed role.
+
+PassRole is not an API call itself, but rather a permission required for a principal to pass (attach) a role  to another AWS service. 
+Pass Role example:
+Example 1: If you want to launch a CloudFormation stack that requires permissions you don’t have directly, 
+you can tell CloudFormation to use a different role in order to get the necessary permissions. 
+But in order to do that the principal launching the stack needs to have permission to PassRole (attach role) for the role in question. 
+This way you can have a relatively unprivileged role that doesn’t have the ability to escalate privileges directly, 
+but can invoke other services to go do more privileged actions on its behalf.
+Example 2: 
+A user/node/sa (principle) can assume the role RRR with the following policy PPP attached to the role RRR:
+====== Policy PPP =========
+{
+   "Version": "2012-10-17",
+   "Statement": [{
+    "Effect":"Allow",
+    "Action":["ec2:*"],
+    "Resource":"*"
+    },
+    {
+    "Effect":"Allow",
+    "Action":"iam:PassRole",
+    "Resource":"arn:aws:iam::Account_ID:role/S3Access"
+    }]
+}
+======End of Policy PPP =====
+Policy PPP says that the user/node/sa (principle) can do everything with ec2 instance, including creation of ec2 instance.
+The iam:PassRole also says that, however, the user can only pass role or attach role S3Access to the resource, i.e. ec2 instances created. 
+That means the user can't attach administrator policy to the instance!
+	
+
+
+
+========== READ ME FROM  TF CODES =============
 PREREQUISITE
 Install jinja2:  pip install jinja2
 Install Python 3.9
@@ -73,12 +195,6 @@ STEP TO RUN
 - sg  # Add custom ports rule here to be applied to worker nodes. The pods inherit the rule from here too.
 - managed_ng  # Created LT and create the managed node group to join them to the cluster.
 
-## Calico
-## Ensure to configure VXLAN pools to always and include blocks of cidrs
-## Reference: https://docs.tigera.io/calico/latest/networking/configuring/vxlan-ipip#configure-vxlan-encapsulation-for-all-inter-workload-traffic
-## Note: Add additional ippools that LT uses: "10.0.0.0/8","172.0.0.0/8","192.0.0.0/8"
-- calio
-
 ### Addon Creation
 ### Note: Do NOT run these addons before managed node group creation
 ### Because their deploy, ds rely on the managed servers.
@@ -128,6 +244,4 @@ Note:   Be sure to adjust the spec.commonName and dnsNames of the cert in (kind:
 ##          Protect applications in case of physical and logical errors 
 ##          Perform migrations between Kubernetes clusters
 ##          Replicate production clusters to development and testing environments
-#           - kube2iam: Not compatible with imdV2 since it doesn't support token requirement of imdV2
 - velero
-
