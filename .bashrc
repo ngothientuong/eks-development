@@ -1,0 +1,191 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+	for rc in ~/.bashrc.d/*; do
+		if [ -f "$rc" ]; then
+			. "$rc"
+		fi
+	done
+fi
+
+unset rc
+
+export PATH=/usr/local/bin/:$PATH
+# Source bash completion
+source /usr/share/bash-completion/bash_completion
+
+source <(kubectl completion bash)
+alias k=kubectl
+complete -o default -F __start_kubectl k
+
+## BL SA 1 - mhv like restricted access
+#export AWS_SECRET_ACCESS_KEY="7rf1rqdkvVkEmQZp3/PPHElQGuLBuxTs4f51rv3g"
+#export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UKDCZ7OGM"
+
+## BL SA 2 - full admin access
+#export AWS_SECRET_ACCESS_KEY="mTcJUbwDz39lPOunb65bI1woSl1QLAbTbtyNk8sO"
+#export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UMGNOIJEI"
+
+complete -C /usr/local/bin/terraform terraform
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_NAME
+export PROJECT_NAME="tngo"
+# END ANSIBLE MANAGED BLOCK PROJECT_NAME
+# BEGIN ANSIBLE MANAGED BLOCK AWS_ACCOUNT_NAME
+export AWS_ACCOUNT_NAME=bl-devops-cloud
+# END ANSIBLE MANAGED BLOCK AWS_ACCOUNT_NAME
+# BEGIN ANSIBLE MANAGED BLOCK AWS_ACCOUNT_NUMBER
+export AWS_ACCOUNT_NUMBER=682331604648
+# END ANSIBLE MANAGED BLOCK AWS_ACCOUNT_NUMBER
+# BEGIN ANSIBLE MANAGED BLOCK AWS_DEFAULT_REGION
+export AWS_DEFAULT_REGION=us-east-2
+# END ANSIBLE MANAGED BLOCK AWS_DEFAULT_REGION
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_DOMAIN
+export PROJECT_DOMAIN="bylightsdc.bylight.com"
+# END ANSIBLE MANAGED BLOCK PROJECT_DOMAIN
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_ARCHIVE
+export PROJECT_ARCHIVE=bl-artifacts
+# END ANSIBLE MANAGED BLOCK PROJECT_ARCHIVE
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_CIDR_MGMT
+export PROJECT_CIDR_MGMT="103.0.0.0/16"
+# END ANSIBLE MANAGED BLOCK PROJECT_CIDR_MGMT
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_CIDR_INT
+export PROJECT_CIDR_INT="104.0.0.0/16"
+# END ANSIBLE MANAGED BLOCK PROJECT_CIDR_INT
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_CIDR_PROD
+export PROJECT_CIDR_PROD="105.0.0.0/16"
+# END ANSIBLE MANAGED BLOCK PROJECT_CIDR_PROD
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_ID
+export PROJECT_ID="tngo"
+# END ANSIBLE MANAGED BLOCK PROJECT_ID
+# BEGIN ANSIBLE MANAGED BLOCK AWS_ACCESS_KEY_ID
+#export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UKDCZ7OGM"
+# END ANSIBLE MANAGED BLOCK AWS_ACCESS_KEY_ID
+# BEGIN ANSIBLE MANAGED BLOCK AWS_SECRET_ACCESS_KEY
+#export AWS_SECRET_ACCESS_KEY="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"
+# END ANSIBLE MANAGED BLOCK AWS_SECRET_ACCESS_KEY
+
+### Service Account - bl-service-account-1 - limited access
+export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UKDCZ7OGM"
+export AWS_SECRET_ACCESS_KEY="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"
+## BL SA 2 - full admin access
+#export AWS_SECRET_ACCESS_KEY="mTcJUbwDz39lPOunb65bI1woSl1QLAbTbtyNk8sO"
+#export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UMGNOIJEI"
+
+function awsdc() {
+        aws sts decode-authorization-message --encoded-message ${1}  | sed 's/\\"/"/g' | sed 's/^"//' | sed 's/"$//'  | sed 's/\,/\n/g'
+}
+
+## Terraform
+export TF_VAR_aws_region=us-east-2
+export TF_LOG=TRACE
+export TF_LOG_PATH="/media/sf_vagrantfileshare/terraform.txt"
+export TF_VAR_CIDR_INT="104.0.0.0/16"
+export TF_VAR_CIDR_MGMT="103.0.0.0/16"
+export TF_VAR_CIDR_PROD="105.0.0.0/16"
+export TF_VAR_rancher_eks_user_access_key=
+export TF_VAR_rancher_eks_user_secret_key=
+## BL SA Account 1 - limited access
+export TF_VAR_aws_access_key="AKIAZ5XRCA2UKDCZ7OGM"
+export TF_VAR_aws_secret_key="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"
+## BL SA Account 2 - Full Access
+#export TF_VAR_aws_access_key="AKIAZ5XRCA2UMGNOIJEI"
+#export TF_VAR_aws_secret_key="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"
+
+
+export ms=~/bl/personal/eks-development
+export eks=~/bl/personal/eks-development/environments/mgmt/services/eks
+export mdl=~/bl/personal/eks-development/modules/services/eks
+export tngo_spec=/home/vagrant/bl/personal/eks-development/users_spec/tngo
+
+function tfmplan() {
+        terraform plan -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars -out tfm.out
+}
+function tfminit() {
+        terraform init -backend-config=${tngo_spec}/user.hcl
+}
+function tfmdestroy() {
+        terraform destroy -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars
+}
+function tfmapply() {
+        terraform apply tfm.out
+}
+alias tfmimport="terraform import "
+
+
+# Kubectl
+alias k="kubectl "
+alias kgl="kubectl get --show-labels -o wide"
+alias kg="kubectl get -o wide"
+alias ke="kubectl edit"
+alias kd="kubectl describe"
+alias kr="kubectl replace --grace-period 0 --force -f"
+alias ka="kubectl apply --grace-period 0 --force -f"
+alias kstd="kubectl exec -it --stdin --tty"
+alias kex="kubectl exec -it"
+export ksn="-n kube-system"
+alias kct="kubectl config use-context "
+export do="--dry-run=client -oyaml"
+export drs="--dry-run=server -oyaml"
+export now="--grace-period 0 --force"
+alias kgc="kubectl config get-contexts "
+alias kuc="kubectl config user-context "
+alias klo="kubectl logs -f "
+alias kdel="kubectl delete --grace-period 0 --force -f"
+function ns() {
+        kubectl config set-context --current --namespace=$1
+}
+function kcdl() {
+        kubectl config delete-cluster $1
+        kubectl config unset users.$1
+        kubectl config delete-context $1
+}
+function addcluster(){
+        sed -i 's/: null/: []/g' ~/.kube/config && \
+        aws eks update-kubeconfig --region us-east-2 --name $1
+}
+function cfn() {
+        for i in ${1}*; do new=$(echo $i | sed "s:${2}:${3}:g" ) ; mv ${i} ${new} ; done
+}
+function mtpl() {
+	cd ${eks}/local-exec/jinja2_templates
+        for i in "eks-addon-kubectl_run"* ; do new=$(echo $i | sed "s:kubectl_run:${1}:g" ) ; cp -rp ${i} ${new}; sed -i "s:kubectl_run:${1}:g" ${new} ; done
+	cd -
+}
+function s3bk() {
+	DATE=$(date +%Y%m%d%H%M%S)
+	root_path=/home/vagrant/bl/personal/eks-development
+	local_sync_folder="mhv-ms"
+	local_sync_src=$(echo ${root_path}/${local_sync_folder})
+	cp -rp ~/.bashrc ${local_sync_src}/
+	s3_bucket="tngo-backup"
+	s3_sync_dest=$(echo s3://${s3_bucket}/${DATE}/${local_sync_folder})
+	aws s3 sync s3://tim-tf-k8s-state/ s3://${s3_bucket}/${DATE}/tim-tf-k8s-state/
+	aws s3 sync $local_sync_src $s3_sync_dest
+}
+function ubuntu() {
+	kubectl run ubuntu --image=ubuntu:latest  -- sh -c "apt update -y; apt install dnsutils curl -y; sleep 5d"
+}
+function centos() {
+        kubectl run centos --image=centos:latest  -- sh -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
+}
+function amzlnx2 {	
+	kubectl run amzlnx2 --image=amazonlinux2:latest -- bash -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
+}
+alias mnkube="minikube start --memory 10240 --cpus 4"
+alias gitadd="cp -rp ~/.bashrc /home/vagrant/bl/personal/eks-development/; git add --all"
