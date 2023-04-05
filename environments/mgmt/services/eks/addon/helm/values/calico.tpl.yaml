@@ -1,0 +1,18 @@
+serviceAccount:
+  annotations: { "eks.amazonaws.com/role-arn": ${sa_iam_role} }
+installation:
+  kubernetesProvider: EKS
+  cni:
+    type: Calico
+  calicoNetwork:
+    bgp: Disabled
+    ipPools:
+    - cidr: 10.244.0.0/8
+      encapsulation: VXLAN  
+      natOutgoing: Enabled
+    # - cidr: 172.0.0.0/8
+    #   encapsulation: VXLAN  
+    #   natOutgoing: Enabled
+    # - cidr: 192.0.0.0/8
+    #   encapsulation: VXLAN  
+    #   natOutgoing: Enabled

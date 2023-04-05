@@ -1,0 +1,135 @@
+# base-files version 3.0-3
+
+# User dependent .bashrc file
+
+# See man bash for more options...
+  # Don't wait for job termination notification
+  # set -o notify
+
+  # Don't use ^D to exit
+  # set -o ignoreeof
+
+  # Don't put duplicate lines in the history.
+  # export HISTCONTROL=ignoredups
+
+if [ -f ~/.env ]; then
+   . ~/.env
+fi
+
+#alias terraform='chmod -R 700 *; terraform'
+
+# Set prompt with blue text for normal user
+# On the same line
+PS1='\n\[\033[0;34m\]\u@\h:\w\[\033[0m\] > '
+# Set prompt with red text for root user
+#PS1='\n\[\033[0;31m\]\u@\h:\w\[\033[0m\]\n> '
+
+
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_NAME
+export PROJECT_NAME=Challenge
+# END ANSIBLE MANAGED BLOCK PROJECT_NAME
+# BEGIN ANSIBLE MANAGED BLOCK AWS_ACCOUNT_NAME
+export AWS_ACCOUNT_NAME=bl-devops-cloud
+# END ANSIBLE MANAGED BLOCK AWS_ACCOUNT_NAME
+# BEGIN ANSIBLE MANAGED BLOCK AWS_ACCOUNT_NUMBER
+export AWS_ACCOUNT_NUMBER=
+# END ANSIBLE MANAGED BLOCK AWS_ACCOUNT_NUMBER
+# BEGIN ANSIBLE MANAGED BLOCK AWS_DEFAULT_REGION
+export AWS_DEFAULT_REGION=us-east-2
+# END ANSIBLE MANAGED BLOCK AWS_DEFAULT_REGION
+# BEGIN ANSIBLE MANAGED BLOCK AWS_SECRET_ACCESS_KEY
+#export AWS_SECRET_ACCESS_KEY=
+# END ANSIBLE MANAGED BLOCK AWS_SECRET_ACCESS_KEY
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_DOMAIN
+export PROJECT_DOMAIN=
+# END ANSIBLE MANAGED BLOCK PROJECT_DOMAIN
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_ARCHIVE
+export PROJECT_ARCHIVE=bl-artifacts
+# END ANSIBLE MANAGED BLOCK PROJECT_ARCHIVE
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_CIDR_MGMT
+export PROJECT_CIDR_MGMT=
+# END ANSIBLE MANAGED BLOCK PROJECT_CIDR_MGMT
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_CIDR_INT
+export PROJECT_CIDR_INT=
+# END ANSIBLE MANAGED BLOCK PROJECT_CIDR_INT
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_CIDR_PROD
+export PROJECT_CIDR_PROD=
+# END ANSIBLE MANAGED BLOCK PROJECT_CIDR_PROD
+# BEGIN ANSIBLE MANAGED BLOCK PROJECT_ID
+export PROJECT_ID=
+# END ANSIBLE MANAGED BLOCK PROJECT_ID
+# BEGIN ANSIBLE MANAGED BLOCK AWS_ACCESS_KEY_ID
+#export AWS_ACCESS_KEY_ID=
+# END ANSIBLE MANAGED BLOCK AWS_ACCESS_KEY_ID
+
+### Service Account - bl-service-account-1 - limited access
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
+
+function awsdc() {
+        aws sts decode-authorization-message --encoded-message ${1}  | sed 's/\\"/"/g' | sed 's/^"//' | sed 's/"$//'  | sed 's/\,/\n/g'
+}
+
+## Terraform
+export TF_VAR_aws_region=us-east-2
+export TF_LOG=TRACE
+export TF_LOG_PATH="/media/sf_vagrantfileshare/terraform.txt"
+export TF_VAR_CIDR_INT=
+export TF_VAR_CIDR_MGMT=
+export TF_VAR_CIDR_PROD=
+export TF_VAR_rancher_eks_user_access_key=
+export TF_VAR_rancher_eks_user_secret_key=
+export TF_VAR_aws_access_key=
+export TF_VAR_aws_secret_key=
+
+export ms=~/bl_terraform/bl-ops-eks-poc-terraform/mhv-ms
+export eks=~/bl_terraform/bl-ops-eks-poc-terraform/mhv-ms/environments/mgmt/services/eks
+export mdl=~/bl_terraform/bl-ops-eks-poc-terraform/mhv-ms/modules/services/eks
+#export tngo_spec=~/deleteme/bl-devops-terraform/users_spec/tngo
+#export tngo_spec=~/bl_projects/bl-devops-terraform/users_spec/tngo
+#export tngo_spec=~/bl_terraform/bl-devops-terraform/users_spec/tngo
+export tngo_spec=/home/vagrant/bl_terraform/bl-ops-eks-poc-terraform/mhv-ms/users_spec/tngo
+
+function tfmplan() {
+        terraform plan -var-file=/home/vagrant/bl_terraform/bl-ops-eks-poc-terraform/mhv-ms/users_spec/tngo/mgmt_user.tfvars -out tfm.out
+}
+function tfminit() {
+        terraform init -backend-config=${tngo_spec}/user.hcl
+}
+function tfmdestroy() {
+        terraform destroy -var-file=/home/vagrant/bl_terraform/bl-ops-eks-poc-terraform/mhv-ms/users_spec/tngo/mgmt_user.tfvars 
+}
+function tfmapply() {
+        terraform apply tfm.out
+}
+
+# Kubectl
+alias k="kubectl "
+alias kgl="kubectl get --show-labels -o wide"
+alias kg="kubectl get -o wide"
+alias ke="kubectl edit"
+alias kd="kubectl describe"
+alias kr="kubectl replace --grace-period 0 --force -f"
+alias kstd="kubectl exec -it --stdin --tty"
+alias kex="kubectl exec -it"
+export ksn="-n kube-system"
+alias kct="kubectl config use-context "
+export do="--dry-run=client -oyaml"
+export drs="--dry-run=server -oyaml"
+export now="--grace-period 0 --force"
+alias kgc="kubectl config get-contexts "
+function ns() {
+        kubectl config set-context --current --namespace=$1
+}
+function kcdl() {
+        kubectl config delete-cluster $1
+        kubectl config unset users.$1
+        kubectl config delete-context $1
+}
+function addcluster(){
+        sed -i 's/: null/: []/g' ~/.kube/config && \
+        aws eks update-kubeconfig --region us-east-2 --name $1
+}
+function cfn() {
+        for i in ${1}*; do new=$(echo $i | sed "s/${2}/${3}//g" ) ; mv ${i} ${new} ; done
+}

@@ -1,0 +1,49 @@
+data "aws_eks_cluster_auth" "{{ cluster_name }}" {
+  name = "{{ cluster_name }}"
+}
+provider "kubernetes" {  
+  alias = "{{ cluster_name }}"
+  host                   = "{{ endpoint }}"
+  cluster_ca_certificate = base64decode("{{ cluster_ca_certificate }}")
+  token                  = data.aws_eks_cluster_auth.{{ cluster_name }}.token
+   exec {
+    api_version = "client.authentication.k8s.io/v1"
+    command     = "aws"
+    args = ["eks", "get-token", "--cluster-name", "{{ cluster_name }}"]    
+  }
+}
+
+provider "helm" {
+  alias = "{{ cluster_name }}"
+  kubernetes {      
+    host                   = "{{ endpoint }}"
+    cluster_ca_certificate = base64decode("{{ cluster_ca_certificate }}")
+    token                  = data.aws_eks_cluster_auth.{{ cluster_name }}.token
+    exec {
+      api_version = "client.authentication.k8s.io/v1"
+      command     = "aws"
+      args = ["eks", "get-token", "--cluster-name", "{{ cluster_name }}"]    
+    }
+  }
+}
+
+### Important:
+### Use this block and disable cert_manager_helm_creation_{{ count_index }} for cleaning up
+#module "kubectl_apply_{{ count_index }}" {
+#  source = "../../../../../../modules/services/eks/addon/cert_manager"
+#  providers = { kubernetes = kubernetes.{{ cluster_name }} }
+#  aws_region = "${var.aws_region}"
+#  aws_access_key = "${var.aws_access_key}"
+#  aws_secret_key = "${var.aws_secret_key}"  
+#  count_idx = {{ count_index }}
+#  clusters = var.clusters
+#  aws_caller_identity = data.aws_caller_identity.current.id
+#}
+
+module "cert_manager_helm_creation_{{ count_index }}" {
+  source = "../../../../../../modules/services/eks/addon/helm"
+  providers = { helm = helm.{{ cluster_name }} }
+  helm_info = local.helm_info[{{ count_index }}]  
+  helm_module_depends_on = ""
+  #helm_module_depends_on = module.kubectl_apply_{{ count_index }}
+}
