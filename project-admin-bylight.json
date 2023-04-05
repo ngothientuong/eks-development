@@ -1,0 +1,379 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "apigateway:*",
+                "appconfig:*",
+                "application-autoscaling:*",
+                "appstream:*",
+                "athena:*",
+                "autoscaling:*",
+                "batch:*",
+                "backup:*",
+                "backup-storage:*",
+                "cloudformation:*",
+                "cloudwatch:*",
+                "codebuild:*",
+                "codecommit:*",
+                "codedeploy:*",
+                "codepipeline:*",
+                "cognito-identity:*",
+                "cognito-idp:*",
+                "comprehend:*",
+                "comprehendmedical:*",
+                "datasync:*",
+                "dlm:*",
+                "dms:*",
+                "dynamodb:*",
+                "ebs:*",
+                "ec2messages:*",
+                "ecr:*",
+                "ecs:*",
+                "eks:*",
+                "elasticache:*",
+                "elasticbeanstalk:*",
+                "elasticfilesystem:*",
+                "elasticloadbalancing:*",
+                "elasticmapreduce:*",
+                "es:*",
+                "events:*",
+                "firehose:*",
+                "fsx:*",
+                "glacier:*",
+                "glue:*",
+                "iot:*",
+                "kafka:*",
+                "kafka-cluster:*",
+                "kinesis:*",
+                "kms:*",
+                "logs:*",
+                "mediaconvert:*",
+                "mobiletargeting:*",
+                "mq:*",
+                "polly:*",
+                "quicksight:*",
+                "rds:*",
+                "rds-db:*",
+                "redshift:*",
+                "redshift-data:*",
+                "resource-explorer:*",
+                "resource-groups:*",
+                "route53:*",
+                "s3:*",
+                "secretsmanager:*",
+                "serverlessrepo:*",
+                "ses:*",
+                "sms:*",
+                "sms-voice:*",
+                "sns:*",
+                "sqs:*",
+                "ssm:*",
+                "ssmmessages:*",
+                "states:*",
+                "support:*",
+                "synthetics:*",
+                "textract:*",
+                "transcribe:*",
+                "transfer:*",
+                "wafv2:*",
+                "xray:*"
+            ],
+            "Resource": "*",
+            "Effect": "Allow",
+            "Sid": "AllowFullAccess"
+        },
+        {
+            "Action": [
+                "cloudtrail:Describe*",
+                "cloudtrail:List*",
+                "guardduty:*Filter",
+                "guardduty:*PublishingDestination",
+                "guardduty:Get*",
+                "guardduty:List*",
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:CreateEventSourceMapping",
+                "sts:DecodeAuthorizationMessage",
+                "tag:Get*",
+                "tag:UntagResources",
+                "tag:TagResources",
+                "trustedadvisor:RefreshCheck"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "secretsmanager:*"
+            ],
+            "Resource": [
+                "arn:aws:secretsmanager:*:*:secret:/vaec/*"
+            ],
+            "Effect": "Deny",
+            "Sid": "DenySecretsManagerForVAEC"
+        },
+        {
+            "Action": [
+                "ssm:DeleteParameter*",
+                "ssm:PutParameter",
+                "ssm:LabelParameterVersion"
+            ],
+            "Resource": [
+                "arn:aws:ssm:*:*:parameter/vaec/*"
+            ],
+            "Effect": "Deny",
+            "Sid": "DenyParams"
+        },
+        {
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:role/project/project-*"
+            ],
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "iam:*OpenIDConnectProvider*"
+            ],
+            "Resource": [
+                "arn:aws:iam::682331604648:oidc-provider/oidc.eks.*"
+            ],
+            "Effect": "Allow"
+        },
+        {
+            "Action": "lambda:*",
+            "Resource": [
+                "arn:aws:lambda:*:682331604648:layer:*",
+                "arn:aws:lambda:*:682331604648:event-source-mapping:*",
+                "arn:aws:lambda:*:682331604648:function:project-*"
+            ],
+            "Effect": "Allow",
+            "Sid": "AllowLambdaAccessToProject"
+        },
+        {
+            "Action": "cloudtrail:*",
+            "Resource": [
+                "arn:aws:cloudtrail:*:682331604648:trail/project-*"
+            ],
+            "Effect": "Allow",
+            "Sid": "AllowCloudTrail"
+        },
+        {
+            "Action": [
+                "kms:DeleteAlias",
+                "kms:UpdateAlias",
+                "kms:DeleteImportedKeyMaterial"
+            ],
+            "Resource": "*",
+            "Effect": "Deny",
+            "Sid": "DenyDeleteKMSAccess"
+        },
+        {
+            "Action": [
+                "ec2:*Console*",
+                "ec2:Describe*",
+                "ec2:*Fleet*",
+                "ec2:*NetworkAclEntry",
+                "ec2:*SecurityGroup*",
+                "ec2:*KeyPair",
+                "ec2:*LaunchTemplate*",
+                "ec2:*NetworkInterface*",
+                "ec2:*Image*",
+                "ec2:*Placement*",
+                "ec2:*Snapshot*",
+                "ec2:*Tags",
+                "ec2:*Volume*",
+                "ec2:*InstanceProfile*",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:AssociateRouteTable",
+                "ec2:CancelConversionTask",
+                "ec2:CancelImportTask",
+                "ec2:ConfirmProductInstance",
+                "ec2:Import*",
+                "ec2:ModifyInstance*",
+                "ec2:MonitorInstances",
+                "ec2:RebootInstances",
+                "ec2:ReportInstanceStatus",
+                "ec2:ResetInstanceAttribute",
+                "ec2:RunInstances",
+                "ec2:StartInstances",
+                "ec2:StopInstances",
+                "ec2:TerminateInstances",
+                "ec2:UnassignPrivateIpAddresses",
+                "ec2:UnmonitorInstances",
+                "ec2-instance-connect:SendSerial*"
+            ],
+            "Resource": "*",
+            "Effect": "Allow",
+            "Sid": "AllowLimitedEC2Access"
+        },
+        {
+            "Condition": {
+                "Bool": {
+                    "ec2:Public": "true"
+                }
+            },
+            "Action": [
+                "ec2:RunInstances"
+            ],
+            "Resource": "*",
+            "Effect": "Deny"
+        },
+        {
+            "Action": [
+                "acm:List*",
+                "acm:Get*",
+                "acm:DeleteCertificate",
+                "acm:DescribeCertificate",
+                "acm:RemoveTagsFromCertificate",
+                "acm:ResendValidationEmail",
+                "acm:AddTagsToCertificate",
+                "acm:ImportCertificate"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "aws-portal:*Billing",
+                "s3:PutAccountPublicAccessBlock"
+            ],
+            "Resource": "*",
+            "Effect": "Deny",
+            "Sid": "DenyforProjAdmin"
+        },
+        {
+            "Action": [
+                "ec2:CreateTrafficMirror*"
+            ],
+            "Resource": "*",
+            "Effect": "Allow",
+            "Sid": "AllowCreateTrafficMirrorSession"
+        },
+        {
+            "Condition": {
+                "StringLike": {
+                    "ec2:ResourceTag/Name": [
+                        "project-*"
+                    ]
+                }
+            },
+            "Action": [
+                "ec2:ModifyTrafficMirror*",
+                "ec2:DeleteTrafficMirror*"
+            ],
+            "Resource": [
+                "arn:aws:ec2:*:*:traffic-mirror-filter/*",
+                "arn:aws:ec2:*:*:traffic-mirror-session/*",
+                "arn:aws:ec2:*:*:traffic-mirror-target/*"
+            ],
+            "Effect": "Allow",
+            "Sid": "AllowModifyTrafficMirrorSession"
+        },
+        {
+            "Action": [
+                "iam:Get*",
+                "iam:List*",
+                "iam:*Certificate",
+                "iam:Simulate*"
+            ],
+            "Resource": "*",
+            "Effect": "Allow",
+            "Sid": "AllowLimitedIAMAccess"
+        },
+        {
+            "Condition": {
+                "StringLike": {
+                    "iam:AWSServiceName": "*.amazonaws.com"
+                }
+            },
+            "Action": [
+                "iam:AttachRolePolicy",
+                "iam:PutRolePolicy",
+                "iam:CreateServiceLinkedRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::682331604648:role/aws-service-role/*.amazonaws.com/*",
+                "arn:aws:iam::682331604648:role/aws-service-role/*"
+            ],
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "iam:DeleteServiceLinkedRole",
+                "iam:GetServiceLinkedRoleDeletionStatus",
+                "iam:UpdateRoleDescription"
+            ],
+            "Resource": [
+                "arn:aws:iam::682331604648:role/aws-service-role/*.amazonaws.com/*"
+            ],
+            "Effect": "Allow"
+        },
+        {
+            "Condition": {
+                "StringLike": {
+                    "iam:PassedToService": [
+                        "*.amazonaws.com"
+                    ]
+                }
+            },
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": "arn:aws:iam::682331604648:role/aws-service-role/*",
+            "Effect": "Allow"
+        },
+        {
+            "Action": [
+                "iam:CreatePolicy*",
+                "iam:DeletePolicy*",
+                "iam:DeleteRole",
+                "iam:*InstanceProfile",
+                "iam:*RolePolicy",
+                "iam:PassRole",
+                "iam:Tag*",
+                "iam:Untag*"
+            ],
+            "Resource": [
+                "arn:aws:iam::682331604648:policy/project/project-*",
+                "arn:aws:iam::682331604648:instance-profile/project/project-*",
+                "arn:aws:iam::682331604648:role/project/project-*"
+            ],
+            "Effect": "Allow"
+        },
+        {
+            "Condition": {
+                "StringEquals": {
+                    "iam:PermissionsBoundary": [
+                        "arn:aws:iam::682331604648:policy/project-admin-bylight"
+                    ]
+                }
+            },
+            "Action": [
+                "iam:CreateRole",
+                "iam:AttachRolePolicy",
+                "iam:DetachRolePolicy",
+                "iam:PutRolePermissionsBoundary"
+            ],
+            "Resource": [
+                "arn:aws:iam::682331604648:role/project/project-*"
+            ],
+            "Effect": "Allow"
+        },
+        {
+            "Resource": [
+                "arn:aws:iam::682331604648:role/vaec*",
+                "arn:aws:iam::682331604648:role/adfs*"
+            ],
+            "Effect": "Deny",
+            "NotAction": [
+                "iam:Get*",
+                "iam:List*"
+            ],
+            "Sid": "LimitedAccessToVaecRole"
+        }
+    ]
+}
