@@ -13,11 +13,13 @@
 - Kiali needs Prometheus to store data
 - Jaeger requires ElasticSearch database
 - traefik
-- argocd
+- argocd:
+    Install kubeseal to encrypt secret and store in Git
+    Install argocd CLI
 - calio   [DONE]
 - datadog agent
 - datadog private location
-- external dns
+- external dns: https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#deploy-externaldns
 - goldilocks
 - loki
 - metric server
@@ -25,7 +27,8 @@
 - traefik
 - Look into fortio (load testing tool such as make 10 concurrent request or whatever)
 - Look into Mutus - multi network interface for pod: https://github.com/aws-samples/eks-install-guide-for-multus/blob/main/README.md
-- Install Seal Secrets
+- Install Seal Secrets: https://github.com/bitnami-labs/sealed-secrets/blob/main/README.md#installation
+- Stakater/Reload: Reload deployment,sts when a resource change such as secret, configmap
 
 #########################
 #   NEED TO WATCH OUT   #
