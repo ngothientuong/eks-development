@@ -25,6 +25,7 @@
 - metric server
 - pghero
 - traefik
+- crossplane
 - cert-manager:  add webhook.hostNetwork=true  due to Calico CNI
 - Look into fortio (load testing tool such as make 10 concurrent request or whatever)
 - Look into Mutus - multi network interface for pod: https://github.com/aws-samples/eks-install-guide-for-multus/blob/main/README.md

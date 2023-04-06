@@ -1,2 +1,5 @@
 serviceAccount:
   annotations: { "eks.amazonaws.com/role-arn": ${sa_iam_role} }
+webhook:
+  hostNetwork: true
+  securePort: 10251
