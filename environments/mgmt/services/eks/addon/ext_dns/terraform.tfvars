@@ -1,0 +1,7 @@
+#project_cidr = "104.0.0.0/16"
+#env = "mgmt"
+#iam_role_path = "/project/"
+#permissions_boundary = "arn:aws:iam::682331604648:policy/project-admin-bylight"
+#ec2_remote_ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8jnUrRWJt/Rvvu0m4Haj0OPu9uGpT8ELSGYIXliCTbt0YJ+P6l/aDmghzx+ppl5PHjq8M448xFo6T3Jf8n5Aqu+rDnAEs86cfHESJ977oRUqzD9h4xNRe1ZUFdmqxPKhe43KSKKsu3KldpcUkQTNZO24rphryIwtGkT2UaNxFKKT+fV9/brmZjR5206cQBkospqK7CzNhm1ziSdgHCubwS14AhzSGNyk32RM4UfQBMFHOONaZR1XXXWz7tYScew5JA8sv33my5+3hYaz2w9ZWGcoWH/cTIz/h/9ptdna5BGdz7IbLvpXEvseVa+isVoXjWYwtxgvTZ8ulswZ6e7kR tngo-keypair"
+
+

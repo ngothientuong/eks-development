@@ -29,6 +29,7 @@
 - Look into Mutus - multi network interface for pod: https://github.com/aws-samples/eks-install-guide-for-multus/blob/main/README.md
 - Install Seal Secrets: https://github.com/bitnami-labs/sealed-secrets/blob/main/README.md#installation
 - Stakater/Reload: Reload deployment,sts when a resource change such as secret, configmap
+- Learn about kustomize. Example here: https://github.com/codefresh-contrib/gitops-certification-examples/tree/main/kustomize-app
 
 #########################
 #   NEED TO WATCH OUT   #

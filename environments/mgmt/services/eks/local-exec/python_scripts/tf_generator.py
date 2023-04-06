@@ -19,7 +19,7 @@ jinja2_template_dir = os.getcwd() + "/jinja2_templates/"
 services_dir = os.getcwd() + '/../../'
 # Note: File name structure is eks-<subpath>-<subpath>...-<subpath>.j2
 template_files = ["eks-configmap.j2","eks-addon-cert_manager.j2","eks-addon-cert_manager-aws_pca_issuer.j2","eks-addon-aws_lb_controller.j2","eks-addon-kubectl_run.j2","eks-addon-ext_snapshotter.j2",
-                  "eks-addon-ext_secret.j2","eks-addon-kube2iam.j2","eks-addon-velero.j2","eks-addon-calico.j2"
+                  "eks-addon-ext_secret.j2","eks-addon-kube2iam.j2","eks-addon-velero.j2","eks-addon-calico.j2","eks-addon-ext_dns.j2"
                   ]
 
 ###################################

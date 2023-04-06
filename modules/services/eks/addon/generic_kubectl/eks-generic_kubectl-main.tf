@@ -9,7 +9,8 @@ locals {
   #   lb_address = ""
   # }]])  
   userdata_params = [{
-    cluster_name =  var.clusters_info.cluster_name    
+    cluster_name =  var.clusters_info.cluster_name  
+    aws_region = var.aws_region
     aws_caller_identity = var.aws_caller_identity        
     service_account_role_arn = format("%q",element([ for sa_role in var.service_account_role_arns : sa_role.arn if length(regexall(var.clusters_info.cluster_name, sa_role.arn)) > 0 ],0))    
     vpc_cidr_block = var.clusters_info.cidr_block   
