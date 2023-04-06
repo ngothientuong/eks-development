@@ -7,7 +7,7 @@
 - Configure cross-zone load balancing
 - Look into AWS Private Link
 - Configure AWS EFS
-- Configure Horizonal Pod AutoScaler
+- Configure Horizonal Pod AutoScaler [DONE - k8s built in]
 - Configure External DNS.
 - Look into AWS Managed Service Prometheus
 - Kiali needs Prometheus to store data
@@ -19,12 +19,13 @@
 - calio   [DONE]
 - datadog agent
 - datadog private location
-- external dns: https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#deploy-externaldns
+- external dns: [DONE] https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#deploy-externaldns
 - goldilocks
 - loki
 - metric server
 - pghero
 - traefik
+- cert-manager:  add webhook.hostNetwork=true  due to Calico CNI
 - Look into fortio (load testing tool such as make 10 concurrent request or whatever)
 - Look into Mutus - multi network interface for pod: https://github.com/aws-samples/eks-install-guide-for-multus/blob/main/README.md
 - Install Seal Secrets: https://github.com/bitnami-labs/sealed-secrets/blob/main/README.md#installation
