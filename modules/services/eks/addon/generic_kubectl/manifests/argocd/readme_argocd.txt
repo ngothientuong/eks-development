@@ -16,6 +16,7 @@ Installation Guide:
     All other fields are required
 - Access the browser as specified in the rules[*].host field.
 
+
 ```
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -63,3 +64,12 @@ spec:
 
 
 ```
+
+#########################
+## Connect to Git Repo ##
+#########################
+- Generate ssh key: ssh-keygen -t ed25519 -C "Tuong Private Git Repo"
+- Go to github repo -> setting -> deploy ssh key -> Place in public key
+- Go to ArgoCD UI -> Setting -> +Connect Repo
+    The address for repo is:   "git@github.com:<your user name>/<name of repo>.git
+    Put in private key and fill out the rest of the form
