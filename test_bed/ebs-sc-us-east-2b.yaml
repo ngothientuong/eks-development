@@ -1,0 +1,19 @@
+allowedTopologies:
+- matchLabelExpressions:
+  - key: topology.ebs.csi.aws.com/zone
+    values:
+    - us-east-2b
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc-2b
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+parameters:
+  csi.storage.k8s.io/fstype: xfs
+  encrypted: "true"
+  iopsPerGB: "100"
+  type: io2
+provisioner: ebs.csi.aws.com
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer

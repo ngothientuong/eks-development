@@ -1,0 +1,446 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: aws-pca-issuer
+      meta.helm.sh/release-namespace: aws-pca-issuer
+    creationTimestamp: "2023-03-27T08:27:55Z"
+    labels:
+      app.kubernetes.io/instance: aws-pca-issuer
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: aws-pca-issuer
+      app.kubernetes.io/version: v0.3.1
+      helm.sh/chart: aws-pca-issuer-0.1.2
+    name: aws-pca-issuer
+    namespace: aws-pca-issuer
+    resourceVersion: "653205"
+    uid: a6d2f313-feb6-48f7-acfb-fca6f4eed581
+  spec:
+    clusterIP: 10.100.206.233
+    clusterIPs:
+    - 10.100.206.233
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: http
+    selector:
+      app.kubernetes.io/instance: aws-pca-issuer
+      app.kubernetes.io/name: aws-pca-issuer
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2023-04-05T08:03:51Z"
+    labels:
+      k8s-app: tigera-api
+    name: calico-api
+    namespace: calico-apiserver
+    ownerReferences:
+    - apiVersion: operator.tigera.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: APIServer
+      name: default
+      uid: ac990cb9-d791-4711-b49e-2d687a7be65c
+    resourceVersion: "3981251"
+    uid: f40a2fb7-b518-4b65-9985-2b01fa53b7b7
+  spec:
+    clusterIP: 10.100.2.188
+    clusterIPs:
+    - 10.100.2.188
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: apiserver
+      port: 443
+      protocol: TCP
+      targetPort: 5443
+    selector:
+      apiserver: "true"
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      prometheus.io/port: "9094"
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2023-04-05T08:03:28Z"
+    labels:
+      k8s-app: calico-kube-controllers
+    name: calico-kube-controllers-metrics
+    namespace: calico-system
+    ownerReferences:
+    - apiVersion: operator.tigera.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Installation
+      name: default
+      uid: e9fc2464-a22c-4d1e-873e-1ea9b695e77c
+    resourceVersion: "3980963"
+    uid: b4a65d8d-2b56-486e-ac68-eeccff706d83
+  spec:
+    clusterIP: None
+    clusterIPs:
+    - None
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: metrics-port
+      port: 9094
+      protocol: TCP
+      targetPort: 9094
+    selector:
+      k8s-app: calico-kube-controllers
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2023-04-05T08:03:24Z"
+    labels:
+      k8s-app: calico-typha
+    name: calico-typha
+    namespace: calico-system
+    ownerReferences:
+    - apiVersion: operator.tigera.io/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Installation
+      name: default
+      uid: e9fc2464-a22c-4d1e-873e-1ea9b695e77c
+    resourceVersion: "3980790"
+    uid: 6011218d-e237-46e1-82bb-8f919b30134b
+  spec:
+    clusterIP: 10.100.143.90
+    clusterIPs:
+    - 10.100.143.90
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: calico-typha
+      port: 5473
+      protocol: TCP
+      targetPort: calico-typha
+    selector:
+      k8s-app: calico-typha
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: cert-manager
+      meta.helm.sh/release-namespace: cert-manager
+    creationTimestamp: "2023-04-06T20:09:10Z"
+    labels:
+      app: webhook
+      app.kubernetes.io/component: webhook
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: webhook
+      app.kubernetes.io/version: v1.11.0
+      helm.sh/chart: cert-manager-v1.11.0
+    name: cert-manager-webhook
+    namespace: cert-manager
+    resourceVersion: "4805225"
+    uid: 2855567f-6c8f-4ba8-b87a-e2727c52c190
+  spec:
+    clusterIP: 10.100.165.252
+    clusterIPs:
+    - 10.100.165.252
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+    selector:
+      app.kubernetes.io/component: webhook
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/name: webhook
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2023-03-25T02:14:37Z"
+    labels:
+      component: apiserver
+      provider: kubernetes
+    name: kubernetes
+    namespace: default
+    resourceVersion: "190"
+    uid: e8782be4-7fda-416b-bb93-452a22b82695
+  spec:
+    clusterIP: 10.100.0.1
+    clusterIPs:
+    - 10.100.0.1
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 443
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: external-secrets
+      meta.helm.sh/release-namespace: external-secrets
+    creationTimestamp: "2023-03-30T05:28:31Z"
+    labels:
+      app.kubernetes.io/instance: external-secrets
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: external-secrets-webhook
+      app.kubernetes.io/version: v0.8.1
+      external-secrets.io/component: webhook
+      helm.sh/chart: external-secrets-0.8.1
+    name: external-secrets-webhook
+    namespace: external-secrets
+    resourceVersion: "1810269"
+    uid: 37fb33f7-4036-4e0e-b866-e62317a6de3a
+  spec:
+    clusterIP: 10.100.29.165
+    clusterIPs:
+    - 10.100.29.165
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: webhook
+      port: 443
+      protocol: TCP
+      targetPort: 10250
+    selector:
+      app.kubernetes.io/instance: external-secrets
+      app.kubernetes.io/name: external-secrets-webhook
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: aws-load-balancer-controller
+      meta.helm.sh/release-namespace: kube-system
+    creationTimestamp: "2023-03-28T20:03:31Z"
+    labels:
+      app.kubernetes.io/component: webhook
+      app.kubernetes.io/instance: aws-load-balancer-controller
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: aws-load-balancer-controller
+      app.kubernetes.io/version: v2.4.7
+      helm.sh/chart: aws-load-balancer-controller-1.4.8
+      prometheus.io/service-monitor: "false"
+    name: aws-load-balancer-webhook-service
+    namespace: kube-system
+    resourceVersion: "1272860"
+    uid: 001ef5ff-777f-4712-8f2f-b07607e42e34
+  spec:
+    clusterIP: 10.100.220.106
+    clusterIPs:
+    - 10.100.220.106
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: webhook-server
+      port: 443
+      protocol: TCP
+      targetPort: webhook-server
+    selector:
+      app.kubernetes.io/instance: aws-load-balancer-controller
+      app.kubernetes.io/name: aws-load-balancer-controller
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      prometheus.io/port: "9153"
+      prometheus.io/scrape: "true"
+    creationTimestamp: "2023-04-05T09:32:39Z"
+    labels:
+      eks.amazonaws.com/component: kube-dns
+      k8s-app: kube-dns
+      kubernetes.io/cluster-service: "true"
+      kubernetes.io/name: CoreDNS
+    name: kube-dns
+    namespace: kube-system
+    resourceVersion: "4016721"
+    uid: b0e9eba8-a11b-41a2-9d49-c389946a766e
+  spec:
+    clusterIP: 10.100.0.10
+    clusterIPs:
+    - 10.100.0.10
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: dns
+      port: 53
+      protocol: UDP
+      targetPort: 53
+    - name: dns-tcp
+      port: 53
+      protocol: TCP
+      targetPort: 53
+    selector:
+      k8s-app: kube-dns
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2023-03-30T06:48:54Z"
+    name: snapshot-validation-service
+    namespace: kube-system
+    resourceVersion: "1837964"
+    uid: 92e36889-7023-4e5e-828d-4e30b688463d
+  spec:
+    clusterIP: 10.100.150.243
+    clusterIPs:
+    - 10.100.150.243
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 443
+      protocol: TCP
+      targetPort: 443
+    selector:
+      app: snapshot-validation
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: tngo-eks-external-dns-test.bylightsdc.bylight.com
+      service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+      service.beta.kubernetes.io/aws-load-balancer-name: tngo-eks-external-dns-test
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
+      service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: '*'
+      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+      service.beta.kubernetes.io/aws-load-balancer-type: external
+    creationTimestamp: "2023-04-06T20:05:20Z"
+    finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+    - service.k8s.aws/resources
+    name: nginx
+    namespace: tim
+    resourceVersion: "4803568"
+    uid: c21e887a-d872-4e11-974a-7cb958bf4ae1
+  spec:
+    allocateLoadBalancerNodePorts: true
+    clusterIP: 10.100.233.115
+    clusterIPs:
+    - 10.100.233.115
+    externalTrafficPolicy: Cluster
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      nodePort: 30439
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    - name: https
+      nodePort: 32573
+      port: 443
+      protocol: TCP
+      targetPort: 8443
+    selector:
+      app: nginx
+    sessionAffinity: None
+    type: LoadBalancer
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      meta.helm.sh/release-name: vmware-tanzu
+      meta.helm.sh/release-namespace: velero
+    creationTimestamp: "2023-03-31T10:23:43Z"
+    labels:
+      app.kubernetes.io/instance: vmware-tanzu
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/name: velero
+      helm.sh/chart: velero-3.1.5
+    name: vmware-tanzu-velero
+    namespace: velero
+    resourceVersion: "2294215"
+    uid: 7d8d48c1-862f-4af9-9d91-b689c8adccd3
+  spec:
+    clusterIP: 10.100.203.97
+    clusterIPs:
+    - 10.100.203.97
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http-monitoring
+      port: 8085
+      protocol: TCP
+      targetPort: http-monitoring
+    selector:
+      app.kubernetes.io/instance: vmware-tanzu
+      app.kubernetes.io/name: velero
+      name: velero
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+kind: List
+metadata:
+  resourceVersion: ""

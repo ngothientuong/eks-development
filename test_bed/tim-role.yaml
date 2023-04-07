@@ -1,0 +1,34 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  creationTimestamp: "2023-03-28T19:11:30Z"
+  labels:
+    k8s-addon: cluster-autoscaler.addons.k8s.io
+    k8s-app: cluster-autoscaler
+  name: tim-role
+  namespace: tim
+  resourceVersion: "1263491"
+  uid: 737367d7-6308-4471-afe2-426bdbfbf7f6
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - create
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resourceNames:
+  - cluster-autoscaler-status
+  - cluster-autoscaler-priority-expander
+  resources:
+  - configmaps
+  verbs:
+  - delete
+  - get
+  - update
+  - watch
+  resources: ["secrets","pods","deploys"]
+  verbs: ["*"]

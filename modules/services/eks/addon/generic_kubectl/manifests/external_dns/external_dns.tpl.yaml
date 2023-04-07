@@ -86,7 +86,7 @@ spec:
             - --aws-prefer-cname    # Gov Cloud caveat: https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#govcloud-caveats
             - --txt-prefix=project-         # Gov Cloud caveat: https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#govcloud-caveats
             - --log-level=info
-            - --aws-zone-type=private
+            - --aws-zone-type=private       # Gov Cloud. For public cloud , choose public
           env:
             - name: AWS_DEFAULT_REGION
               value: ${aws_region} # change to region where EKS is installed

@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: private
+
+    # for creating record-set
+    external-dns.alpha.kubernetes.io/hostname: int-eks-echo.bylightsdc.bylight.com # give your domain name here
+  name: echoserver-internal
+  namespace: echoserver
+spec:
+  #ingressClassName: alb
+  rules:
+  - host: eks-tim-echo.bylightsdc.bylight.com
+    http:
+      paths:
+      - path: /
+        backend:
+          service:
+            name: echoserver
+            port:
+              number: 80
+        pathType: Prefix

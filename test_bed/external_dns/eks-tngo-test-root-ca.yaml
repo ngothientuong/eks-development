@@ -1,0 +1,22 @@
+kind: Certificate
+apiVersion: cert-manager.io/v1
+metadata:
+  name: nlb-lab-tls-cert
+spec:
+  commonName: tngo-eks-external-dns-test.bylightsdc.bylight.com
+  dnsNames:
+    - tngo-eks-external-dns-test.bylightsdc.bylight.com
+    - tuong-ngo.test.eks.bylightsdc.bylight.com
+  duration: 2160h0m0s
+  issuerRef:
+    group: awspca.cert-manager.io
+    kind: AWSPCAClusterIssuer
+    name: eks-tngo-test-root-ca
+  renewBefore: 360h0m0s
+  secretName: nlb-tls-app-secret
+  usages:
+    - server auth
+    - client auth
+  privateKey:
+    algorithm: "RSA"
+    size: 2048

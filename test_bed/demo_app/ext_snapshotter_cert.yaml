@@ -1,0 +1,32 @@
+apiVersion: awspca.cert-manager.io/v1beta1
+kind: AWSPCAClusterIssuer
+metadata:
+  name: external-snapshotter-$(cluster_name)-issuer
+  namespace: kube-system
+spec:
+  arn: arn:aws:acm-pca:us-east-2:682331604648:certificate-authority/d6d38646-9c02-488b-94ab-c5894de95b95
+  region: us-east-2
+---    
+kind: Certificate
+apiVersion: cert-manager.io/v1
+metadata:
+  name: external-snapshotter-$(cluster_name)-cert
+  namespace: kube-system
+spec:
+  commonName: "external-snapshotter-$(cluster_name)-elb.us-east-2.amazonaws.com"
+  dnsNames:
+    - "external-snapshotter-backup-$(cluster_name)-elb.us-east-2.amazonaws.com"
+    - tuong-ngo.test.eks.bylightsdc.bylight.com
+  duration: 2160h0m0s
+  issuerRef:
+    group: awspca.cert-manager.io
+    kind: AWSPCAClusterIssuer
+    name: external-snapshotter-$(cluster_name)-issuer
+  renewBefore: 360h0m0s
+  secretName: nlb-tls-app-secret
+  usages:
+    - server auth
+    - client auth
+  privateKey:
+    algorithm: "RSA"
+    size: 2048

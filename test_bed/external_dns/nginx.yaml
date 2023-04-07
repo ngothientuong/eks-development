@@ -1,0 +1,116 @@
+# Run this twice because you don't know 
+# the server name, aka. your LB DNS until you ran it the first time
+# to fill in the configmap section: server_name ${lb_address};
+apiVersion: awspca.cert-manager.io/v1beta1
+kind: AWSPCAClusterIssuer
+metadata:
+  name: eks-tngo-test-root-ca
+spec:
+  arn: arn:aws:acm-pca:us-east-2:682331604648:certificate-authority/d6d38646-9c02-488b-94ab-c5894de95b95
+  region: us-east-2
+---  
+kind: Certificate
+apiVersion: cert-manager.io/v1
+metadata:
+  name: nlb-lab-tls-cert
+spec:
+  commonName: tngo-eks-external-dns-test.bylightsdc.bylight.com
+  dnsNames:
+    - tngo-eks-external-dns-test.bylightsdc.bylight.com
+    - tuong-ngo.test.eks.bylightsdc.bylight.com
+  duration: 2160h0m0s
+  issuerRef:
+    group: awspca.cert-manager.io
+    kind: AWSPCAClusterIssuer
+    name: eks-tngo-test-root-ca
+  renewBefore: 360h0m0s
+  secretName: nlb-tls-app-secret
+  usages:
+    - server auth
+    - client auth
+  privateKey:
+    algorithm: "RSA"
+    size: 2048
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tngo-eks-external-dns-test
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: tngo-eks-external-dns-test.bylightsdc.bylight.com
+    #service.beta.kubernetes.io/aws-load-balancer-type: "nlb-ip"
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-proxy-protocol: "*"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-name: tngo-eks-external-dns-test
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    name: http
+    targetPort: 8080
+  - port: 443
+    name: https
+    targetPort: 8443
+  selector:
+    app: nginx
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - name: secret
+          mountPath: /etc/nginx/ssl
+          readOnly: true
+        - name: config-volume
+          mountPath: /etc/nginx/conf.d
+      volumes:
+      - name: secret
+        secret:
+          secretName: nlb-tls-app-secret
+      - name: config-volume
+        configMap:
+          name: secure-config
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: secure-config
+data:
+  app.conf: |-
+    server {
+      listen 8443 ssl proxy_protocol;
+      real_ip_header proxy_protocol;
+      set_real_ip_from 10.0.0.0/8;
+      
+      server_name tngo-eks-external-dns-test;
+
+      ssl_certificate /etc/nginx/ssl/tls.crt;
+      ssl_certificate_key /etc/nginx/ssl/tls.key;
+
+      default_type text/plain;
+
+      location / {
+        return 200 "hello from pod $hostname\n";
+      }
+    }
+#set_real_ip_from 192.168.0.0/16;    

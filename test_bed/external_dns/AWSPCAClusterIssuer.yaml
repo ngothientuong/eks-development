@@ -1,0 +1,10 @@
+# Run this twice because you don't know 
+# the server name, aka. your LB DNS until you ran it the first time
+# to fill in the configmap section: server_name ${lb_address};
+apiVersion: awspca.cert-manager.io/v1beta1
+kind: AWSPCAClusterIssuer
+metadata:
+  name: eks-tngo-test-root-ca
+spec:
+  arn: arn:aws:acm-pca:us-east-2:682331604648:certificate-authority/d6d38646-9c02-488b-94ab-c5894de95b95
+  region: us-east-2

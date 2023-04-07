@@ -1,0 +1,112 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2023-04-01T01:48:46Z"
+  labels:
+    run: ubuntu
+  name: ubuntu
+  namespace: tim
+  resourceVersion: "2628019"
+  uid: c8e39e27-eda1-46a2-9c62-def69c2e26bb
+spec:
+  containers:
+  - args:
+    - sh
+    - -c
+    - apt update ; apt install dnsutils curl -y; cp -rp /etc/secret-volume/* /data;
+      sleep 5d;
+    image: ubuntu:latest
+    imagePullPolicy: Always
+    name: ubuntu
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /data
+      name: persistent-storage
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-rd2rp
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: ip-103-0-3-142.us-east-2.compute.internal
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: persistent-storage
+    persistentVolumeClaim:
+      claimName: ebs-claim-tim
+  - name: secret-volume
+    secret:
+      defaultMode: 420
+      secretName: tim-secret-file
+  - name: kube-api-access-rd2rp
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2023-04-01T01:48:46Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2023-04-01T02:45:31Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2023-04-01T02:45:31Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2023-04-01T01:48:46Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://b21aa5d77ff691c46d133bd390e877114186e42de02db7231677a27ac8995138
+    image: docker.io/library/ubuntu:latest
+    imageID: docker.io/library/ubuntu@sha256:67211c14fa74f070d27cc59d69a7fa9aeff8e28ea118ef3babc295a0428a6d21
+    lastState: {}
+    name: ubuntu
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2023-04-01T02:45:30Z"
+  hostIP: 103.0.3.142
+  phase: Running
+  podIP: 103.0.3.101
+  podIPs:
+  - ip: 103.0.3.101
+  qosClass: BestEffort
+  startTime: "2023-04-01T01:48:46Z"

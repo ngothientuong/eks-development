@@ -1,0 +1,20 @@
+allowedTopologies:
+- matchLabelExpressions:
+  - key: topology.ebs.csi.aws.com/zone
+    values:
+    - us-east-2b
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  creationTimestamp: "2023-04-01T02:45:04Z"
+  name: ebs-sc
+  resourceVersion: "2627851"
+  uid: f5bd68b1-9a6c-4475-bf8c-a9eb4c31e6d1
+parameters:
+  csi.storage.k8s.io/fstype: xfs
+  encrypted: "true"
+  iopsPerGB: "50"
+  type: io1
+provisioner: ebs.csi.aws.com
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
