@@ -147,6 +147,38 @@ alias kgc="kubectl config get-contexts "
 alias kuc="kubectl config user-context "
 alias klo="kubectl logs -f "
 alias kdel="kubectl delete --grace-period 0 --force -f"
+function kjn() {
+  kubectl get $1 -o=jsonpath={.items[*].metadata.name}
+}
+function kgall {
+    for i in $(kubectl api-resources -o name --namespaced)
+    do
+	if [ "$(kubectl -n ${1} get --ignore-not-found ${i} 2>/dev/null)" != "" ]
+        then
+            for item in $(kubectl get --show-labels -n ${1} --ignore-not-found ${i} | awk '{print $1}' | tail -n +2 )
+            do
+                   echo ${i}/${item} 
+           done
+        fi
+    done
+}
+function destroyall {
+    for i in $(kubectl api-resources -o name --namespaced)
+    do
+        if [ "$(kubectl -n ${1} get --ignore-not-found ${i} 2>/dev/null)" != "" ]
+        then
+            for item in $(kubectl get --show-labels -n ${1} --ignore-not-found ${i} | awk '{print $1}' | tail -n +2 )
+            do
+		   if [ "$(echo ${1} )" != "kube-system" ]
+		   then
+                     kubectl delete -n ${1} ${i}/${item} --grace-period 0 --force
+                   else 
+			   echo "Can't destroy kube-system"
+		   fi
+           done
+        fi
+    done
+}
 function ns() {
         kubectl config set-context --current --namespace=$1
 }

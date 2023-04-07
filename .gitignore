@@ -6,6 +6,7 @@
 *.tfstate.*
 *tfm.out
 .terraform.lock.hcl
+*.tar.gz
 # Crash log files
 crash.log
 
