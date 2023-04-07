@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: external-dns-private
+  name: external-dns-private
+  namespace: external-dns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: external-dns-private
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: external-dns-private
+    spec:
+      containers:
+      - args:
+        - --source=ingress
+        - --provider=aws
+        - --registry=txt
+        - --txt-owner-id=dev.k8s.nexus
+        - --annotation-filter=kubernetes.io/ingress.class in (internal-ingress)
+        - --aws-zone-type=private
+        - --domain-filter=bylightsdc.bylight.com # will make external-dns see only the hosted zones matching provided domain, omit to process all available hosted zones
+        - --policy=upsert-only # would prevent external-dns from deleting any records, omit to enable full synchronization
+        image: registry.k8s.io/external-dns/external-dns:v0.13.4
+        name: external-dns-private

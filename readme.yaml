@@ -8,7 +8,8 @@
 - Look into AWS Private Link
 - Configure AWS EFS
 - Configure Horizonal Pod AutoScaler [DONE - k8s built in]
-- Configure External DNS.
+- Configure External DNS:
+    MUST have 'waf-regional:*' permission or else ALB/NLB will fail
 - Look into AWS Managed Service Prometheus
 - Kiali needs Prometheus to store data
 - Jaeger requires ElasticSearch database
@@ -205,6 +206,8 @@ STEP TO RUN
 ### Note: Do NOT run these addons before managed node group creation
 ### Because their deploy, ds rely on the managed servers.
 #- vpc_cni:  Use Calico, don't use vpc_cni
+- calico:   HUGE NOTE => add hostNetwork=true to helm deployment for webhook pod in ALL helm deployment
+            so that control plane can reach out to it! Look at aws-load-balancer-controller helm deployment for example
 - coredns
 - kube-proxy
 
