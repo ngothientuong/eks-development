@@ -194,6 +194,41 @@ Requirement:
 - Create istio-system namespace
 - Create secret tls file called 'cacerts' with the key, cert requested by a COMMON CA
 - The secret must be placed in istio-system namespace
+- Install URL: https://istio.io/latest/docs/setup/install/multicluster/multi-primary/
+
+###########
+## Cilium #
+###########
+- Requirement:
+    Control Plane
+      Requirements
+        All Kubernetes worker nodes must be assigned a unique IP address and all worker nodes must have IP connectivity between each other.
+        All clusters must be assigned unique PodCIDR ranges.
+        Cilium must be configured to use etcd as the kvstore.
+        The network between clusters must allow the inter-cluster communication. The exact firewalling requirements will depend on whether Cilium is configured to run in direct-routing or tunneling mode.
+- Cluster design:
+    Statefless application cluster:
+        Each stateless set of application runs on its own cluster.
+        Each stateless application cluster above runs on its own AZ
+        One of the cluster only runs 1 pod each to serve as a working mirror member
+        Each pod is configured to run with AWS EBS storage claim 'delete' when the pod is terminated
+        Each service is configured as cilium shared service        
+        The services must share the exact same name, in the same namespace
+        There will be only 1 single AWS ALB accepting external traffic, routing to either or both cluster
+        
+    Stateful database and shared service:
+        Each stateful set of database service & shared service runs on its own cluster.
+        Each stateful service cluster above run on its own AZ
+        The services must share the exact same name, in the same namespace
+        Only 1 cluster with global service enabled and receive traffic from the stateless clusters. 
+        Snapshots are actively taken from the active stateless cluster of AZ 1.
+        Snapshots are actively restored in the other stateless cluster (failover cluster) in AZ 2.
+        The other cluster in AZ 2 (failover cluster) will not have global service enabled.
+        The failover clulster will scaled down to 0 when EBS restoration take place.
+        The failover cluster will then be scaled up to at least 2 pod each service.
+        
+
+
 
 
 STEP TO RUN
