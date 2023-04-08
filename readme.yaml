@@ -195,8 +195,6 @@ Requirement:
 - Create secret tls file called 'cacerts' with the key, cert requested by a COMMON CA
 - The secret must be placed in istio-system namespace
 
-## Argocd Installation
-- 
 
 STEP TO RUN
 #### Cluster and Node Group Creation ###
