@@ -189,6 +189,14 @@ Requirement:
     ]
 }
 
+## Istio Installation
+- Install istioctl: https://istio.io/latest/docs/setup/getting-started/#download
+- Create istio-system namespace
+- Create secret tls file called 'cacerts' with the key, cert requested by a COMMON CA
+- The secret must be placed in istio-system namespace
+
+## Argocd Installation
+- 
 
 STEP TO RUN
 #### Cluster and Node Group Creation ###
@@ -254,3 +262,12 @@ Note:   Be sure to adjust the spec.commonName and dnsNames of the cert in (kind:
 ##          Perform migrations between Kubernetes clusters
 ##          Replicate production clusters to development and testing environments
 - velero
+
+## ArgoCD
+## Install manually via the profile
+## Look at instruction above
+- argocd
+
+## Istio
+## Install via multi-primary cluster network above
+## Look at instruction above

@@ -73,3 +73,19 @@ spec:
 - Go to ArgoCD UI -> Setting -> +Connect Repo
     The address for repo is:   "git@github.com:<your user name>/<name of repo>.git
     Put in private key and fill out the rest of the form
+
+###############################
+## Connect to remote Servers ##
+## ############################
+- Ensure you add clusters in your kubectl first so you have cluster CONTEXT in hand
+  argocd cluster add <CLUSTER CONTEXT>
+argocd cluster add arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-rancher-test
+argocd cluster add arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-test
+- You should see the cluster (unknown status) in the UI because of no apps
+
+###################################
+## Deploy the first example app  ##
+###################################
+argocd app create guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-server https://87FE42E2F4258886AAD287E4F42B393B.gr7.us-east-2.eks.amazonaws.com --dest-namespace default
+argocd app create guestbook-cluster1 --repo https://github.com/argoproj/argocd-example-apps.git --path guestbook --dest-server https://D13A3C493A0CFE9DCBEAFE5639226574.gr7.us-east-2.eks.amazonaws.com --dest-namespace default
+

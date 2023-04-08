@@ -222,3 +222,6 @@ function amzlnx2 {
 alias mnkube="minikube start --memory 10240 --cpus 4"
 alias gitadd="cp -rp ~/.bashrc /home/vagrant/bl/personal/eks-development/; git add --all"
 export gitkey=$(kg secret -n kube-system private-github-pat -o=jsonpath={.data.key} | base64 -d)
+alias argocd="argocd --grpc-web"
+export CTX_CLUSTER1=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-rancher-test
+export CTX_CLUSTER2=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-test
