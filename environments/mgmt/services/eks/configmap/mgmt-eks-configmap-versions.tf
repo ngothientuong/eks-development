@@ -25,7 +25,7 @@ terraform {
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = ">= 2.18.1"
-      configuration_aliases = [  kubernetes.project-mgmt-eks-cluster-rancher-test , kubernetes.project-mgmt-eks-cluster-int-test  ]
+      configuration_aliases = [  kubernetes.project-mgmt-eks-cluster-rancher-test , kubernetes.project-mgmt-eks-cluster-int-test , kubernetes.project-mgmt-eks-cluster-int-2  ]
     }    
     null = {
       source  = "hashicorp/null"

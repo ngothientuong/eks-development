@@ -29,7 +29,8 @@ project_archive = "bl-artifacts"
 clusters = [
     {
       cluster_name              = "project-mgmt-eks-cluster-rancher-test"     
-      cluster_env               =  "mgmt"  # From subnet's tags      
+      cluster_env               =  "mgmt"  # From subnet's tags   
+      service_ipv4_cidr         = "172.16.0.0/16"  # Must be unique between cluster.    
       iam_console_user_role             = "project-mgmt-rancher"  
       kube2iam_role              = "project-mgmt-rancher"      
       cluster_backup_bucket     = "project-mgmt-rancher-eks-backup"  
@@ -38,6 +39,7 @@ clusters = [
       #k8s_kms_key_arn = "arn:aws:kms:us-east-2:682331604648:key/41373326-d2fa-4642-9d80-ca2373e14cef"      
       eks_version               = "1.25"
       eks_subnets              = ["subnet-06568ba86bee0eefa","subnet-001a39ffe9acc06ee"]
+      #eks_subnets              = ["subnet-06568ba86bee0eefa"] # Stick w private subnet 1
       #eks_security_groups          = ["sg-019347f2aa06a38b7"]  # Optional 
       endpoint_private_access = false      
         ### Requirements between LT and NG
@@ -64,9 +66,10 @@ clusters = [
         {          
           name          = "project-rancher-mgmt_ng1"                    
           node_group_name_prefix = "project-rancher-mgmt_ng1"
+          ng_subnets = ["subnet-06568ba86bee0eefa"]
           desired_size  = 3
           max_size      = 5
-          min_size      = 3
+          min_size      = 1
           # disk_size     = 100  # Replaced volumes size by LT
           #max_unavailable = 2
           max_unavailable_percentage = 33 
@@ -82,7 +85,7 @@ clusters = [
             "Name" = "project-rancher-mgmt_ng1"
             "Creator" = "Tuong Ngo"
           }
-          taint = [{}]
+          taint = [{"ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"="true"},{"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready"="true"}]
           ng_eks_version = 1.25 
           pre_userdata = ""  
           post_userdata = ""          
@@ -134,6 +137,7 @@ clusters = [
     {
       cluster_name              = "project-mgmt-eks-cluster-int-test"       
       cluster_env               =  "int"  # From subnet's tags
+      service_ipv4_cidr         = "172.17.0.0/16"  # Must be unique between cluster.    
       iam_console_user_role             = "project-mgmt-int"
       kube2iam_role              = "project-mgmt-int"
       cluster_backup_bucket     = "project-mgmt-int-test-eks-backup"  
@@ -148,9 +152,10 @@ clusters = [
         {
           name          = "project-rancher-int_ng1"                    
           node_group_name_prefix = "project-rancher-int_ng1"
+          ng_subnets = ["subnet-0ba654dee6f07a181"]
           desired_size  = 3
           max_size      = 5
-          min_size      = 3
+          min_size      = 1
           #disk_size     = 100            
           #max_unavailable = 2
           max_unavailable_percentage = 33 
@@ -166,7 +171,7 @@ clusters = [
             "Name" = "project-rancher-int_ng1"
             "Creator" = "Tuong Ngo"
           }
-          taint = [{}]
+          taint = [{"ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"="true"},{"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready"="true"}]
           ng_eks_version = 1.25 
           pre_userdata = ""  
           post_userdata = ""
@@ -211,13 +216,31 @@ clusters = [
               instance_metadata_tags      = "enable"
             }        
           }
-        },
+        }
+      ]        
+    },
+    {
+      cluster_name              = "project-mgmt-eks-cluster-int-2"       
+      cluster_env               =  "int"  # From subnet's tags
+      service_ipv4_cidr         = "172.18.0.0/16"  # Must be unique between cluster.    
+      iam_console_user_role             = "project-mgmt-int-2"
+      kube2iam_role              = "project-mgmt-int-2"
+      cluster_backup_bucket     = "project-mgmt-int-2-eks-backup"  
+      cluster_additional_backup_bucket     = "project-mgmt-int-2-additional-eks-backup"  
+      enabled_cluster_log_types = ["audit", "api","authenticator","controllerManager","scheduler"]      
+      #k8s_kms_key_arn = "arn:aws:kms:us-east-2:682331604648:key/41373326-d2fa-4642-9d80-ca2373e14cef"      
+      eks_version               = "1.25"
+      eks_subnets              = ["subnet-0ba654dee6f07a181","subnet-0826eccf3e4f3e11e"] 
+      #eks_security_groups          = ["sg-019347f2aa06a38b7"]  # Optional
+      endpoint_private_access = false    
+      node_groups = [        
         {
-          name          = "project-rancher-int_ng2"                    
-          node_group_name_prefix = "project-rancher-int_ng2"
+          name          = "project-rancher-int-2_ng2"                    
+          node_group_name_prefix = "project-rancher-int-2_ng2"
+          ng_subnets = ["subnet-0826eccf3e4f3e11e"]
           desired_size  = 3
           max_size      = 5
-          min_size      = 3
+          min_size      = 1
           #disk_size     = 100            
           #max_unavailable = 2
           max_unavailable_percentage = 33 
@@ -230,10 +253,10 @@ clusters = [
           #release_version = null          
           #ec2_ssh_key   = "vaawsmhv"
           tags = {
-            "Name" = "project-rancher-int_ng2"
+            "Name" = "project-rancher-int-2_ng2"
             "Creator" = "Tuong Ngo"
           }
-          taint = [{}]
+          taint = [{"ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"="true"},{"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready"="true"}]
           ng_eks_version = 1.25 
           pre_userdata = ""  
           post_userdata = ""
@@ -278,234 +301,7 @@ clusters = [
               instance_metadata_tags      = "enable"
             }             
           }
-        }
+        },
       ]        
     }
 ]
-
-/*
-    ########################################################
-    # tngo-mgmt - cluster
-    ########################################################
-    terraform state rm rancher2_cluster.c_mgmt
-    terraform state rm rancher2_cluster_sync.c_mgmt
-    terraform state rm data.template_file.c_mgmt_etcd
-    terraform state rm rancher2_node_template.c_mgmt_etcd
-    terraform state rm rancher2_node_pool.c_mgmt_etcd
-    terraform state rm data.template_file.c_mgmt_control_plane
-    terraform state rm rancher2_node_template.c_mgmt_control_plane
-    terraform state rm rancher2_node_pool.c_mgmt_control_plane
-    terraform state rm data.template_file.c_mgmt_worker
-    terraform state rm rancher2_node_template.c_mgmt_worker
-    terraform state rm rancher2_node_pool.c_mgmt_worker
-    terraform state rm data.template_file.c_mgmt_worker_asg
-    terraform state rm aws_launch_configuration.c_mgmt_worker_asg
-    terraform state rm aws_autoscaling_group.c_mgmt_worker_asg
-    terraform state rm rancher2_storage_class_v2.c_mgmt_aws_ebs
-    terraform state rm rancher2_cluster_logging.c_mgmt
-    terraform state rm rancher2_notifier.c_mgmt_email
-    terraform state rm rancher2_notifier.c_mgmt_slack
-    terraform state rm rancher2_notifier.c_mgmt_msteams
-
-    # projects
-
-    // default
-    terraform state rm rancher2_project.c_mgmt_default
-    terraform state rm rancher2_certificate.c_mgmt_default
-    terraform state rm rancher2_registry.c_mgmt_default
-    terraform state rm rancher2_project_logging.c_mgmt_logging
-    terraform state rm rancher2_namespace.c_mgmt_default_efs_provisioner
-    terraform state rm rancher2_app.c_mgmt_default_efs_provisioner
-
-    // secrets
-    terraform state rm rancher2_project.c_mgmt_secrets
-    terraform state rm rancher2_certificate.c_mgmt_secrets
-    terraform state rm rancher2_namespace.c_mgmt_secrets_consul
-    terraform state rm rancher2_namespace.c_mgmt_secrets_vault
-    terraform state rm rancher2_app.c_mgmt_secrets_consul
-    terraform state rm rancher2_app.c_mgmt_secrets_vault
-    terraform state rm rancher2_project_alert_group.c_mgmt_secrets
-    terraform state rm rancher2_project_alert_rule.c_mgmt_secrets_vault_workload_less_than_100_percent
-    terraform state rm rancher2_project_alert_rule.c_mgmt_secrets_vault_workload_less_than_50_percent
-    terraform state rm rancher2_pod_security_policy_template.c_mgmt_secrets_consul
-
-    // twistlock
-    terraform state rm rancher2_project.c_mgmt_twistlock
-    terraform state rm rancher2_namespace.c_mgmt_twistlock
-    terraform state rm rancher2_namespace.c_mgmt_twistlock_defender
-    terraform state rm rancher2_app.c_mgmt_twistlock_defender
-    terraform state rm rancher2_pod_security_policy_template.c_mgmt_twistlock
-
-    // system
-    terraform state rm rancher2_project.c_mgmt_system
-    terraform state rm rancher2_namespace.c_mgmt_system_cluster_autoscaler
-    terraform state rm rancher2_app.c_mgmt_system_cluster_autoscaler
-
-    ########################################################
-    # tngo-int - cluster
-    ########################################################
-
-    # cluster
-    terraform state rm rancher2_cluster.c_int
-    terraform state rm rancher2_cluster_sync.c_int
-    terraform state rm data.template_file.c_int_etcd
-    terraform state rm rancher2_node_template.c_int_etcd
-    terraform state rm rancher2_node_pool.c_int_etcd
-    terraform state rm data.template_file.c_int_control_plane
-    terraform state rm rancher2_node_template.c_int_control_plane
-    terraform state rm rancher2_node_pool.c_int_control_plane
-    terraform state rm data.template_file.c_int_worker
-    terraform state rm rancher2_node_template.c_int_worker
-    terraform state rm rancher2_node_pool.c_int_worker
-    terraform state rm data.template_file.c_int_worker_asg
-    terraform state rm aws_launch_configuration.c_int_worker_asg
-    terraform state rm aws_autoscaling_group.c_int_worker_asg
-    terraform state rm rancher2_storage_class_v2.c_int_aws_ebs
-    terraform state rm rancher2_cluster_logging.c_int
-    terraform state rm rancher2_notifier.c_int_email
-    terraform state rm rancher2_notifier.c_int_slack
-    terraform state rm rancher2_notifier.c_int_msteams
-
-    # projects
-
-    // default
-    terraform state rm rancher2_project.c_int_default
-    terraform state rm rancher2_certificate.c_int_default
-    terraform state rm rancher2_registry.c_int_default
-    terraform state rm rancher2_project_logging.c_int_logging
-    terraform state rm rancher2_namespace.c_int_default_efs_provisioner
-    terraform state rm rancher2_app.c_int_default_efs_provisioner
-
-    // secrets
-    terraform state rm rancher2_project.c_int_secrets
-    terraform state rm rancher2_certificate.c_int_secrets
-    terraform state rm rancher2_namespace.c_int_secrets_consul
-    terraform state rm rancher2_namespace.c_int_secrets_vault
-    terraform state rm rancher2_app.c_int_secrets_consul
-    terraform state rm rancher2_app.c_int_secrets_vault
-    terraform state rm rancher2_project_alert_group.c_int_secrets
-    terraform state rm rancher2_project_alert_rule.c_int_secrets_vault_workload_less_than_100_percent
-    terraform state rm rancher2_project_alert_rule.c_int_secrets_vault_workload_less_than_50_percent
-    terraform state rm rancher2_pod_security_policy_template.c_int_secrets_consul
-
-    // twistlock
-    terraform state rm rancher2_project.c_int_twistlock
-    terraform state rm rancher2_namespace.c_int_twistlock
-    terraform state rm rancher2_namespace.c_int_twistlock_defender
-    terraform state rm rancher2_app.c_int_twistlock_defender
-    terraform state rm rancher2_pod_security_policy_template.c_int_twistlock
-
-    // system
-    terraform state rm rancher2_project.c_int_system
-    terraform state rm rancher2_namespace.c_int_system_cluster_autoscaler
-    terraform state rm rancher2_app.c_int_system_cluster_autoscaler
-
-    ########################################################
-    # tngo-prod - cluster
-    ########################################################
-
-    # cluster
-    terraform state rm rancher2_cluster.c_prod
-    terraform state rm rancher2_cluster_sync.c_prod
-    terraform state rm data.template_file.c_prod_etcd
-    terraform state rm rancher2_node_template.c_prod_etcd
-    terraform state rm rancher2_node_pool.c_prod_etcd
-    terraform state rm data.template_file.c_prod_control_plane
-    terraform state rm rancher2_node_template.c_prod_control_plane
-    terraform state rm rancher2_node_pool.c_prod_control_plane
-    terraform state rm data.template_file.c_prod_worker
-    terraform state rm rancher2_node_template.c_prod_worker
-    terraform state rm rancher2_node_pool.c_prod_worker
-    terraform state rm data.template_file.c_prod_worker_asg
-    terraform state rm aws_launch_configuration.c_prod_worker_asg
-    terraform state rm aws_autoscaling_group.c_prod_worker_asg
-    terraform state rm rancher2_storage_class_v2.c_prod_aws_ebs
-    terraform state rm rancher2_cluster_logging.c_prod
-    terraform state rm rancher2_notifier.c_prod_email
-    terraform state rm rancher2_notifier.c_prod_slack
-    terraform state rm rancher2_notifier.c_prod_msteams
-
-    # projects
-
-    // default
-    terraform state rm rancher2_project.c_prod_default
-    terraform state rm rancher2_certificate.c_prod_default
-    terraform state rm rancher2_registry.c_prod_default
-    terraform state rm rancher2_project_logging.c_prod_logging
-    terraform state rm rancher2_namespace.c_prod_default_efs_provisioner
-    terraform state rm rancher2_app.c_prod_default_efs_provisioner
-
-    // secrets
-    terraform state rm rancher2_project.c_prod_secrets
-    terraform state rm rancher2_certificate.c_prod_secrets
-    terraform state rm rancher2_namespace.c_prod_secrets_consul
-    terraform state rm rancher2_namespace.c_prod_secrets_vault
-    terraform state rm rancher2_app.c_prod_secrets_consul
-    terraform state rm rancher2_app.c_prod_secrets_vault
-    terraform state rm rancher2_project_alert_group.c_prod_secrets
-    terraform state rm rancher2_project_alert_rule.c_prod_secrets_vault_workload_less_than_100_percent
-    terraform state rm rancher2_project_alert_rule.c_prod_secrets_vault_workload_less_than_50_percent
-    terraform state rm rancher2_pod_security_policy_template.c_prod_secrets_consul
-
-    // twistlock
-    terraform state rm rancher2_project.c_prod_twistlock
-    terraform state rm rancher2_namespace.c_prod_twistlock
-    terraform state rm rancher2_namespace.c_prod_twistlock_defender
-    terraform state rm rancher2_app.c_prod_twistlock_defender
-    terraform state rm rancher2_pod_security_policy_template.c_prod_twistlock
-
-    // system
-    terraform state rm rancher2_project.c_prod_system
-    terraform state rm rancher2_namespace.c_prod_system_cluster_autoscaler
-    terraform state rm rancher2_app.c_prod_system_cluster_autoscaler
-
-## Command Reference
-
-    # view senstive variables
-    terraform output project_id
-    terraform output project_domain
-    terraform output rancher_username
-    terraform output rancher_password
-    terraform output cluster_kubernetes_version
-    terraform output cluster_etcd_instance_type
-    terraform output cluster_cp_instance_type
-    terraform output cluster_worker_instance_type
-    terraform output cluster_worker_asg_instance_type
-    terraform output docker_registry_username
-    terraform output docker_registry_password
-    terraform output dockerhub_registry_username
-    terraform output dockerhub_registry_password
-    terraform output helm_catalog_username
-    terraform output helm_catalog_password
-    terraform output elasticsearch_username
-    terraform output elasticsearch_password
-
-    # enable debugging
-    export TF_LOG_PATH=./terraform.log
-    export TF_LOG=TRACE
-
-    # challenge - initialize plan apply
-    terraform init
-    terraform refresh
-    terraform plan -out=c.tfplan
-    terraform show c.tfplan
-    terraform apply c.tfplan
-
-    refactor: https://learn.hashicorp.com/tutorials/terraform/organize-configuration?in=terraform/modules
-
-    # reset admin password
-    docker exec -ti <rancher_container_id> reset-password
-
-    # debug
-    https://www.terraform.io/docs/internals/debugging.html
-    set TF_LOG_PATH to a file name
-    TF_LOG=TRACE terraform refresh -var-file=vars/challenge.tfvars
-
-    cd rancher;
-    terraform init -backend-config=vars/challenge-backend.hcl
-    terraform refresh -var-file=vars/challenge.tfvars
-    terraform plan -lock=false -var-file=vars/challenge.tfvars -out=plans/challenge.tfplan
-    terraform show plans/challenge.tfplan
-    terraform apply -lock=false plans/challenge.tfplan
-
-*/

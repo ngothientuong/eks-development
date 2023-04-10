@@ -124,7 +124,8 @@ locals {
           cluster_name = each_cluster.cluster_name
           version = each_mn_ng.ng_eks_version  # Make node group version the same version as the control plane
           node_role_arn = data.terraform_remote_state.iam-roles.outputs.ng_role_arn
-          subnet_ids = each_cluster.eks_subnets  # User same subnet as the cluster for managed node groups          
+          subnet_ids = each_cluster.eks_subnets  # Option1: User same subnet as the cluster for managed node groups          
+          ng_subnet_ids = each_mn_ng.ng_subnets  # Option 2: Use dedicated subnet ID for each node group
           desired_size = each_mn_ng.desired_size
           max_size = each_mn_ng.max_size
           min_size = each_mn_ng.min_size

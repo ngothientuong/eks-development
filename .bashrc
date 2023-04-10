@@ -122,6 +122,9 @@ function tfminit() {
 function tfmdestroy() {
         terraform destroy -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars
 }
+function tfmrefresh() {
+        terraform refresh -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars
+}
 function tfmapply() {
         terraform apply tfm.out
 }
@@ -182,7 +185,7 @@ function destroyall {
 function ns() {
         kubectl config set-context --current --namespace=$1
 }
-function kcdl() {
+function removecluster() {
         kubectl config delete-cluster $1
         kubectl config unset users.$1
         kubectl config delete-context $1
@@ -198,6 +201,11 @@ function mtpl() {
 	cd ${eks}/local-exec/jinja2_templates
         for i in "eks-addon-kubectl_run"* ; do new=$(echo $i | sed "s:kubectl_run:${1}:g" ) ; cp -rp ${i} ${new}; sed -i "s:kubectl_run:${1}:g" ${new} ; done
 	cd -
+}
+function mhtpl() {
+        cd ${eks}/local-exec/jinja2_templates        
+	for i in "eks-addon-aws_lb_controller"* ; do new=$(echo $i | sed "s:aws_lb_controller:${1}:g" ) ; cp -rp ${i} ${new}; sed -i "s:aws_lb_controller:${1}:g" ${new} ; done
+        cd -
 }
 function s3bk() {
 	DATE=$(date +%Y%m%d%H%M%S)
@@ -223,5 +231,5 @@ alias mnkube="minikube start --memory 10240 --cpus 4"
 alias gitadd="cp -rp ~/.bashrc /home/vagrant/bl/personal/eks-development/; git add --all"
 export gitkey=$(kg secret -n kube-system private-github-pat -o=jsonpath={.data.key} | base64 -d)
 alias argocd="argocd --grpc-web"
-export CTX_CLUSTER1=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-rancher-test
-export CTX_CLUSTER2=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-test
+export CTX_CLUSTER1=
+export CTX_CLUSTER2=

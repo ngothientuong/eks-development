@@ -52,6 +52,10 @@ resource "aws_eks_cluster" "example" {
     }
   }
 
+  kubernetes_network_config {
+    service_ipv4_cidr = var.clusters[count.index].service_ipv4_cidr
+  }
+
   tags = var.asg_tags
 
   version = var.clusters[count.index].eks_version

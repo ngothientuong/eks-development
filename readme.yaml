@@ -33,6 +33,7 @@
 - Install Seal Secrets: https://github.com/bitnami-labs/sealed-secrets/blob/main/README.md#installation
 - Stakater/Reload: Reload deployment,sts when a resource change such as secret, configmap
 - Learn about kustomize. Example here: https://github.com/codefresh-contrib/gitops-certification-examples/tree/main/kustomize-app
+- kube-router to run BGP routing daemon: required for cilium multi-cluster routing.
 
 #########################
 #   NEED TO WATCH OUT   #
@@ -200,12 +201,18 @@ Requirement:
 ## Cilium #
 ###########
 - Requirement:
-    Control Plane
+    Control Plane:
       Requirements
         All Kubernetes worker nodes must be assigned a unique IP address and all worker nodes must have IP connectivity between each other.
         All clusters must be assigned unique PodCIDR ranges.
         Cilium must be configured to use etcd as the kvstore.
         The network between clusters must allow the inter-cluster communication. The exact firewalling requirements will depend on whether Cilium is configured to run in direct-routing or tunneling mode.
+    Tranparent Encryption:
+        Make sure to configure all nodes across all clusters with a common key and all communication between nodes is automatically encrypted
+        That will automatically encrypt communication across pods.
+    Multi-cluster network policy:
+        Same as normal k8s cluster. However, it is the responsibility of the user to import/configure the policy into all clusters
+        That way each cluster gets to decide whether the cluster is permitted to receive communication from remote clusters or emit communication to remote clusters.
 - Cluster design:
     Statefless application cluster:
         Each stateless set of application runs on its own cluster.
@@ -228,6 +235,7 @@ Requirement:
         The failover cluster will then be scaled up to at least 2 pod each service.
         
 
+- Install Cilium command line
 
 
 
@@ -247,10 +255,11 @@ STEP TO RUN
 ### Note: Do NOT run these addons before managed node group creation
 ### Because their deploy, ds rely on the managed servers.
 #- vpc_cni:  Use Calico, don't use vpc_cni
-- calico:   HUGE NOTE => add hostNetwork=true to helm deployment for webhook pod in ALL helm deployment
-            so that control plane can reach out to it! Look at aws-load-balancer-controller helm deployment for example
+# - calico:   HUGE NOTE => add hostNetwork=true to helm deployment for webhook pod in ALL helm deployment
+#             so that control plane can reach out to it! Look at aws-load-balancer-controller helm deployment for example
+- cilium:   Replace kube-proxy
 - coredns
-- kube-proxy
+# - kube-proxy
 
 ### Cluster-AutoScaler
 ### Deployment Consideration: https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html

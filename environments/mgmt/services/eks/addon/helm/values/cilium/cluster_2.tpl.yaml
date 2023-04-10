@@ -1,0 +1,10 @@
+ipam:
+  # -- Configure IP Address Management mode.
+  # ref: https://docs.cilium.io/en/stable/network/concepts/ipam/
+  mode: "cluster-pool"
+  operator:
+    # -- Deprecated in favor of ipam.operator.clusterPoolIPv4PodCIDRList.
+    # IPv4 CIDR range to delegate to individual nodes for IPAM.
+    clusterPoolIPv4PodCIDR: ""   #  <<< Must be Unique for each cluster!!!!
+    # -- IPv4 CIDR list range to delegate to individual nodes for IPAM.
+    clusterPoolIPv4PodCIDRList: ["10.204.0.0/15","10.206.0.0/15"]
