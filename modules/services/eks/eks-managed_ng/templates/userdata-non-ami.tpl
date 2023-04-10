@@ -36,7 +36,7 @@ export SERVICE_IPV6_CIDR=${service_ipv6_cidr}
 %{ if length(custom_ami_id) > 0 ~}
 B64_CLUSTER_CA=${cluster_ca_base64}
 API_SERVER_URL=${cluster_endpoint}
-/etc/eks/bootstrap.sh ${eks_cluster_id} --kubelet-extra-args "${kubelet_extra_args}" ${bootstrap_extra_args}
+/etc/eks/bootstrap.sh ${eks_cluster_id} --kubelet-extra-args '${kubelet_extra_args}' ${bootstrap_extra_args}
 
 --//
 Content-Type: text/x-shellscript; charset="us-ascii"

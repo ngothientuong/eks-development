@@ -67,7 +67,7 @@ clusters = [
           name          = "project-rancher-mgmt_ng1"                    
           node_group_name_prefix = "project-rancher-mgmt_ng1"
           ng_subnets = ["subnet-06568ba86bee0eefa"]
-          desired_size  = 3
+          desired_size  = 1
           max_size      = 5
           min_size      = 1
           # disk_size     = 100  # Replaced volumes size by LT
@@ -85,11 +85,18 @@ clusters = [
             "Name" = "project-rancher-mgmt_ng1"
             "Creator" = "Tuong Ngo"
           }
-          taint = [{"ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"="true"},{"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready"="true"}]
+          # taint key and value each has maximun length of 63!
+          taint = [
+            {
+              key = "ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"
+              value = "true"
+              effect = "NO_EXECUTE"
+            }
+          ]
           ng_eks_version = 1.25 
           pre_userdata = ""  
           post_userdata = ""          
-          kubelet_extra_args = ""
+          kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""
           bootstrap_extra_args = ""
           lt_config = {
             # name is cluster id + ng name
@@ -153,7 +160,7 @@ clusters = [
           name          = "project-rancher-int_ng1"                    
           node_group_name_prefix = "project-rancher-int_ng1"
           ng_subnets = ["subnet-0ba654dee6f07a181"]
-          desired_size  = 3
+          desired_size  = 1
           max_size      = 5
           min_size      = 1
           #disk_size     = 100            
@@ -171,11 +178,18 @@ clusters = [
             "Name" = "project-rancher-int_ng1"
             "Creator" = "Tuong Ngo"
           }
-          taint = [{"ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"="true"},{"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready"="true"}]
+          # taint key and value each has maximun length of 63!
+          taint = [
+            {
+              key = "ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"
+              value = "true"
+              effect = "NO_EXECUTE"
+            }
+          ]
           ng_eks_version = 1.25 
           pre_userdata = ""  
           post_userdata = ""
-          kubelet_extra_args = ""   
+          kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""   
           bootstrap_extra_args = ""       
           lt_config = {
             # name is cluster id + ng name
@@ -238,7 +252,7 @@ clusters = [
           name          = "project-rancher-int-2_ng2"                    
           node_group_name_prefix = "project-rancher-int-2_ng2"
           ng_subnets = ["subnet-0826eccf3e4f3e11e"]
-          desired_size  = 3
+          desired_size  = 1
           max_size      = 5
           min_size      = 1
           #disk_size     = 100            
@@ -256,11 +270,18 @@ clusters = [
             "Name" = "project-rancher-int-2_ng2"
             "Creator" = "Tuong Ngo"
           }
-          taint = [{"ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"="true"},{"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready"="true"}]
+          # taint key and value each has maximun length of 63!
+          taint = [
+            {
+              key = "ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"
+              value = "true"
+              effect = "NO_EXECUTE"
+            }
+          ]
           ng_eks_version = 1.25 
           pre_userdata = ""  
           post_userdata = ""
-          kubelet_extra_args = ""
+          kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""
           bootstrap_extra_args = ""
           lt_config = {
             # name is cluster id + ng name

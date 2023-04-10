@@ -158,7 +158,15 @@ resource "aws_eks_node_group" "mn_ng" {
   }  
   
   # TODO - Dynamic taint section here
-  #taint {}
+  dynamic "taint" {
+    for_each = "${var.managed_ng_contexts[count.index].taint}"
+
+    content {
+      key = try(taint.value.key,null)
+      value = try(taint.value.value,null)
+      effect = try(taint.value.effect,null)      
+    }
+  }  
 
   launch_template {
     name = aws_launch_template.lt_mn_ng[count.index].name
@@ -167,117 +175,3 @@ resource "aws_eks_node_group" "mn_ng" {
 
 
 }  
-
-### Commented out the below
-/*
-resource "aws_eks_cluster" "example" {  
-  count = length(var.clusters) > 0 ? length(var.clusters) : 0
-  name     = var.clusters[count.index].cluster_name
-  role_arn = var.cluster_role_arn
-
-  vpc_config {
-    subnet_ids = var.clusters[count.index].eks_subnets
-    ## Security Group ID for communication between worker node and control plan - optional
-    #security_group_ids = var.clusters[count.index].eks_security_groups
-        
-    endpoint_private_access = var.clusters[count.index].endpoint_private_access
-    ## Subnet must have tag: "kubernetes.io/role/internal-elb: 1" to enable load-balancer
-  }
-
-  enabled_cluster_log_types = var.clusters[count.index].enabled_cluster_log_types
-
-  encryption_config{
-    resources = ["secrets"]
-    provider {
-    key_arn = var.k8s_kms_key_arn 
-    }
-  }
-
-  tags = var.asg_tags
-
-  version = var.clusters[count.index].eks_version
-  
-  # # Need to do research more about outpost_config
-  # outpost_config {
-  #   control_plane_instance_type = var.clusters[count.index].control_plane_instance_type
-  # }
-
-  # Already address the below in iam role creation
-  # Ensure that IAM Role permissions are created before and deleted after EKS Cluster handling.
-  # Otherwise, EKS will not be able to properly delete EKS managed EC2 infrastructure such as Security Groups.
-  #depends_on = [ var.eks_cluster_depends_on ]
-  #depends_on = [aws_cloudwatch_log_group.example]
-}
-
-
-data "tls_certificate" "cluster_ca_cert" {
-  count = length(var.clusters) > 0 ? length(var.clusters) : 0
-  url = aws_eks_cluster.example[count.index].identity[0].oidc[0].issuer
-}
-
-resource "aws_iam_openid_connect_provider" "openid_connect_provider" {
-  count = length(var.clusters) > 0 ? length(var.clusters) : 0
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = data.tls_certificate.cluster_ca_cert[count.index].certificates[*].sha1_fingerprint
-  url             = data.tls_certificate.cluster_ca_cert[count.index].url
-}
-
-data "aws_iam_policy_document" "openid_connect_assume_role_policy" {
-  count = length(var.clusters) > 0 ? length(var.clusters) : 0
-  statement {
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-    effect  = "Allow"
-
-    condition {
-      #test     = "StringEquals"
-      test     = "StringLike"
-      variable = "${replace(aws_iam_openid_connect_provider.openid_connect_provider[count.index].url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:kube-system:aws-node"]
-    }
-    condition {
-      #test     = "StringEquals"
-      test     = "StringLike"
-      variable = "${replace(aws_iam_openid_connect_provider.openid_connect_provider[count.index].url, "https://", "")}:aud"
-      values   = ["sts.amazonaws.com"]
-    }
-    condition {
-      #test     = "StringEquals"
-      test     = "StringLike"
-      variable = "${replace(aws_iam_openid_connect_provider.openid_connect_provider[count.index].url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:amazon-cloudwatch:cloudwatch-agent"]
-    }
-
-    principals {
-      identifiers = [aws_iam_openid_connect_provider.openid_connect_provider[count.index].arn]
-      type        = "Federated"
-    }
-  }
-}
-
-resource "aws_iam_role" "openid_connect_role" {
-  count = length(var.clusters) > 0 ? length(var.clusters) : 0
-  #count = 0  
-  assume_role_policy = data.aws_iam_policy_document.openid_connect_assume_role_policy[count.index].json
-  name               = "${format("%s%s",var.clusters[count.index].cluster_name,"-openid_connect_role")}"
-  depends_on = [aws_eks_cluster.example]
-  path = var.iam_role_path
-  permissions_boundary = var.permissions_boundary
-  force_detach_policies = true
-}
-
-resource "aws_iam_role_policy_attachment" "CloudWatch-AdministratorAccess" {
-  count = length(var.clusters) > 0 ? length(var.clusters) : 0
-  #count = 0
-  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
-  role       = aws_iam_role.openid_connect_role[count.index].name
-  depends_on = [aws_iam_role.openid_connect_role]
-}
-
-resource "aws_iam_role_policy_attachment" "CloudWatch-CloudWatchAgentServerPolicy" {
-  count = length(var.clusters) > 0 ? length(var.clusters) : 0
-  #count = 0
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-  role       = aws_iam_role.openid_connect_role[count.index].name
-  depends_on = [aws_iam_role.openid_connect_role]
-}
-*/

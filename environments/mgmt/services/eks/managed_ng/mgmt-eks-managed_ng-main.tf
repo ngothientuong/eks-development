@@ -153,7 +153,8 @@ locals {
             "k8s.io/cluster-autoscaler/enabled" = true
             Name = each_mn_ng.node_group_name_prefix
           })    # LT - This is for k8-auto scaler
-          taint = flatten(concat(each_mn_ng.taint , [{}]))
+          #taint = flatten(concat(each_mn_ng.taint , [{}]))
+          taint = try(each_mn_ng.taint, [{}])
 
           ## Section for launch template
           ## User data parameters
