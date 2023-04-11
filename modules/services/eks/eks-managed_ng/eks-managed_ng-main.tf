@@ -156,15 +156,15 @@ resource "aws_eks_node_group" "mn_ng" {
   lifecycle {
     ignore_changes = [scaling_config[0].desired_size,tags]
   }  
-  
+    
   # TODO - Dynamic taint section here
   dynamic "taint" {
-    for_each = "${var.managed_ng_contexts[count.index].taint}"
+    for_each = { for k,v in "${var.managed_ng_contexts[count.index].taint}" : k => v if length(try(var.managed_ng_contexts[count.index].taint[0].key,[])) > 0 }
 
     content {
-      key = try(taint.value.key,null)
-      value = try(taint.value.value,null)
-      effect = try(taint.value.effect,null)      
+      key = try(v.key,null)
+      value = try(v.value,null)
+      effect = try(v.effect,null)      
     }
   }  
 

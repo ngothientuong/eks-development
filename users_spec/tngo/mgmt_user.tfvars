@@ -86,17 +86,19 @@ clusters = [
             "Creator" = "Tuong Ngo"
           }
           # taint key and value each has maximun length of 63!
-          taint = [
-            {
-              key = "ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"
-              value = "true"
-              effect = "NO_EXECUTE"
-            }
-          ]
+          # taint = [
+          #   {
+          #     key = "ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"
+          #     value = true
+          #     effect = "NO_EXECUTE"
+          #   }
+          # ]
+          taint=[{}]
           ng_eks_version = 1.25 
           pre_userdata = ""  
           post_userdata = ""          
           kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""
+          #kubelet_extra_args = ""
           bootstrap_extra_args = ""
           lt_config = {
             # name is cluster id + ng name
@@ -179,17 +181,19 @@ clusters = [
             "Creator" = "Tuong Ngo"
           }
           # taint key and value each has maximun length of 63!
-          taint = [
-            {
-              key = "ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"
-              value = "true"
-              effect = "NO_EXECUTE"
-            }
-          ]
+          # taint = [
+          #   {
+          #     key = "ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"
+          #     value = true
+          #     effect = "NO_EXECUTE"
+          #   }
+          # ]
+          taint=[{}]
           ng_eks_version = 1.25 
           pre_userdata = ""  
           post_userdata = ""
-          kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""   
+          kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""      # It works BUT no need for 2 node taints at 2 different place
+          #kubelet_extra_args = ""
           bootstrap_extra_args = ""       
           lt_config = {
             # name is cluster id + ng name
@@ -271,17 +275,19 @@ clusters = [
             "Creator" = "Tuong Ngo"
           }
           # taint key and value each has maximun length of 63!
-          taint = [
-            {
-              key = "ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"
-              value = "true"
-              effect = "NO_EXECUTE"
-            }
-          ]
+          # taint = [
+          #   {
+          #     key = "ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready"
+          #     value = true
+          #     effect = "NO_EXECUTE"
+          #   }
+          # ]
+          taint=[{}]
           ng_eks_version = 1.25 
           pre_userdata = ""  
           post_userdata = ""
           kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""
+          #kubelet_extra_args = ""
           bootstrap_extra_args = ""
           lt_config = {
             # name is cluster id + ng name
