@@ -29,6 +29,7 @@ resource "helm_release" "helm_release" {
       value = set.value.value
     }
   }  
+  # prender doesn't work!
   depends_on = [var.helm_module_depends_on]
 }
 

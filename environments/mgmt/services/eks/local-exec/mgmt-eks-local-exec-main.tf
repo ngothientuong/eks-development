@@ -81,6 +81,9 @@ resource "null_resource" "template_renderer" {
   provisioner "local-exec" {        
     command = <<-EOT
       python ${path.module}/python_scripts/tf_generator.py ${local.cluster_provider_contexts[count.index].cluster_name} ${local.cluster_provider_contexts[count.index].endpoint} ${local.cluster_provider_contexts[count.index].cluster_ca_certificate} ${var.env} ${count.index} ${length(local.cluster_provider_contexts)}      
+      mkdir -p ${path.module}/python_scripts/rendered_shell_files
+      chmod 777 ${path.module}/python_scripts/rendered_shell_files
+      cd ${path.module}/python_scripts/; python ./local_tf_and_shell_generator.py
     EOT
     #command = "aws s3 ls"
     }

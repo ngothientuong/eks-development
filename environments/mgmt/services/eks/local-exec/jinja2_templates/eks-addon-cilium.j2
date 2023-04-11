@@ -27,10 +27,27 @@ provider "helm" {
   }
 }
 
+
+
+resource "null_resource" "cilium_patch_aws_node_{{ count_index }}" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+  provisioner "local-exec" {
+    interpreter = ["bash", "-c"]
+    command     = <<EOT
+    /bin/bash ${path.module}/../helm/values/cilium/{{ cluster_name }}_patch_ds_aws_node.sh
+    EOT
+  }
+  
+}
+
 module "cilium_helm_creation_{{ count_index }}" {
   source = "../../../../../../modules/services/eks/addon/helm"
   providers = { helm = helm.{{ cluster_name }} }
   helm_info = local.helm_info[{{ count_index }}]  
   helm_module_depends_on = ""
   #helm_module_depends_on = module.kubectl_apply_{{ count_index }}
+  depends_on = [null_resource.cilium_patch_aws_node_{{ count_index }}]
 }
+

@@ -73,7 +73,7 @@ locals {
       ]
       # Set to true if you do NOT want to install crds
       skip_crds = false
-      namespace = "NAMESPACE"
+      namespace = "APP_NAMESPACE"
       create_namespace = false    
       force_update = true
       recreate_pods = true
@@ -122,7 +122,7 @@ locals {
       ]
       # Set to true if you do NOT want to install crds
       skip_crds = false
-      namespace = "NAMESPACE"
+      namespace = "APP_NAMESPACE"
       create_namespace = false    
       force_update = true
       recreate_pods = true
@@ -171,7 +171,7 @@ locals {
       ]
       # Set to true if you do NOT want to install crds
       skip_crds = false
-      namespace = "NAMESPACE"
+      namespace = "APP_NAMESPACE"
       create_namespace = false    
       force_update = true
       recreate_pods = true

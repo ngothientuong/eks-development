@@ -159,13 +159,19 @@ resource "aws_eks_node_group" "mn_ng" {
     
   # TODO - Dynamic taint section here
   dynamic "taint" {
-    for_each = { for k,v in "${var.managed_ng_contexts[count.index].taint}" : k => v if length(try(var.managed_ng_contexts[count.index].taint[0].key,[])) > 0 }
+    for_each = { for k,v in try(var.managed_ng_contexts[count.index].taint,[{}]) : k => v if length(try(var.managed_ng_contexts[count.index].taint[0].key,[])) > 0 }
 
     content {
       key = try(v.key,null)
       value = try(v.value,null)
       effect = try(v.effect,null)      
     }
+    ## Correct dynamic taint syntax might be down here!!!
+    # content {
+    #   key = try(taint.value.key,null)
+    #   value = try(taint.value.value,null)
+    #   effect = try(taint.value.effect,null)      
+    # }
   }  
 
   launch_template {

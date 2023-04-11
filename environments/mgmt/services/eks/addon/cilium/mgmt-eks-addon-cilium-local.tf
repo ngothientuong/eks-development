@@ -78,7 +78,7 @@ locals {
       force_update = true
       recreate_pods = true
       timeout = 300
-      verify = false # If true then requires /home/vagrant/.gnupg/pubring.gpg which is not found
+      verify = false # If true then requires /home/vagrant/.gnupg/pubring.gpg which is not found      
       set = [
         {
           name = "serviceAccount.name"
@@ -138,7 +138,7 @@ locals {
       force_update = true
       recreate_pods = true
       timeout = 300
-      verify = false # If true then requires /home/vagrant/.gnupg/pubring.gpg which is not found
+      verify = false # If true then requires /home/vagrant/.gnupg/pubring.gpg which is not found      
       set = [
         {
           name = "serviceAccount.name"
@@ -197,7 +197,7 @@ locals {
       force_update = true
       recreate_pods = true
       timeout = 300
-      verify = false # If true then requires /home/vagrant/.gnupg/pubring.gpg which is not found
+      verify = false # If true then requires /home/vagrant/.gnupg/pubring.gpg which is not found      
       set = [
         {
           name = "serviceAccount.name"
