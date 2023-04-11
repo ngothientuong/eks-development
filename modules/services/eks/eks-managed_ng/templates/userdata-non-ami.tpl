@@ -71,8 +71,15 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 # Add cluster to kubectl
 aws eks update-kubeconfig --region ${aws_region} --name ${eks_cluster_id}
 
+--//
+Content-Type: text/x-shellscript; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename="post_userdata_cilium.txt"
+
+#!/bin/bash
 #Patch VPC CNI (aws-node DaemonSet) for Cilium network
-kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}'
+kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"\}\}\}\}\}'
 
 # Flush iptables added by VPC CNI if any
 iptables -t nat -F AWS-SNAT-CHAIN-0 \\
