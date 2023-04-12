@@ -236,3 +236,15 @@ export gitkey=$(kg secret -n kube-system private-github-pat -o=jsonpath={.data.k
 alias argocd="argocd --grpc-web"
 export CTX_CLUSTER1=
 export CTX_CLUSTER2=
+alias kzfix="kustomize edit fix"
+function restartdeploy(){
+	for i in $(kg ns --no-headers | awk {'print $1'}); do kubectl config set-context --current --namespace="${i}"; kubectl rollout restart deploy ; done
+}
+function scalealldeploy(){
+        for i in $(kg ns --no-headers | awk {'print $1'}); do kubectl config set-context --current --namespace="${i}"; 
+	for dpl in $(kg deploy --no-headers | awk {'print $1'});
+	do	
+	kubectl scale deploy $dpl --replicas=${1}; 
+	done
+	done
+}
