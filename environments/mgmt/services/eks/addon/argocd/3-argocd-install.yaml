@@ -17815,6 +17815,7 @@ spec:
     port: 443
     protocol: TCP
     targetPort: 8080
+    nodePort: 31191  ## Hardcoded nodePort for ArgoCD
   selector:
     app.kubernetes.io/name: argocd-server
 ---

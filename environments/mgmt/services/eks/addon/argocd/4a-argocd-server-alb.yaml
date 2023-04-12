@@ -12,7 +12,7 @@ metadata:
     kubernetes.io/ingress.class: alb    # Required
     alb.ingress.kubernetes.io/healthcheck-path: "/healthz?full=true"    # Required
     alb.ingress.kubernetes.io/healthcheck-protocol: "HTTPS"  # Required
-    alb.ingress.kubernetes.io/healthcheck-port: "31191"      # Has to be the same as the nodePort
+    alb.ingress.kubernetes.io/healthcheck-port: "31191"      # Has to be the same as the nodePort. Hardcoded nodePort for ArgoCD
     alb.ingress.kubernetes.io/subnets: 'subnet-0f08d68d1c661395a,subnet-0312fb0e0e36c8b49'   # Required to be in public subnets for internet facing!!  
 
     # Cert Manager

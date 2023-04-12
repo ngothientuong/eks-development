@@ -258,15 +258,25 @@ STEP TO RUN
 # - calico:   HUGE NOTE => add hostNetwork=true to helm deployment for webhook pod in ALL helm deployment
 #             so that control plane can reach out to it! Look at aws-load-balancer-controller helm deployment for example
 - cilium:   Replace kube-proxy
-- coredns
+    Todo:   Enable Hubble 
+            Configure Cluster Mesh
 # - kube-proxy
 
-### Cluster-AutoScaler
+### Cluster-AutoScaler (Seems to work WITHOUT hostNetwork=true)
 ### Deployment Consideration: https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html
 Label the large pod, long processing pod with: "cluster-autoscaler.kubernetes.io/safe-to-evict": "false"
 - cluster-autoscaler
 
-## Cert-Manager
+## aws-lb-controller (Must enable ALL pods with hostNetwork=true)
+## Allow the creation of NLB, ALB in AWS
+Note: You can manually assign subnets to your load balancer using the alb.ingress.kubernetes.io/subnets annotation. For more information, see Ingress annotations on the AWS Load Balancer Controller website.  https://repost.aws/knowledge-center/eks-load-balancer-controller-subnets
+- aws-lb-controller
+
+## External DNS 
+## Optional: Configure connectivity to Route53
+- external-dns
+
+## Cert-Manager  (Must enable Webhook's hostNetwork=true. Just WebHook)
 ## Automatically renew cert with the configured private CA
 - cert-manager
 
@@ -275,10 +285,12 @@ Label the large pod, long processing pod with: "cluster-autoscaler.kubernetes.io
 ## Important: Must have the 'acm-pca:*' allowed in permission boundary
 - aws-pca-issuer  
 
-## aws-lb-controller
-## Allow the creation of NLB, ALB in AWS
-Note: You can manually assign subnets to your load balancer using the alb.ingress.kubernetes.io/subnets annotation. For more information, see Ingress annotations on the AWS Load Balancer Controller website.  https://repost.aws/knowledge-center/eks-load-balancer-controller-subnets
-- aws-lb-controller
+# CoreDNS to be installed via ArgoCD
+- coredns
+
+
+
+
 
 ## External snapshotter
 ## There is the optional install of: Admission Webhook (controller installed as deployment) 

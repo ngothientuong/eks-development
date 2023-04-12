@@ -148,13 +148,25 @@ locals {
           echo # Must have echo at beginnging to avoid bug
                         
         EOF        
+      },    
+      {
+        pre_template_kubectl_command = <<EOF
+          echo # Must have echo at beginnging to avoid bug
+                        
+        EOF        
       }
+      
     ]
     post_template_kubectl_commands = [
       {
         post_template_kubectl_command = <<EOF
           echo # Has to have something here or else bash failed          
         EOF
+      },    
+      {
+        post_template_kubectl_command = <<EOF
+          echo # Has to have something here or else bash failed  
+        EOF        
       },    
       {
         post_template_kubectl_command = <<EOF

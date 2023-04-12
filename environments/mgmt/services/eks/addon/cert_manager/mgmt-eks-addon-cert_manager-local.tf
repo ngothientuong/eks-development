@@ -133,7 +133,75 @@ locals {
         #   value = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[1].cluster_name,vl.id)) > 0],0)) 
         # }
       ]
-    }] # End of the list of the last cluster
+    }], # End of the list of the last cluster
+    [{
+      cluster_name = var.clusters[1].cluster_name
+      # Name - Name is the name of the release
+      name = "cert-manager"
+      repository = "https://charts.jetstack.io"
+      chart = "cert-manager"      
+      # Chart version
+      version = "1.11.0"          
+      values = [
+        templatefile("${path.module}/../helm/values/cert_manager.tpl.yaml", {
+          sa_iam_role = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[1].cluster_name,vl.id)) > 0],0))
+        })
+      ]
+      # Set to true if you do NOT want to install crds
+      skip_crds = false
+      namespace = "cert-manager"
+      create_namespace = true    
+      force_update = true
+      recreate_pods = true
+      timeout = 300
+      verify = false # If true then requires /home/vagrant/.gnupg/pubring.gpg which is not found
+      set = [
+        { name = "prometheus.enabled"
+          value = "false"
+        },
+        { name = "webhook.timeoutSeconds"
+          value = "4"
+        },
+        {
+          name = "installCRDs"
+          value = "true"
+        },        
+      ]
+    }],
+    [{
+      cluster_name = var.clusters[2].cluster_name
+      # Name - Name is the name of the release
+      name = "cert-manager"
+      repository = "https://charts.jetstack.io"
+      chart = "cert-manager"      
+      # Chart version
+      version = "1.11.0"          
+      values = [
+        templatefile("${path.module}/../helm/values/cert_manager.tpl.yaml", {
+          sa_iam_role = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[2].cluster_name,vl.id)) > 0],0))
+        })
+      ]
+      # Set to true if you do NOT want to install crds
+      skip_crds = false
+      namespace = "cert-manager"
+      create_namespace = true    
+      force_update = true
+      recreate_pods = true
+      timeout = 300
+      verify = false # If true then requires /home/vagrant/.gnupg/pubring.gpg which is not found
+      set = [
+        { name = "prometheus.enabled"
+          value = "false"
+        },
+        { name = "webhook.timeoutSeconds"
+          value = "4"
+        },
+        {
+          name = "installCRDs"
+          value = "true"
+        },        
+      ]
+    }],
   ]
 }
 

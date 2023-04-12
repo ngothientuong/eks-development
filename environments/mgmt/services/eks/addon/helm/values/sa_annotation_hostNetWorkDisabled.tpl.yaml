@@ -1,0 +1,10 @@
+serviceAccount:
+  annotations: { "eks.amazonaws.com/role-arn": ${sa_iam_role} }
+
+# Calico - must enable hostNetWork to true
+# Cilium - must enable to false to use its virtual IP (overlay mode)
+# Allow API server to talk to webhook Pod via hostNetwork   
+webhook:
+  hostNetwork: false
+# Allow API server to talk to all pod Pods via hostNetwork  
+hostNetwork: false

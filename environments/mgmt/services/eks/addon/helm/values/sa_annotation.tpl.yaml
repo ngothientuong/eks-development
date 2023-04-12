@@ -1,8 +1,2 @@
 serviceAccount:
   annotations: { "eks.amazonaws.com/role-arn": ${sa_iam_role} }
-
-# Allow API server to talk to webhook Pod via hostNetwork  
-webhook:
-  hostNetwork: true
-# Allow API server to talk to all pod Pods via hostNetwork  
-hostNetwork: true
