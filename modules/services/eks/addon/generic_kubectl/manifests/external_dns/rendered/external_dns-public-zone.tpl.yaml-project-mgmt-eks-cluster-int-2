@@ -80,7 +80,7 @@ spec:
             - --source=ingress
             #- --domain-filter=bylightsdc.bylight.com # will make external-dns see only the hosted zones matching provided domain, omit to process all available hosted zones
             - --provider=aws   # Name of the right provider
-            #- --policy=upsert-only # would prevent external-dns from deleting any records, omit to enable full synchronization
+            - --policy=upsert-only # would prevent external-dns from deleting any records, omit to enable full synchronization
             - --aws-zone-type=public # only look at public hosted zones (valid values are public, private or no value for both)
             #- --aws-zone-type=public # only look at public hosted zones (valid values are public, private or no value for both)
             - --registry=txt
