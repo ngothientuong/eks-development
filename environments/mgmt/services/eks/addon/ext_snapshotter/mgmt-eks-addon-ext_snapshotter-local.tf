@@ -114,8 +114,15 @@ locals {
           kubectl replace --grace-period 0 --force -f "${path.module}/../../../../../../modules/services/eks/addon/generic_kubectl/manifests/ext_snapshotter/rendered/cert.yaml"
           sleep 2          
           kubectl get secret snapshot-validation-secret -n kube-system -o=jsonpath={.data.ca\\.crt} > ~/ca_base64.crt
-        EOF
-        
+        EOF        
+      },
+      {
+        pre_template_kubectl_command = <<EOF
+          echo "${templatefile("${path.module}/../../../../../../modules/services/eks/addon/generic_kubectl/manifests/ext_snapshotter/cert.yaml", {cluster_name = var.clusters[2].cluster_name})}" > "${path.module}/../../../../../../modules/services/eks/addon/generic_kubectl/manifests/ext_snapshotter/rendered/cert.yaml"
+          kubectl replace --grace-period 0 --force -f "${path.module}/../../../../../../modules/services/eks/addon/generic_kubectl/manifests/ext_snapshotter/rendered/cert.yaml"
+          sleep 2          
+          kubectl get secret snapshot-validation-secret -n kube-system -o=jsonpath={.data.ca\\.crt} > ~/ca_base64.crt
+        EOF        
       }
     ]
     post_template_kubectl_commands = [
@@ -132,8 +139,14 @@ locals {
           python ./replace_var.py          
           kubectl replace --grace-period 0 --force -f "${path.module}/../../../../../../modules/services/eks/addon/generic_kubectl/manifests/ext_snapshotter/rendered/admission-configuration.yaml"
           echo After kubectl replace
-        EOF
-        
+        EOF        
+      },
+      {
+        post_template_kubectl_command = <<EOF
+          python ./replace_var.py          
+          kubectl replace --grace-period 0 --force -f "${path.module}/../../../../../../modules/services/eks/addon/generic_kubectl/manifests/ext_snapshotter/rendered/admission-configuration.yaml"
+          echo After kubectl replace
+        EOF        
       }
     ]
     service_account_role_arns = data.terraform_remote_state.clusters.outputs.openid_connect_sa_role_objs

@@ -257,6 +257,7 @@ STEP TO RUN
 #- vpc_cni:  Use Calico, don't use vpc_cni
 # - calico:   HUGE NOTE => add hostNetwork=true to helm deployment for webhook pod in ALL helm deployment
 #             so that control plane can reach out to it! Look at aws-load-balancer-controller helm deployment for example
+- local-exec   # Have to do again prior to cilium
 - cilium:   Replace kube-proxy
     Todo:   Enable Hubble 
             Configure Cluster Mesh
@@ -285,10 +286,18 @@ Note: You can manually assign subnets to your load balancer using the alb.ingres
 ## Important: Must have the 'acm-pca:*' allowed in permission boundary
 - aws-pca-issuer  
 
-# CoreDNS to be installed via ArgoCD
+# CoreDNS - no helm chart for this
 - coredns
 
+## EBS CSI - no helm chart for this
+## Note:    The sa ebs-csi-node-sa and ebs-csi-controller-sa have not been annotated just yet. 
+##          Be sure to annotate those account if the feature doesn't work.
+- ebs_csi
 
+## ArgoCD
+## Install manually via the profile
+## Look at instruction above
+- argocd
 
 
 
@@ -300,10 +309,7 @@ Note:   Be sure to adjust the spec.commonName and dnsNames of the cert in (kind:
         The secret in the cert request has to match with the secret mounted in the pod of the deployment.
 - ext_snapshotter
 
-## EBS CSI
-## Note:    The sa ebs-csi-node-sa and ebs-csi-controller-sa have not been annotated just yet. 
-##          Be sure to annotate those account if the feature doesn't work.
-- ebs_csi
+
 
 ## External Secret
 ## You still need to configure the 'kind: SecretStore' of your choice.
@@ -317,10 +323,6 @@ Note:   Be sure to adjust the spec.commonName and dnsNames of the cert in (kind:
 ##          Replicate production clusters to development and testing environments
 - velero
 
-## ArgoCD
-## Install manually via the profile
-## Look at instruction above
-- argocd
 
 ## Istio
 ## Install via multi-primary cluster network above

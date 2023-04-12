@@ -191,7 +191,10 @@ function removecluster() {
         kubectl config delete-context $1
 }
 function addcluster(){
-        sed -i 's/: null/: []/g' ~/.kube/config && \
+	if [ -f ~/.kube/config ]
+	then
+          sed -i 's/: null/: []/g' ~/.kube/config 
+	fi	  
         aws eks update-kubeconfig --region us-east-2 --name $1
 }
 function cfn() {

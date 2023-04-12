@@ -65,7 +65,7 @@ locals {
       version = ""
       #values = []     
       values = [
-        templatefile("${path.module}/../helm/values/cert_manager.tpl.yaml", {
+        templatefile("${path.module}/../helm/values/sa_annotation.tpl.yaml", {
           sa_iam_role = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[0].cluster_name,vl.id)) > 0],0))
         }),
         #templatefile("${path.module}/../../helm/values/aws_pca_issuer.tpl.yaml", {})
@@ -86,22 +86,8 @@ locals {
         # ## Below doesn't work because the default value template commented out serviceAccount.annotations 
         {
           name = "serviceAccount.annotations\\.eks\\.amazonaws\\.com/role-arn"
-          value = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[0].cluster_name,vl.id)) > 0],0))
-        },
-        # {
-        #   name = "clusterName"
-        #   value = var.clusters[0].cluster_name
-        # },
-        # # The below is for pods with restricted access to EC2 instance metadata service 
-        # # If pod is with restricted access, it can't inherit instance profile assigned to the worker node: https://aws.github.io/aws-eks-best-practices/security/docs/iam/#restrict-access-to-the-instance-profile-assigned-to-the-worker-node
-        # {
-        #   name = "region"
-        #   value = var.aws_region
-        # },
-        # {
-        #   name = "vpcId"
-        #   value = var.clusters[0].cluster_vpcID  # Note that is vpcID of nodes that controllers are deployed to
-        # },                
+          value = element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[0].cluster_name,vl.id)) > 0],0)
+        },              
       ]
     }], # } is End of the first helm chart ] is End of the list of helm chart of the first cluster
     [{
@@ -114,7 +100,7 @@ locals {
       version = ""
       #values = []     
       values = [
-        templatefile("${path.module}/../helm/values/cert_manager.tpl.yaml", {
+        templatefile("${path.module}/../helm/values/sa_annotation.tpl.yaml", {
           sa_iam_role = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[1].cluster_name,vl.id)) > 0],0))
         }),
         #templatefile("${path.module}/../../helm/values/aws_pca_issuer.tpl.yaml", {})
@@ -135,25 +121,46 @@ locals {
         ## Below doesn't work because the default value template commented out serviceAccount.annotations 
         {
           name = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"          
-          value = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[1].cluster_name,vl.id)) > 0],0))
+          value = element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[1].cluster_name,vl.id)) > 0],0)
           type = "string"
-        },
-        # {
-        #   name = "clusterName"
-        #   value = var.clusters[1].cluster_name
-        # },
-        # # The below is for pods with restricted access to EC2 instance metadata service 
-        # # If pod is with restricted access, it can't inherit instance profile assigned to the worker node: https://aws.github.io/aws-eks-best-practices/security/docs/iam/#restrict-access-to-the-instance-profile-assigned-to-the-worker-node
-        # {
-        #   name = "region"
-        #   value = var.aws_region
-        # },
-        # {
-        #   name = "vpcId"
-        #   value = var.clusters[1].cluster_vpcID  # Note that is vpcID of nodes that controllers are deployed to
-        # },        
+        },  
       ]
-    }] # End of the list of the last cluster
+    }], # End of the list of the last cluster
+    [{
+      cluster_name = var.clusters[2].cluster_name
+      # Name - Name is the name of the release
+      name = "external-secrets"
+      repository = "https://charts.external-secrets.io"
+      chart = "external-secrets"      
+      # Chart version
+      version = ""
+      #values = []     
+      values = [
+        templatefile("${path.module}/../helm/values/sa_annotation.tpl.yaml", {
+          sa_iam_role = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[2].cluster_name,vl.id)) > 0],0))
+        }),
+        #templatefile("${path.module}/../../helm/values/aws_pca_issuer.tpl.yaml", {})
+      ]
+      # Set to true if you do NOT want to install crds
+      skip_crds = false
+      namespace = "external-secrets"
+      create_namespace = true    
+      force_update = true
+      recreate_pods = true
+      timeout = 300
+      verify = false # If true then requires /home/vagrant/.gnupg/pubring.gpg which is not found
+      set = [
+        # {
+        #   name = "serviceAccount.name"
+        #   value = "external-secrets"
+        # },        
+        {
+          name = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"          
+          value = element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[2].cluster_name,vl.id)) > 0],0)
+          type = "string"
+        },  
+      ]
+    }]
   ]
 }
 

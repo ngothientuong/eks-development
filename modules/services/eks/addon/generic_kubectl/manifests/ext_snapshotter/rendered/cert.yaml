@@ -1,7 +1,7 @@
 apiVersion: awspca.cert-manager.io/v1beta1
 kind: AWSPCAClusterIssuer
 metadata:
-  name: external-snapshotter-project-mgmt-eks-cluster-int-test-issuer
+  name: external-snapshotter-project-mgmt-eks-cluster-int-2-issuer
   namespace: kube-system
 spec:
   arn: arn:aws:acm-pca:us-east-2:682331604648:certificate-authority/d6d38646-9c02-488b-94ab-c5894de95b95
@@ -10,18 +10,18 @@ spec:
 kind: Certificate
 apiVersion: cert-manager.io/v1
 metadata:
-  name: project-mgmt-eks-cluster-int-test-snap-cert
+  name: project-mgmt-eks-cluster-int-2-snap-cert
   namespace: kube-system
 spec:
   commonName: snapshot-validation-service # Has to match with service name or Ingress's spec.tls.hosts
   dnsNames:    # Has to match with service name or Ingress's spec.tls[*].hosts
-    - project-mgmt-eks-cluster-int-test-snap.com
+    - project-mgmt-eks-cluster-int-2-snap.com
     - snapshotter.com
   duration: 2160h0m0s
   issuerRef:
     group: awspca.cert-manager.io
     kind: AWSPCAClusterIssuer
-    name: external-snapshotter-project-mgmt-eks-cluster-int-test-issuer
+    name: external-snapshotter-project-mgmt-eks-cluster-int-2-issuer
   renewBefore: 360h0m0s
   secretName: snapshot-validation-secret  # Has to match with the secret mounted in deployment by Ingress's spec.tls[*].hosts.secretName
   usages:
