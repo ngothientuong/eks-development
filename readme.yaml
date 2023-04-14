@@ -301,7 +301,7 @@ Note: You can manually assign subnets to your load balancer using the alb.ingres
 
 
 
-## External snapshotter
+## External snapshotter (ArgoCD)
 ## There is the optional install of: Admission Webhook (controller installed as deployment) 
 ## and the required install of: snapshot-controller deployed as deployment
 ## Important: There is NO svc for the snapshot-controller just yet. Must look into in case of failure
@@ -311,7 +311,7 @@ Note:   Be sure to adjust the spec.commonName and dnsNames of the cert in (kind:
 
 
 
-## External Secret
+## External Secret (ArgoCD)
 ## You still need to configure the 'kind: SecretStore' of your choice.
 ## For AWS: https://external-secrets.io/v0.8.1/provider/aws-secrets-manager/
 - ext_secret
