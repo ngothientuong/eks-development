@@ -15,3 +15,7 @@ ipam:
 #extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready','--debug']
 extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready']
 egressMasqueradeInterfaces: eth0
+
+cluster:
+  name: project-mgmt-eks-cluster-int-test
+  id: 2

@@ -47,6 +47,5 @@ module "cilium_helm_creation_0" {
   providers = { helm = helm.project-mgmt-eks-cluster-rancher-test }
   helm_info = local.helm_info[0]  
   helm_module_depends_on = ""
-  #helm_module_depends_on = module.kubectl_apply_0
   depends_on = [null_resource.cilium_patch_aws_node_0]
 }

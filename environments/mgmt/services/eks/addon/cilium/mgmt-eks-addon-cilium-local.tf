@@ -90,8 +90,12 @@ locals {
           value = element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[0].cluster_name,vl.id)) > 0],0)
         },
         {
-          name = "clusterName"
+          name = "cluster.name"
           value = var.clusters[0].cluster_name
+        },
+        {
+          name = "cluster.id"
+          value = 0
         },
         {
           name = "webhook.hostNetwork"
@@ -150,8 +154,12 @@ locals {
           value = element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[1].cluster_name,vl.id)) > 0],0)
         },
         {
-          name = "clusterName"
+          name = "cluster.name"
           value = var.clusters[1].cluster_name
+        },
+        {
+          name = "cluster.id"
+          value = 1
         },
         {
           name = "webhook.hostNetwork"
@@ -209,8 +217,12 @@ locals {
           value = element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[2].cluster_name,vl.id)) > 0],0)
         },
         {
-          name = "clusterName"
+          name = "cluster.name"
           value = var.clusters[2].cluster_name
+        },
+        {
+          name = "cluster.id"
+          value = 2
         },
         {
           name = "webhook.hostNetwork"

@@ -316,7 +316,7 @@ Note:   Be sure to adjust the spec.commonName and dnsNames of the cert in (kind:
 ## For AWS: https://external-secrets.io/v0.8.1/provider/aws-secrets-manager/
 - ext_secret
 
-## Velero
+## Velero (ArgoCD)
 ## Usage: 
 ##          Protect applications in case of physical and logical errors 
 ##          Perform migrations between Kubernetes clusters

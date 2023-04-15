@@ -47,6 +47,5 @@ module "cilium_helm_creation_1" {
   providers = { helm = helm.project-mgmt-eks-cluster-int-test }
   helm_info = local.helm_info[1]  
   helm_module_depends_on = ""
-  #helm_module_depends_on = module.kubectl_apply_1
   depends_on = [null_resource.cilium_patch_aws_node_1]
 }
