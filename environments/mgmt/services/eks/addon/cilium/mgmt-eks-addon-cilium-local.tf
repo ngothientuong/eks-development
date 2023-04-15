@@ -95,7 +95,7 @@ locals {
         },
         {
           name = "cluster.id"
-          value = 0
+          value = 254             ## Cluster.id can't be 0 as it will not be able connect with other clusters. Value must be between 1-255
         },
         {
           name = "webhook.hostNetwork"

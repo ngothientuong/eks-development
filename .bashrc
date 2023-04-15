@@ -248,3 +248,27 @@ function scalealldeploy(){
 	done
 	done
 }
+CLUSTER1=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-rancher-test
+CLUSTER2=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-test
+CLUSTER3=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-2
+
+function viewtls(){
+  for i in ca\\.crt ca\\.key tls\\.crt tls\\.key
+  do
+	  TMP=$(kubectl get secret ${1} -oyaml -ojsonpath={.data.${i}})
+	  if [ "$(echo $TMP)" != "" ]
+	  then	  
+            echo "==== ${i} base64 ====:"  
+            echo $TMP
+	    echo "==== ${i} base64 DECODE ====:"
+	    echo $TMP | base64 -d 
+	    echo "==== ${i} cert content ====:"
+	    echo $TMP | base64 -d > ./${1}-$(echo ${i} | sed -e 's:\\::g')
+	    chmod 644 ./${1}-$(echo ${i} | sed -e 's:\\::g')
+              if [ "$(echo $i |  sed -e 's:\\::g' | grep '.key')" == "" ]
+              then
+	       openssl x509 -in ./${1}-$(echo ${i} | sed -e 's:\\::g') -text -noout
+	      fi
+          fi  
+  done	  
+}
