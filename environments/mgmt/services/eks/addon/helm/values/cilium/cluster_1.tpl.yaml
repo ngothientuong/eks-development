@@ -1,3 +1,8 @@
+## Cluster unique name and ID
+cluster:
+  name: project-mgmt-eks-cluster-int-test
+  id: 1
+
 ipam:
   # -- Configure IP Address Management mode.
   # ref: https://docs.cilium.io/en/stable/network/concepts/ipam/
@@ -8,6 +13,7 @@ ipam:
     clusterPoolIPv4PodCIDR: ""   #  <<< Must be Unique for each cluster!!!!
     # -- IPv4 CIDR list range to delegate to individual nodes for IPAM.
     clusterPoolIPv4PodCIDRList: ["10.200.0.0/15","10.202.0.0/15"]
+    cluster-pool-ipv4-mask-size: "15"  # Must match with /number above
 # Remove taint key ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready
 # and key ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready 
 # from node to allow cluster-autoscaler to scale and only remove taint 
@@ -16,6 +22,8 @@ ipam:
 extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready']
 egressMasqueradeInterfaces: eth0  
 
+# Configure common TLS
+# -- Configure TLS configuration in the agent.
 tls:
   # -- This configures how the Cilium agent loads the secrets used TLS-aware CiliumNetworkPolicies
   # (namely the secrets referenced by terminatingTLS and originatingTLS).
@@ -56,7 +64,85 @@ serviceAccounts:
     automount: true
     annotations: {}
 
+# preflight:
+#   # -- Enable Cilium pre-flight resources (required for upgrade)
+#   enabled: true
 
-cluster:
-  name: project-mgmt-eks-cluster-int-test
-  id: 1
+# debug:
+#   # -- Enable debug logging
+#   enabled: true
+#   # Applicable values:
+#   # - flow
+#   # - kvstore
+#   # - envoy
+#   # - datapath
+#   # - policy
+#   verbose: 4
+
+# -- Roll out cilium agent pods automatically when configmap is updated.
+# rollOutCiliumPods: true
+
+
+# ingressController:
+#   # -- Enable cilium ingress controller
+#   # This will automatically set enable-envoy-config as well.
+#   enabled: true
+
+#   # -- Default ingress load balancer mode
+#   # Supported values: shared, dedicated
+#   # For granular control, use the following annotations on the ingress resource
+#   # ingress.cilium.io/loadbalancer-mode: shared|dedicated,
+#   loadbalancerMode: shared
+
+#   # -- Enforce https for host having matching TLS host in Ingress.
+#   # Incoming traffic to http listener will return 308 http error code with respective location in header.
+#   enforceHttps: true
+
+#   # -- IngressLBAnnotations are the annotation prefixes, which are used to filter annotations to propagate
+#   # from Ingress to the Load Balancer service
+#   ingressLBAnnotationPrefixes: ['service.beta.kubernetes.io', 'service.kubernetes.io', 'cloud.google.com']
+
+#   # -- SecretsNamespace is the namespace in which envoy SDS will retrieve TLS secrets from.
+#   secretsNamespace:
+#     # -- Create secrets namespace for Ingress.
+#     create: true
+
+#     # -- Name of Ingress secret namespace.
+#     name: cilium-secrets
+
+#     # -- Enable secret sync, which will make sure all TLS secrets used by Ingress are synced to secretsNamespace.name.
+#     # If disabled, TLS secrets must be maintained externally.
+#     sync: true
+
+# # ## Disable GatewayAPI as this will require kube-proxy to be replaced
+# gatewayAPI:
+#   -- Enable support for Gateway API in cilium
+#   This will automatically set enable-envoy-config as well.
+#   enabled: true
+# kubeProxyReplacement: probe # Required for Ingress/Gateway API. Partial just in case
+# kubeConfigPath: "~/.kube/project-mgmt-eks-cluster-int-test.config"
+# k8sServiceHost: 93C08E0ADD36AFEBF2B86F0EE63F6B3B.gr7.us-east-2.eks.amazonaws.com
+# k8sServicePort: 443
+
+encryption:
+  # -- Enable transparent network encryption.
+  enabled: true
+  ipsec:
+    # -- Name of the key file inside the Kubernetes secret configured via secretName.
+    keyFile: "keys"
+
+    # -- Path to mount the secret inside the Cilium pod.
+    mountPath: "/etc/ipsec"
+
+    # -- Name of the Kubernetes secret containing the encryption keys.
+    secretName: "cilium-ipsec-keys"
+
+    # -- The interface to use for encrypted traffic.
+    interface: "eth0"    
+
+# # -- cilium-monitor sidecar.
+# monitor:
+#   # -- Enable the cilium-monitor sidecar.
+#   enabled: true
+
+

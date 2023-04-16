@@ -272,3 +272,6 @@ function viewtls(){
           fi  
   done	  
 }
+function viewnodeport(){
+  kubectl get svc -A -o=jsonpath='{range..items[?(.spec.type=="NodePort")]}{.metadata.name}{"\n"}{end}'
+}
