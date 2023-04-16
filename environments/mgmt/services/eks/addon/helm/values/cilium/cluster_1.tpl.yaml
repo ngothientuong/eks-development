@@ -13,7 +13,7 @@ ipam:
     clusterPoolIPv4PodCIDR: ""   #  <<< Must be Unique for each cluster!!!!
     # -- IPv4 CIDR list range to delegate to individual nodes for IPAM.
     clusterPoolIPv4PodCIDRList: ["10.200.0.0/15","10.202.0.0/15"]
-    cluster-pool-ipv4-mask-size: "15"  # Must match with /number above
+    clusterPoolIPv4MaskSize: "15"  # Must match with /number above
 # Remove taint key ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready
 # and key ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready 
 # from node to allow cluster-autoscaler to scale and only remove taint 
