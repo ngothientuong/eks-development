@@ -85,43 +85,43 @@ serviceAccounts:
 # rollOutCiliumPods: true
 
 
-# ingressController:
-#   # -- Enable cilium ingress controller
-#   # This will automatically set enable-envoy-config as well.
-#   enabled: true
+ingressController:
+  # -- Enable cilium ingress controller
+  # This will automatically set enable-envoy-config as well.
+  enabled: true
 
-#   # -- Default ingress load balancer mode
-#   # Supported values: shared, dedicated
-#   # For granular control, use the following annotations on the ingress resource
-#   # ingress.cilium.io/loadbalancer-mode: shared|dedicated,
-#   loadbalancerMode: shared
+  # -- Default ingress load balancer mode
+  # Supported values: shared, dedicated
+  # For granular control, use the following annotations on the ingress resource
+  # ingress.cilium.io/loadbalancer-mode: shared|dedicated,
+  loadbalancerMode: shared
 
-#   # -- Enforce https for host having matching TLS host in Ingress.
-#   # Incoming traffic to http listener will return 308 http error code with respective location in header.
-#   enforceHttps: true
+  # -- Enforce https for host having matching TLS host in Ingress.
+  # Incoming traffic to http listener will return 308 http error code with respective location in header.
+  enforceHttps: true
 
-#   # -- IngressLBAnnotations are the annotation prefixes, which are used to filter annotations to propagate
-#   # from Ingress to the Load Balancer service
-#   ingressLBAnnotationPrefixes: ['service.beta.kubernetes.io', 'service.kubernetes.io', 'cloud.google.com']
+  # -- IngressLBAnnotations are the annotation prefixes, which are used to filter annotations to propagate
+  # from Ingress to the Load Balancer service
+  ingressLBAnnotationPrefixes: ['service.beta.kubernetes.io', 'service.kubernetes.io', 'cloud.google.com']
 
-#   # -- SecretsNamespace is the namespace in which envoy SDS will retrieve TLS secrets from.
-#   secretsNamespace:
-#     # -- Create secrets namespace for Ingress.
-#     create: true
+  # -- SecretsNamespace is the namespace in which envoy SDS will retrieve TLS secrets from.
+  secretsNamespace:
+    # -- Create secrets namespace for Ingress.
+    create: true
 
-#     # -- Name of Ingress secret namespace.
-#     name: cilium-secrets
+    # -- Name of Ingress secret namespace.
+    name: cilium-secrets
 
-#     # -- Enable secret sync, which will make sure all TLS secrets used by Ingress are synced to secretsNamespace.name.
-#     # If disabled, TLS secrets must be maintained externally.
-#     sync: true
+    # -- Enable secret sync, which will make sure all TLS secrets used by Ingress are synced to secretsNamespace.name.
+    # If disabled, TLS secrets must be maintained externally.
+    sync: true
 
-# # ## Disable GatewayAPI as this will require kube-proxy to be replaced
-# gatewayAPI:
-#   # -- Enable support for Gateway API in cilium
-#   # This will automatically set enable-envoy-config as well.
-#   enabled: true
-# kubeProxyReplacement: probe # Required for Ingress/Gateway API. Partial just in case
+# # ## Enable GatewayAPI as this will require kube-proxy to be replaced
+gatewayAPI:
+  # -- Enable support for Gateway API in cilium
+  # This will automatically set enable-envoy-config as well.
+  enabled: true
+kubeProxyReplacement: partial # Required for Ingress/Gateway API. Partial just in case
 # kubeConfigPath: "~/.kube/project-mgmt-eks-cluster-rancher-test.config"
 # k8sServiceHost: EE00B7C37FBEFD736D4DCB89D9BF09D7.sk1.us-east-2.eks.amazonaws.com
 # k8sServicePort: 443
