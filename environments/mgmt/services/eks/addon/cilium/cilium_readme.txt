@@ -13,6 +13,10 @@ Second Install:
 6.  Rerun terraform plan, terraform apply to update the ca certs across cluster
 7.  Check if cilium-ca and hubble-ca-secret have the same keys and values across ALL cluster as it's needed for cluster communication
 
-
+## Do not enable the following components as it'll break cilium controller
+- gatewayAPI
+- debug
+- monitor
+- pre-flight
 
 

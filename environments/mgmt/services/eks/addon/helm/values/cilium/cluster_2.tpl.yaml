@@ -63,19 +63,15 @@ serviceAccounts:
     automount: true
     annotations: {}
 
-# preflight:
-#   # -- Enable Cilium pre-flight resources (required for upgrade)
-#   enabled: true
+# Preflight enable breaks cilium
+preflight:
+  # -- Enable Cilium pre-flight resources (required for upgrade)
+  enabled: false
 
+## Do NOT enable debug for now, it breaks Cilium Controller
 # debug:
 #   # -- Enable debug logging
 #   enabled: true
-#   # Applicable values:
-#   # - flow
-#   # - kvstore
-#   # - envoy
-#   # - datapath
-#   # - policy
 #   verbose: 4
 
 # -- Roll out cilium agent pods automatically when configmap is updated.
@@ -113,11 +109,11 @@ ingressController:
     # If disabled, TLS secrets must be maintained externally.
     sync: true
 
-# # ## Enable GatewayAPI
-gatewayAPI:
-  # -- Enable support for Gateway API in cilium
-  # This will automatically set enable-envoy-config as well.
-  enabled: true
+# # ## Enable GatewayAPI - Cannot Enable as it'll break controller
+# gatewayAPI:
+#   # -- Enable support for Gateway API in cilium
+#   # This will automatically set enable-envoy-config as well.
+#   enabled: false
 kubeProxyReplacement: partial # Required for Ingress/Gateway API. Partial just in case
 # kubeConfigPath: "~/.kube/project-mgmt-eks-cluster-int-2.config"
 # k8sServiceHost: 5E7A1F7119EC1B3A4AEA414E93D048D8.gr7.us-east-2.eks.amazonaws.com
