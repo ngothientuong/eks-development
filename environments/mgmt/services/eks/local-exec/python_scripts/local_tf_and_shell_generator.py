@@ -41,13 +41,13 @@ for j2_file in os.listdir(template_folder):
         )
         with open(template_folder + '/' + filename, mode="w", encoding="utf-8") as message:
             message.write(content)
-            print(f"... wrote {filename}")
+            #print(f"... wrote {filename}")
 
 for cluster_name in cluster_names:    
     template_folder = "./sh_local_files/"
-    print('cluster_name: ', cluster_name)
+    #print('cluster_name: ', cluster_name)
     for j2_file in os.listdir(template_folder):  
-        print("shell j2 files: ", j2_file)  
+        #print("shell j2 files: ", j2_file)  
         template_name = j2_file
         environment = Environment(loader=FileSystemLoader(template_folder))
         template = environment.get_template(template_name)        
@@ -59,5 +59,5 @@ for cluster_name in cluster_names:
         with open('./rendered_shell_files/' + filename, mode="w", encoding="utf-8") as message:
             message.write(content)
             os.chmod('./rendered_shell_files/' + filename, 0o0777 )
-            print(f"... wrote {filename}")            
+            #print(f"... wrote {filename}")            
             message.close()

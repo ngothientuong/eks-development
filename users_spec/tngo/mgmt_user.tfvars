@@ -37,7 +37,7 @@ clusters = [
       cluster_additional_backup_bucket     = "project-mgmt-rancher-additional-eks-backup"  
       enabled_cluster_log_types = ["audit", "api","authenticator","controllerManager","scheduler"]            
       #k8s_kms_key_arn = "arn:aws:kms:us-east-2:682331604648:key/41373326-d2fa-4642-9d80-ca2373e14cef"      
-      eks_version               = "1.25"
+      eks_version               = "1.26"
       eks_subnets              = ["subnet-06568ba86bee0eefa","subnet-001a39ffe9acc06ee"]
       #eks_subnets              = ["subnet-06568ba86bee0eefa"] # Stick w private subnet 1
       #eks_security_groups          = ["sg-019347f2aa06a38b7"]  # Optional 
@@ -94,7 +94,7 @@ clusters = [
           #   }
           # ]
           taint=[{}]
-          ng_eks_version = 1.25 
+          ng_eks_version = 1.26 
           pre_userdata = ""  
           post_userdata = ""          
           #kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""      # It works BUT no need for 2 node taints at 2 different place
@@ -104,7 +104,7 @@ clusters = [
             # name is cluster id + ng name
             description            = "Launch Template for EKS Managed Node Groups"
             update_default_version = true
-            custom_ami_id          = "ami-028251eabda9afee5" # Do not use custom image_id (or ami) and let EKS choose it for you
+            custom_ami_id          = "ami-0bc87fc008168cc65" # Do not use custom image_id (or ami) and let EKS choose it for you
             enable_monitoring      = true            
             public_ip              = false
             key_name               = "tngo-keypair"
@@ -153,7 +153,7 @@ clusters = [
       cluster_additional_backup_bucket     = "project-mgmt-int-additional-eks-backup"  
       enabled_cluster_log_types = ["audit", "api","authenticator","controllerManager","scheduler"]      
       #k8s_kms_key_arn = "arn:aws:kms:us-east-2:682331604648:key/41373326-d2fa-4642-9d80-ca2373e14cef"      
-      eks_version               = "1.25"
+      eks_version               = "1.26"
       eks_subnets              = ["subnet-0ba654dee6f07a181","subnet-0826eccf3e4f3e11e"] 
       #eks_security_groups          = ["sg-019347f2aa06a38b7"]  # Optional
       endpoint_private_access = false    
@@ -189,7 +189,7 @@ clusters = [
           #   }
           # ]
           taint=[{}]
-          ng_eks_version = 1.25 
+          ng_eks_version = 1.26 
           pre_userdata = ""  
           post_userdata = ""
           #kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""      # It works BUT no need for 2 node taints at 2 different place
@@ -199,7 +199,7 @@ clusters = [
             # name is cluster id + ng name
             description            = "Launch Template for EKS Managed Node Groups"
             update_default_version = true
-            custom_ami_id          = "ami-028251eabda9afee5"
+            custom_ami_id          = "ami-0bc87fc008168cc65"
             enable_monitoring      = true            
             public_ip              = false
             key_name               = "tngo-keypair"
@@ -247,7 +247,7 @@ clusters = [
       cluster_additional_backup_bucket     = "project-mgmt-int-2-additional-eks-backup"  
       enabled_cluster_log_types = ["audit", "api","authenticator","controllerManager","scheduler"]      
       #k8s_kms_key_arn = "arn:aws:kms:us-east-2:682331604648:key/41373326-d2fa-4642-9d80-ca2373e14cef"      
-      eks_version               = "1.25"
+      eks_version               = "1.26"
       eks_subnets              = ["subnet-0ba654dee6f07a181","subnet-0826eccf3e4f3e11e"] 
       #eks_security_groups          = ["sg-019347f2aa06a38b7"]  # Optional
       endpoint_private_access = false    
@@ -283,7 +283,7 @@ clusters = [
           #   }
           # ]
           taint=[{}]
-          ng_eks_version = 1.25 
+          ng_eks_version = 1.26 
           pre_userdata = ""  
           post_userdata = ""
           #kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""      # It works BUT no need for 2 node taints at 2 different place
@@ -293,7 +293,7 @@ clusters = [
             # name is cluster id + ng name
             description            = "Launch Template for EKS Managed Node Groups"
             update_default_version = true
-            custom_ami_id          = "ami-028251eabda9afee5"
+            custom_ami_id          = "ami-0bc87fc008168cc65"
             enable_monitoring      = true            
             public_ip              = false
             key_name               = "tngo-keypair"

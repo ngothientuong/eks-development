@@ -258,7 +258,8 @@ STEP TO RUN
 # - calico:   HUGE NOTE => add hostNetwork=true to helm deployment for webhook pod in ALL helm deployment
 #             so that control plane can reach out to it! Look at aws-load-balancer-controller helm deployment for example
 - local-exec   # Have to do again prior to cilium
-- cilium:   Replace kube-proxy
+- Copy files under local-exec/python_scripts/rendered_shell_files and put under addon/helm/cilium folder
+- cilium:   Replace kube-proxy (Can't replace no damn kube-proxy)
     Todo:   Enable Hubble 
             Configure Cluster Mesh
 # - kube-proxy

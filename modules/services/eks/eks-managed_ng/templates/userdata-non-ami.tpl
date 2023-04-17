@@ -36,7 +36,7 @@ export SERVICE_IPV6_CIDR=${service_ipv6_cidr}
 %{ if length(custom_ami_id) > 0 ~}
 B64_CLUSTER_CA=${cluster_ca_base64}
 API_SERVER_URL=${cluster_endpoint}
-/etc/eks/bootstrap.sh ${eks_cluster_id} --kubelet-extra-args '${kubelet_extra_args}' ${bootstrap_extra_args}
+/etc/eks/bootstrap.sh ${eks_cluster_id} --container-runtime containerd --kubelet-extra-args '${kubelet_extra_args}' ${bootstrap_extra_args}
 
 --//
 Content-Type: text/x-shellscript; charset="us-ascii"
@@ -79,13 +79,13 @@ Content-Disposition: attachment; filename="post_userdata_cilium.txt"
 
 #!/bin/bash
 #Patch VPC CNI (aws-node DaemonSet) for Cilium network
-sudo /usr/local/bin/kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}' >> /tmp/kubectl_output.txt
+#sudo /usr/local/bin/kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}' >> /tmp/kubectl_output.txt
 
 # Flush iptables added by VPC CNI if any
-iptables -t nat -F AWS-SNAT-CHAIN-0 \\
-   && iptables -t nat -F AWS-SNAT-CHAIN-1 \\
-   && iptables -t nat -F AWS-CONNMARK-CHAIN-0 \\
-   && iptables -t nat -F AWS-CONNMARK-CHAIN-1
+#iptables -t nat -F AWS-SNAT-CHAIN-0 \\
+#   && iptables -t nat -F AWS-SNAT-CHAIN-1 \\
+#   && iptables -t nat -F AWS-CONNMARK-CHAIN-0 \\
+#   && iptables -t nat -F AWS-CONNMARK-CHAIN-1
 
 %{ endif ~}
 %{ if length(post_userdata) > 0 ~}
