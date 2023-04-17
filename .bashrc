@@ -275,3 +275,9 @@ function viewtls(){
 function viewnodeport(){
   kubectl get svc -A -o=jsonpath='{range..items[?(.spec.type=="NodePort")]}{.metadata.name}{"\n"}{end}'
 }
+function hubblefw(){
+  cilium hubble port-forward&
+}
+function removeciliumsecret() {
+  for i in clustermesh-apiserver-admin-cert clustermesh-apiserver-client-cert clustermesh-apiserver-external-workload-cert clustermesh-apiserver-server-cert  ; do kubectl delete secret $i -n kube-system ; done
+}

@@ -3,6 +3,14 @@ cluster:
   name: project-mgmt-eks-cluster-int-test
   id: 1
 
+operator:
+  # -- Enable the cilium-operator component (required).
+  enabled: true
+  # -- Roll out cilium-operator pods automatically when configmap is updated.
+  rollOutPods: true
+  # -- Number of replicas to run for the cilium-operator deployment
+  replicas: 1
+
 ipam:
   # -- Configure IP Address Management mode.
   # ref: https://docs.cilium.io/en/stable/network/concepts/ipam/
@@ -30,7 +38,7 @@ tls:
   # Possible values:
   #   - local
   #   - k8s
-  secretsBackend: k8s
+  secretsBackend: local
 
   # -- Base64 encoded PEM values for the CA certificate and private key.
   # This can be used as common CA to generate certificates used by hubble and clustermesh components
@@ -76,19 +84,19 @@ preflight:
 #   verbose: 4
 
 # -- Roll out cilium agent pods automatically when configmap is updated.
-# rollOutCiliumPods: true
+rollOutCiliumPods: true
 
 
 ingressController:
   # -- Enable cilium ingress controller
   # This will automatically set enable-envoy-config as well.
-  enabled: true
+  enabled: true  
 
   # -- Default ingress load balancer mode
   # Supported values: shared, dedicated
   # For granular control, use the following annotations on the ingress resource
   # ingress.cilium.io/loadbalancer-mode: shared|dedicated,
-  loadbalancerMode: shared
+  loadbalancerMode: dedicated
 
   # -- Enforce https for host having matching TLS host in Ingress.
   # Incoming traffic to http listener will return 308 http error code with respective location in header.
@@ -122,7 +130,8 @@ kubeProxyReplacement: partial # Required for Ingress/Gateway API. Partial just i
 
 encryption:
   # -- Enable transparent network encryption.
-  enabled: true
+  enabled: false
+  type: ipsec    ## Type wireguard does not support Ingress L7 Proxy
   ipsec:
     # -- Name of the key file inside the Kubernetes secret configured via secretName.
     keyFile: "keys"

@@ -1,7 +1,15 @@
 # Cluster unique name and ID
 cluster:
   name: project-mgmt-eks-cluster-rancher-test
-  id: 10000
+  id: 254
+
+operator:
+  # -- Enable the cilium-operator component (required).
+  enabled: true
+  # -- Roll out cilium-operator pods automatically when configmap is updated.
+  rollOutPods: true
+  # -- Number of replicas to run for the cilium-operator deployment
+  replicas: 1
 
 ipam:
   # -- Configure IP Address Management mode.
@@ -32,7 +40,7 @@ tls:
   # Possible values:
   #   - local
   #   - k8s
-  secretsBackend: k8s
+  secretsBackend: local
 
   # -- Base64 encoded PEM values for the CA certificate and private key.
   # This can be used as common CA to generate certificates used by hubble and clustermesh components
@@ -77,7 +85,7 @@ preflight:
 #   verbose: 4
 
 # -- Roll out cilium agent pods automatically when configmap is updated.
-# rollOutCiliumPods: true
+rollOutCiliumPods: true
 
 
 ingressController:
@@ -89,7 +97,7 @@ ingressController:
   # Supported values: shared, dedicated
   # For granular control, use the following annotations on the ingress resource
   # ingress.cilium.io/loadbalancer-mode: shared|dedicated,
-  loadbalancerMode: shared
+  loadbalancerMode: dedicated
 
   # -- Enforce https for host having matching TLS host in Ingress.
   # Incoming traffic to http listener will return 308 http error code with respective location in header.
@@ -117,13 +125,14 @@ ingressController:
 #   # This will automatically set enable-envoy-config as well.
 #   enabled: false
 kubeProxyReplacement: partial # Required for Ingress/Gateway API. Partial just in case
-# kubeConfigPath: "~/.kube/project-mgmt-eks-cluster-rancher-test.config"
-# k8sServiceHost: EE00B7C37FBEFD736D4DCB89D9BF09D7.sk1.us-east-2.eks.amazonaws.com
-# k8sServicePort: 443
+# # kubeConfigPath: "~/.kube/project-mgmt-eks-cluster-rancher-test.config"
+# # k8sServiceHost: EE00B7C37FBEFD736D4DCB89D9BF09D7.sk1.us-east-2.eks.amazonaws.com
+# # k8sServicePort: 443
 
 encryption:
   # -- Enable transparent network encryption.
   enabled: true
+  type: ipsec    ## Type wireguard does not support Ingress L7 Proxy
   ipsec:
     # -- Name of the key file inside the Kubernetes secret configured via secretName.
     keyFile: "keys"

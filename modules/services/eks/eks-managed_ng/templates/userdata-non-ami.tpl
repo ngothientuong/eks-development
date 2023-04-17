@@ -79,7 +79,7 @@ Content-Disposition: attachment; filename="post_userdata_cilium.txt"
 
 #!/bin/bash
 #Patch VPC CNI (aws-node DaemonSet) for Cilium network
-kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"\}\}\}\}\}'
+sudo /usr/local/bin/kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}' >> /tmp/kubectl_output.txt
 
 # Flush iptables added by VPC CNI if any
 iptables -t nat -F AWS-SNAT-CHAIN-0 \\

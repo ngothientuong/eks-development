@@ -18139,7 +18139,7 @@ metadata:
     app.kubernetes.io/part-of: argocd
   name: argocd-redis-ha-haproxy
 spec:
-  replicas: 3
+  replicas: 2
   revisionHistoryLimit: 1
   selector:
     matchLabels:
@@ -19018,7 +19018,7 @@ metadata:
   name: argocd-redis-ha-server
 spec:
   podManagementPolicy: OrderedReady
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/name: argocd-redis-ha
