@@ -281,3 +281,8 @@ function hubblefw(){
 function removeciliumsecret() {
   for i in clustermesh-apiserver-admin-cert clustermesh-apiserver-client-cert clustermesh-apiserver-external-workload-cert clustermesh-apiserver-server-cert  ; do kubectl delete secret $i -n kube-system ; done
 }
+function removeciliumtest(){
+  for sa in echo-other-node echo-same-node client client2; do kubectl delete sa ${sa} -n cilium-test; done
+  for svc in echo-other-node echo-same-node; do kubectl delete svc/${svc} -n cilium-test; done
+  for deploy in echo-same-node echo-other-node client client2; do kubectl delete deploy/${deploy} -n cilium-test; done
+}

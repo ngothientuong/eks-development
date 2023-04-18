@@ -30,6 +30,13 @@ ipam:
 extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready']
 egressMasqueradeInterfaces: eth0  
 
+# -- Configure the eBPF-based ip-masq-agent
+ipMasqAgent:
+  enabled: false
+
+bpf: 
+  masquerade: false
+
 # Configure common TLS
 # -- Configure TLS configuration in the agent.
 tls:
@@ -45,11 +52,11 @@ tls:
   ca:
     # -- Optional CA cert. If it is provided, it will be used by cilium to
     # generate all other certificates. Otherwise, an ephemeral CA is generated.
-    cert: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURFekNDQWZ1Z0F3SUJBZ0lRZjNMeS9DeW40cXJDcTh4cFBBUzYrREFOQmdrcWhraUc5dzBCQVFzRkFEQVUKTVJJd0VBWURWUVFERXdsRGFXeHBkVzBnUTBFd0hoY05Nak13TkRFeU1EYzFNRFUyV2hjTk1qWXdOREV4TURjMQpNRFUyV2pBVU1SSXdFQVlEVlFRREV3bERhV3hwZFcwZ1EwRXdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCCkR3QXdnZ0VLQW9JQkFRRFZlTVJ6RWFmT04rRnBwVjRuN2lsU0hPK09MSGtoY0xReGJ2QzJaTUg5OGFXK21tOUkKeU9FbHRiV3hEQ0x1cWllTDc3QlYvcCszckwyYzFNRkZJTWZ2Y2h6ZU00YWVxcjUwN2RMcW9xUnlrZ3NNNE9qcQpYNk9MZXhYYnlIdWpQY3BibDNFUjlWWE1jR1NvbkpaT0ZmNHhBeCtqUEMxRXZFNmZURFYzdllvSVUrTFFUZU90CjZNdjR2MXFxYmZobXphR0JvUTllZkpCSnNSSjFzOEdoMklhKzlBTHdVbEx3U1NMdXYyOWR3cUJrOVYyYnhGUUgKRHpsZ0svZjQ2enZTbkxwSDk0OEg3ZXJjQkFjTU5sZm03SUYweThBamplZTE4TjhENWh4NzJWTnRrc0xJZ0E3UAowWmFUbi81R1lMUzF0L2hvcmwwYVlJMTl1bkpoeG44N21Od3pBZ01CQUFHallUQmZNQTRHQTFVZER3RUIvd1FFCkF3SUNwREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVIQXdJd0R3WURWUjBUQVFIL0JBVXcKQXdFQi96QWRCZ05WSFE0RUZnUVVQMy92V016N3dUdVptZnlMUHRlMEZWRUlBdnd3RFFZSktvWklodmNOQVFFTApCUUFEZ2dFQkFGVjhOc1g5TDB6UklVcjhjVDNOQnNLUXBCVHlHOXJlbno4UHBzRHk4UHlDSVFLdi96dVVBcldNCng3eXcvQjZ6cm9lVFdROFFmZlZreGYycnJybEpPTmpMS3Q5aUo3bGJjYzYyWUZWL255UGROMmxOeGRjQjhjTlUKbXN2Nld0YndPcFdwUmx5WWd1ODdoMDZmb1JDeVpXcDhTQnFXM1k4N3FVZDZsbk85VUlBUFBnUDFibFVENW5OQgpCNEhqSXhSc1FzN2RUY1NPOGM3c1NXb2VOQllCdXY3c1VrNStXZDZFTlBsK3p5anVjMjRlbkQ4RjRkNmhuZjh5ClhuVVRYWlRoeDAxQ1V3cnBDVmtweEovc2FtaGNpLzZSTlBJV25aZWlrQnk0TThvdVluUXgybU4zNmhqUllHVmIKeW1QTTJvTFpzT0lWY1NMblk3Q1l4ZnNnalkzUk40ND0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo="
+    cert: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURGakNDQWY2Z0F3SUJBZ0lSQU1QVzRzMUd6NzFPTUxsbWh1dmxIL1l3RFFZSktvWklodmNOQVFFTEJRQXcKRkRFU01CQUdBMVVFQXhNSlEybHNhWFZ0SUVOQk1DQVhEVEl6TURReE56RTNOREl3TmxvWUR6SXdOVE13TkRBNQpNVGMwTWpBMldqQVVNUkl3RUFZRFZRUURFd2xEYVd4cGRXMGdRMEV3Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBCkE0SUJEd0F3Z2dFS0FvSUJBUURzbnppZWhyZmVjRFhZRXZDOGpoUS83UmVoMjVYaW5MQ2tTRzRsWDZlZ3EyUzgKaXVjN1Z0QUhFZ21yQUdCNUFacUVVTjJOL0svalZIK0xCQ1h2SjBJVE1rUnp3dzVpZDR5OTNkcXRMMGpST0E5bwpxMFAzUWVLanphZjc1Z24wOWNxckdXZXBJdG9zazBLcnFYblM1ekk3ZXRzbVR2cWlVUU1ZTHRkK3JaRGFSVVRGCm9HNjQwaithNFdzeUFLSDJ0UkpsWFJqLzY4QnNXYnJoV2kwdWdyOFg3TG4xRWJEZDdndlFIMlBYRXNRVzRiZkwKdFFOY3pqOE05MzJSNFFJVE11aFFadkhMbE5LbjVQL1BDRmNua0dEWXRoMkM5TDFML0MxMW5ySDlBb3BVWlN4QwovQ0dRYVI1emJWWk9Cb1hucUtzU2FVbTNEeTVZZ3BkcDN2MWdCdU5IQWdNQkFBR2pZVEJmTUE0R0ExVWREd0VCCi93UUVBd0lDcERBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFRWUlLd1lCQlFVSEF3SXdEd1lEVlIwVEFRSC8KQkFVd0F3RUIvekFkQmdOVkhRNEVGZ1FVdDNWdkRubzl4V2NIcjNRU0VMTXM3ckxyd1BRd0RRWUpLb1pJaHZjTgpBUUVMQlFBRGdnRUJBQ09EdVpycHYwbGp6Z3ZKRGRSVTNBaUgvOXFDVUJWMnE0Wm1iMXpKKzBjRXIyc1owb0xjClk1MjZlZzRrTUZRcUJ1TndRMTVEcnBicmdhKzZmNm5KbXZSTy92NWxhOEs3eEtDeXVJQ3g4SFRYZWZHckdSaFIKaTIrTkUzL2JJcExhbFNhQS9Zc0NqemgwQ2NOOWliNnNLSDczeWZMM2R3RHpreDM4OStoSFNBZEVIb1BVNkErYQo3MjRoUEE1V3RuaTRtVHJ1aVp1UTdGL3dwYjdZVEJEdkZMRVcyZjBUNjhyZ2JoZWVPQTF5cWFMTlpVN0FZVWI5Ck5jekNzcDFFTEd5MFVUT1VUM0NxMEx4UXhBeXFNZkNxQWI4di9VMzJQRWVrU25Pa1A2dzVKVzBKaDlDTjhlQ2YKVmx5NlJMSUZmd0dobTd1eTVNZ2JQL3NBVnk1dlE0blByeU09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
 
     # -- Optional CA private key. If it is provided, it will be used by cilium to
     # generate all other certificates. Otherwise, an ephemeral CA is generated.
-    key: "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBMVhqRWN4R256amZoYWFWZUorNHBVaHp2aml4NUlYQzBNVzd3dG1UQi9mR2x2cHB2ClNNamhKYlcxc1F3aTdxb25pKyt3VmY2ZnQ2eTluTlRCUlNESDczSWMzak9HbnFxK2RPM1M2cUtrY3BJTERPRG8KNmwramkzc1YyOGg3b3ozS1c1ZHhFZlZWekhCa3FKeVdUaFgrTVFNZm96d3RSTHhPbjB3MWQ3MktDRlBpMEUzagpyZWpMK0w5YXFtMzRaczJoZ2FFUFhueVFTYkVTZGJQQm9kaUd2dlFDOEZKUzhFa2k3cjl2WGNLZ1pQVmRtOFJVCkJ3ODVZQ3YzK09zNzBweTZSL2VQQiszcTNBUUhERFpYNXV5QmRNdkFJNDNudGZEZkErWWNlOWxUYlpMQ3lJQU8KejlHV2s1LytSbUMwdGJmNGFLNWRHbUNOZmJweVljWi9PNWpjTXdJREFRQUJBb0lCQUFtNUUzR09SMDljT2pjZQpvaGc5ZjhKT3NSYVByZ0M0Nm13cCttckVVaFduOFAycWVSRWVuU3FqaVNBRVJuOEtYdnkvc1E5cHBvcXVJb0RICksvcGpFTmcySVZ4NWlsTWx3Y0QvcUJDcDBjV3FJemkxOGNYakQwYm1GMHZJYU9FNWlrTDd0ZG0waS9EZzJhVFkKWlB3dmdrRm5QQVNxVkFHQ2RpNUpRVkl2M3Q2Y0pqUzA1UVIrdnZzUXdTYUdQNTFrQ1ZxRHVrZTVFMUx2RzkzWgpEYnViSlpqNEloSkdHbkxHZHpsQzhSM0FkZDRFQis2d1NKV3c1U2JraGlFY2dHbkp2YUV4U043SmovOVA2Y1BVCmhJTWh5RGEzOExvY1pSMjZrNTZ5MjU2SUhyM2JFbkJjUUxvaTN5MEZwZkdoRHJOLzBkRVdUdU5mTU4rNjdYYXoKVHU0bkRkRUNnWUVBNGQ5MENTYUUrRUUwZm1xNWJkdU1SMTFKUU5GS3U0WmpjQzZJYmdYaFJCSjB2SFV1ZFlLcwpmMGpQV2NBbE1OSnFaN1ltbVFTWlNHMExmRng1djcvdjBZS0JUVml5ak5EMXVGdkNYS0lCR1pvTmlPNlgwMFRICkJ1bjZwVG9Fc21iS3htbVl3THU1N2VCS2xTRmlVa0JXalJyaGNtUDYzN0piRVpNSHR1Yi9yNXNDZ1lFQThmSGYKRzlpZ2dYeTdlQTREeGdJUTFTblRKb0UrUXpsR1hIaXBMUFd1OGd3bElzVGhiRkY5UUJvTHF0NDY3WVFrdkl2TgovYndZTjNiaXBYNkxRUXN6YnlxVk5obTJISWdhMG5FaTZDeWZwZWRBUjFObGR5VEdsbUpERm1YMWM5VDRLS3d6Cm9EU0xmek5rUUNCY3g4Z1lxbTdPNURqVnFjVTI5N0h5M3pCK2Ewa0NnWUE5M1ZRTXhZNFo2TklWNWVsUDI1ZzYKVzZTYXFqaEwwRzBmNXI3YlU2VDFYaEMzSldsS0tqWlF6b0pzVktKYkV1YXQ3VWY1RlRkZWpPOWVhbjIyTlQzYwpKbUIvN05GS25Ga1EyNkVLZWh6UEJGQzh0b3pEQXMxNGFWR0xPNjdacGluWDJraEtVYUNGTks5NDFTSDI0VVJUCmRZOVdJMmd0S002a3E1NnJTKzJ3RFFLQmdEQ1hMUUhBcmV1VGkyci9GWTdzMTBpWVQ4bko1eUZGSFhadzNUa2sKVm5CU05Cc1pnMVJud1VuZ2NUdHR5bFB0V0J0dDBIOEhDYTRKK0ZiWVpVczQzcW1TMmNpMXZUZFp0bGxSVTN0aAppdWFjM1BIMk04aUw0RDVQbWIyajJIbmM2Y0h4WTZUbktLVHhRMDhGc055R3VUMXhaNmU2S2w4Z05udmtoeXgvCjVzUFJBb0dCQU5WNWxlSnVUZVlwOTF0N0tjNkhDeDFWMTVXNVFhMlJBOWZJUm9tRU9VKzlnZy9LMktBWlp0UDYKTmU1UXhJUDdwMTk2ZnZYc1pDS3pkbHhGL2xDZW1YVXBSNFNZdUpTT1djWUc1V2M3U0Qrc1ZjK3RPaWpQS0h1TQp2MTM5VlMxNzh0SHVzWmZYejVtam1EK2NmUVNlWTVGVDhCZGU5L2M0UDBZc1l6Q0FiZXYyCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg=="
+    key: "LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBN0o4NG5vYTMzbkExMkJMd3ZJNFVQKzBYb2R1VjRweXdwRWh1SlYrbm9LdGt2SXJuCk8xYlFCeElKcXdCZ2VRR2FoRkRkamZ5djQxUi9pd1FsN3lkQ0V6SkVjOE1PWW5lTXZkM2FyUzlJMFRnUGFLdEQKOTBIaW84Mm4rK1lKOVBYS3F4bG5xU0xhTEpOQ3E2bDUwdWN5TzNyYkprNzZvbEVER0M3WGZxMlEya1ZFeGFCdQp1TkkvbXVGck1nQ2g5clVTWlYwWS8rdkFiRm02NFZvdExvSy9GK3k1OVJHdzNlNEwwQjlqMXhMRUZ1RzN5N1VEClhNNC9EUGQ5a2VFQ0V6TG9VR2J4eTVUU3ArVC96d2hYSjVCZzJMWWRndlM5Uy93dGRaNngvUUtLVkdVc1F2d2gKa0drZWMyMVdUZ2FGNTZpckVtbEp0dzh1V0lLWGFkNzlZQWJqUndJREFRQUJBb0lCQUYxU0ltdHJLR01qRUNsSwp0d1UyWjhnYWd1S0VEdVlUOUJxbXNrSXRLcGhVWUdOM3lPQi9TWVl3Vi8zSUpVUTBITE9vak9pdHl0UzJnNkxaCkhQam9HOGdrWUJqanllMk54c1V2RlVxT1JvSzFRR2FBZlVxc0FtMmw4MldHZ1ZES0M0ZFZlcXViSWo3SVNWZ1kKZkFKd3lqL3BJVHRIbE5PbGJib0E1MTUvcDR4ZFdTcWo2WHQwL0M4RG9ObDNqeTVqOXBYOUhqYkJ6QzN4Mjl2RgprakxaamkySjJ2bG1zMVBRR2dBL2VYMG1NQzRiL0Yzb29OVW13Q0VGbkc1SXBPeFlXUklRMUNyUlFkaUZpNEdQCmlSMWNRTjJrTlpnRVNkNlBSWFk1TzNaTVBhaUd5K2ZsS2xOdGwwWkJwbDhBdnNhRnRrdUtLMW42YUpacWhGRkQKVStVRm9KRUNnWUVBOGQxV2M1dldTb3hMZUJVbGNIOUJtYU1oT1NvTUV2UVVndi9nRXJMT1ZHTGM3dzJ5dmNQbwpmY3c3YkZhVWNzRWJQMzM5aTU5RitvSHNzdE1SeXFsb3UxZVIwNFBzTVdFRUNCOWhVVzRXWm51bldaVTRFSFRECkJWcWZHZDVON3NLQ1VNbXBPQmJibGtxbnJqVHBhaEVuWmU0NjlyTjdnKzBER1N2UTVXTDBIa2tDZ1lFQStuTnkKRUIzcnBmQzV5UWNmTU5BN3BvbWFiaFdQSlMveW94U0ZLc0NGOGViai9YYWh4SVFZRHQ1VUFpY21FTi9BbWc4WApTU3dBS0g3N0t3Nmc2VUhtNG0vZit5d1VueFNNNnc2VGZuaDF5VUlpL09XUkovdnRmeGRiU3VqYnBzT2hzNThiCnpURVh3dHErNVVWMjhiWXhIWUxjM3dxY2dUZ2MzZ3phYzAzVU5ROENnWUFLSkRuSHh6VUpFekRtN0J3Ung0UTgKcVBadnF5K3VhOFdnYUpKQXRuYW9XeXpnYVRhaGRtRjlSTjhJLytoaGwyOUpEa05mWTJKUHlycmVGTE9lUjlRNApac2Vha3VHSWdJVG13a29XWEFOY2NMcm5xclliR29wQzR6WGdvODJvd1VjdGxBY2didlR1TEZzemxzeGl3aTFnCnZNaUVKNnA2TWFuN21EYStKNVFNNFFLQmdHWlFSVGVxVVhzLzVWWG5qK2xzR0FKSDBvdklTT3NqTkZkRTZjWDIKVW9IcEZoaVVueTlkMjBvdnIxZ1YwQ295amtjaGhSekNXZW94UGNCd1FISXFGdjFJUU5NbVJlSmJEZHAwNFBKWQptWjIzWS8yMmR0OUR2dGtkbkpEMG9jNzF1cGhibG9yejFFWXBBTFUrOUlGNE1ZWmgwSU5abldmNG1XcHBDOUR3CjZaRW5Bb0dCQU0wcWNRdWk4cFR4YTBINGEvdjNlVnBiMmYreVowazlqQmZBR2VudHdjaTVrUUVpL09EWFJNa1AKbmlsRWk2RXlhdERXTSs1bUlEcXlZQVVkN3IyVDd2dDJScWZFMEVFTENJcHpHTHBOTzV1NHRNWUtMaVhFT012VgpYbExVbkdrbnhSbThORDhwS2RWNEcwdFh0d29IelpoUTdFUk1LaytFLy9wb1RJajNuWlgyCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg=="
 
     # -- Generated certificates validity duration in days. This will be used for auto generated CA.
     certValidityDuration: 10950
@@ -77,73 +84,79 @@ serviceAccounts:
 #   # -- Enable Cilium pre-flight resources (required for upgrade)
 #   enabled: false
 
-## Do NOT enable debug for now, it breaks Cilium Controller
-# debug:
-#   # -- Enable debug logging
-#   enabled: true
-#   verbose: 4
+# Do NOT enable debug for now, it breaks Cilium Controller
+debug:
+  # -- Enable debug logging
+  enabled: true
+  verbose: 4
 
 # -- Roll out cilium agent pods automatically when configmap is updated.
 rollOutCiliumPods: true
 
+etcd:
+  # -- Enable etcd mode for the agent.
+  enabled: false
+ingressController:
+  # -- Enable cilium ingress controller
+  # This will automatically set enable-envoy-config as well.
+  enabled: false  
 
-# ingressController:
-#   # -- Enable cilium ingress controller
-#   # This will automatically set enable-envoy-config as well.
-#   enabled: true  
+  # -- Default ingress load balancer mode
+  # Supported values: shared, dedicated
+  # For granular control, use the following annotations on the ingress resource
+  # ingress.cilium.io/loadbalancer-mode: shared|dedicated,
+  loadbalancerMode: dedicated
 
-#   # -- Default ingress load balancer mode
-#   # Supported values: shared, dedicated
-#   # For granular control, use the following annotations on the ingress resource
-#   # ingress.cilium.io/loadbalancer-mode: shared|dedicated,
-#   loadbalancerMode: dedicated
+  # -- Enforce https for host having matching TLS host in Ingress.
+  # Incoming traffic to http listener will return 308 http error code with respective location in header.
+  enforceHttps: true
 
-#   # -- Enforce https for host having matching TLS host in Ingress.
-#   # Incoming traffic to http listener will return 308 http error code with respective location in header.
-#   enforceHttps: true
+  # -- IngressLBAnnotations are the annotation prefixes, which are used to filter annotations to propagate
+  # from Ingress to the Load Balancer service
+  ingressLBAnnotationPrefixes: ['service.beta.kubernetes.io', 'service.kubernetes.io', 'cloud.google.com']
 
-#   # -- IngressLBAnnotations are the annotation prefixes, which are used to filter annotations to propagate
-#   # from Ingress to the Load Balancer service
-#   ingressLBAnnotationPrefixes: ['service.beta.kubernetes.io', 'service.kubernetes.io', 'cloud.google.com']
+  # -- SecretsNamespace is the namespace in which envoy SDS will retrieve TLS secrets from.
+  secretsNamespace:
+    # -- Create secrets namespace for Ingress.
+    create: true
 
-#   # -- SecretsNamespace is the namespace in which envoy SDS will retrieve TLS secrets from.
-#   secretsNamespace:
-#     # -- Create secrets namespace for Ingress.
-#     create: true
+    # -- Name of Ingress secret namespace.
+    name: cilium-secrets
 
-#     # -- Name of Ingress secret namespace.
-#     name: cilium-secrets
-
-#     # -- Enable secret sync, which will make sure all TLS secrets used by Ingress are synced to secretsNamespace.name.
-#     # If disabled, TLS secrets must be maintained externally.
-#     sync: true
+    # -- Enable secret sync, which will make sure all TLS secrets used by Ingress are synced to secretsNamespace.name.
+    # If disabled, TLS secrets must be maintained externally.
+    sync: true
 
 # # # ## Enable GatewayAPI - Cannot Enable as it'll break controller
 # # gatewayAPI:
 # #   #-- Enable support for Gateway API in cilium
 # #   # This will automatically set enable-envoy-config as well.
 # #   enabled: false
-# kubeProxyReplacement: partial # Required for Ingress/Gateway API. Partial just in case
+kubeProxyReplacement: partial # Required for Ingress/Gateway API. Partial just in case
 # kubeConfigPath: "~/.kube/project-mgmt-eks-cluster-int-test.config"
 # k8sServiceHost: 93C08E0ADD36AFEBF2B86F0EE63F6B3B.gr7.us-east-2.eks.amazonaws.com
 # k8sServicePort: 443
 
+l7Proxy: false    ## Set to false to enable encryption type wireguard
+tunnel: "vxlan"
+#ipv4NativeRoutingCIDR: "10.0.0.0/9"
 encryption:
   # -- Enable transparent network encryption.
-  enabled: false
-  type: ipsec    ## Type wireguard does not support Ingress L7 Proxy
-  ipsec:
-    # -- Name of the key file inside the Kubernetes secret configured via secretName.
-    keyFile: "keys"
+  enabled: true
+  type: wireguard    ## Type wireguard does not support Ingress L7 Proxy
+  # type: ipsec    ## Type wireguard does not support Ingress L7 Proxy
+  # ipsec:
+  #   # -- Name of the key file inside the Kubernetes secret configured via secretName.
+  #   keyFile: "keys"
 
-    # -- Path to mount the secret inside the Cilium pod.
-    mountPath: "/etc/ipsec"
+  #   # -- Path to mount the secret inside the Cilium pod.
+  #   mountPath: "/etc/ipsec"
 
-    # -- Name of the Kubernetes secret containing the encryption keys.
-    secretName: "cilium-ipsec-keys"
+  #   # -- Name of the Kubernetes secret containing the encryption keys.
+  #   secretName: "cilium-ipsec-keys"
 
-    # -- The interface to use for encrypted traffic.
-    interface: "eth0"    
+  #   # -- The interface to use for encrypted traffic.
+  #   interface: "eth0"    
 
 # # -- cilium-monitor sidecar.
 # monitor:

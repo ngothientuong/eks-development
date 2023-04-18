@@ -15,7 +15,6 @@ Second Install:
 
 ## Do not enable the following components as it'll break cilium controller
 - gatewayAPI
-- debug
 - monitor
 - pre-flight
 
