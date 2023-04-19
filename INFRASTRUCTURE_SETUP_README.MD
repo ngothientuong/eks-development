@@ -98,3 +98,143 @@
 ![MicrosoftTeams-image (1)](https://user-images.githubusercontent.com/34757197/232990958-fed20b36-6e2b-4f5e-a901-9b429e5b4a11.png)
 
 
+---
+
+# PROVISION VPC AND INFRASTRUCTURE COMPONENT
+## Provisioning Preparation
+### Set up dedicated ~/.bashrc
+- Ensure the region is correct
+- Ensure accounts for both TF and AWS point to the account with full AWS privilege is correct
+- Ensure the path to hardcoded tfvars, .hcl  is correct
+
+### HCL, TFVARS FILES
+- Make copy and change the content of HCL, TFVARS to appropriate aws_region, s3 bucket, dynamodb info, env, envlc
+
+### DEDICATED FOLDER FOR GLOBAL/{S3,VPC}
+- Create folder for the region in global, ie. eu_west_2
+- Copy s3, vpc folders into the newly created region folder
+
+
+### EC2-KEYPAIR
+- Create the public key from private key
+```
+ssh-keygen -f ~/.ssh/tngo-keypair -y > ~/tngo-keypair.pub
+```
+- Import the public key to the new region EC2 Key service
+
+## Execute The Provisioning
+### Run TF in S3 folder
+```
+terraform init
+
+terraform plan -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars -compact-warnings -out tfm.out
+
+terraform apply tfm.out
+```
+
+### Run TF in VPC folder
+> -backend-config=${tngo_spec}/user_eu_west_2.hcl
+- Comment out the below:
+
+    
+**.terraform/modules/transit-gateway/main.tf**:
+```
+# resource "aws_ram_resource_association" "this" {
+#   count = var.create_tgw && var.share_tgw ? 1 : 0
+
+#   resource_arn       = aws_ec2_transit_gateway.this[0].arn
+#   resource_share_arn = aws_ram_resource_share.this[0].id
+# }
+
+# resource "aws_ram_principal_association" "this" {
+#   count = var.create_tgw && var.share_tgw ? length(var.ram_principals) : 0
+
+#   principal          = var.ram_principals[count.index]
+#   resource_share_arn = aws_ram_resource_share.this[0].arn
+# }
+```
+
+**.terraform/modules/transit-gateway/outputs.tf**
+
+```
+# output "ram_resource_share_id" {
+#   description = "The Amazon Resource Name (ARN) of the resource share"
+#   value       = try(aws_ram_resource_share.this[0].id, "")
+# }
+
+# output "ram_principal_association_id" {
+#   description = "The Amazon Resource Name (ARN) of the Resource Share and the principal, separated by a comma"
+#   value       = try(aws_ram_principal_association.this[0].id, "")
+# }
+```
+
+- Run tfminit, tfmplan and tfmapply as usual
+
+---
+# PEERING BETWEEN 2 VPCS VIA TRANSIT GATEWAY
+## Create a peering connectiong between 2 transit gateway
+- Follow this Link for instruction: https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#same-account-different-region
+
+We'll use reggion VPC A of us-east-2 and VPC B of eu-west-2 as an example
+
+### US-EAST-2
+- VPC -> Peering connections -> Create peering Connection
+- Choose a name for the connection, i.e. **us-east-2-eu-west-2**
+- Choose VPC A
+- A VPC CIDRs will appear as default choice
+- Select another VPC to peer with -> Another Region
+- Choose **eu-west-2**
+- Choose VPC B
+- Create peering connection
+
+### EU-WEST-2
+- VPC -> Peering connections
+- You should see an entry of the connection with CIDR block of VPC A from us-east-2 in pending status
+- Check on the radio button of the connection -> Action -> Accept Request
+
+## Create|Add VPC Route Tables to VPC Peer Connection 
+### US-EAST-2
+#### VPC Route table
+- VPC -> Route Tables -> Create Route Table 
+- Name "VPC-A-US-EAST-2-VPC-B-EU-WEST-2"
+- Choose CIDR BLOCK of VPC A 
+- Create Route Table
+- Go back to VPC -> Route tables -> "VPC-A-US-EAST-2-VPC-B-EU-WEST-2" -> Subnet associations -> Edit Subnet associations
+- Choose subnets from VPC A you want to be connect to subnets of VPC B. In this case, choose the private subnets from VPC A
+- VPC -> Route tables -> "VPC-A-US-EAST-2-VPC-B-EU-WEST-2" -> Routes -> Edit Routes
+- Entry 1:
+    - Destination: CIDR_BLOCK of VPC A;   
+    - Target: Local
+- Add route -> Entry 2
+    - Destination: CIDR_BLOCK of VPC B or subnet CIDR_BLOCKs of VPC B
+    - Target: pcx-XXXX (VPC Peering ID )
+#### Transit-Gateway Route table
+- VPC -> Transit gateway route tables -> The transit gateway associating with VPC Peering Connection -> Routes
+- Create static Route 
+    - CIDR: cidr_block of VPC B or subnet cidr_blocks of VPC B
+    - Type: Active
+    - Choose attachment: The attachment associating with subnets of VPC A. In this case, the attachment is associating with the private subnets of VPC B
+
+### US-WEST-2
+#### VPC Route table
+- VPC -> Route Tables -> Create Route Table 
+- Name "VPC-B-EU-WEST-2-VPC-A-US-EAST-2"
+- Choose CIDR BLOCK of VPC B
+- Create Route Table
+- Go back to VPC -> Route tables -> "VPC-B-EU-WEST-2-VPC-A-US-EAST-2" -> Subnet associations -> Edit Subnet associations
+- Choose subnets from VPC B you want to be connect to subnets of VPC A. In this case, choose the private subnets from VPC B
+- VPC -> Route tables -> "VPC-B-EU-WEST-2-VPC-A-US-EAST-2" -> Routes -> Edit Routes
+- Entry 1:
+    - Destination: CIDR_BLOCK of VPC B;   
+    - Target: Local
+- Add route -> Entry 2
+    - Destination: CIDR_BLOCK of VPC A or subnet CIDR_BLOCKs of VPC A
+    - Target: pcx-XXXX (VPC Peering ID )
+#### Transit-Gateway Route table
+- VPC -> Transit gateway route tables -> The transit gateway associating with VPC Peering Connection -> Routes
+- Create static Route 
+    - CIDR: cidr_block of VPC A or subnet cidr_blocks of VPC A
+    - Type: Active
+    - Choose attachment: The attachment associating with subnets of VPC B. In this case, the attachment is associating with the private subnets of VPC B
+
+

@@ -25,7 +25,7 @@ vpc = {
     private_subnet_names = ["tngo-eumgmt-private-subnet-1","tngo-eumgmt-private-subnet-2"]
     private_subnet_assign_ipv6_address_on_creation = false
     private_subnet_enable_resource_name_dns_aaaa_record_on_launch = false
-    public_subnet_tags = { Name = "tngo-eumgmt-private" }
+    private_subnet_tags = { Name = "tngo-eumgmt-private" }
     public_subnets = ["110.0.0.0/24", "110.0.2.0/24"]
     public_subnet_names = ["tngo-eumgmt-public-subnet-1","tngo-eumgmt-public-subnet-2"]
     public_subnet_tags = { Name = "tngo-eumgmt-public" }
