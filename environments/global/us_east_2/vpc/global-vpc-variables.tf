@@ -19,3 +19,15 @@ variable "s3_bucket_name" {
   type = string
   //default = "TF_VAR_aws_secret_key"
 }
+
+variable "vpc" {
+  type = any
+  default = {}
+  //default = "TF_VAR_aws_secret_key"
+}
+
+variable "tgw" {
+  type = any
+  default = {}
+  //default = "TF_VAR_aws_secret_key"
+}

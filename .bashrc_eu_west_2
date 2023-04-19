@@ -81,11 +81,11 @@ export PROJECT_ID="tngo"
 # END ANSIBLE MANAGED BLOCK AWS_SECRET_ACCESS_KEY
 
 ### Service Account - bl-service-account-1 - limited access
-export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UKDCZ7OGM"
-export AWS_SECRET_ACCESS_KEY="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"
+#export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UKDCZ7OGM"
+#export AWS_SECRET_ACCESS_KEY="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"
 ## BL SA 2 - full admin access
-#export AWS_SECRET_ACCESS_KEY="mTcJUbwDz39lPOunb65bI1woSl1QLAbTbtyNk8sO"
-#export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UMGNOIJEI"
+export AWS_SECRET_ACCESS_KEY="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"
+export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UMGNOIJEI"
 
 function awsdc() {
         aws sts decode-authorization-message --encoded-message ${1}  | sed 's/\\"/"/g' | sed 's/^"//' | sed 's/"$//'  | sed 's/\,/\n/g'
@@ -101,11 +101,11 @@ export TF_VAR_CIDR_PROD="105.0.0.0/16"
 export TF_VAR_rancher_eks_user_access_key=
 export TF_VAR_rancher_eks_user_secret_key=
 ## BL SA Account 1 - limited access
-export TF_VAR_aws_access_key="AKIAZ5XRCA2UKDCZ7OGM"
-export TF_VAR_aws_secret_key="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"
+#export TF_VAR_aws_access_key="AKIAZ5XRCA2UKDCZ7OGM"
+#export TF_VAR_aws_secret_key="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"
 ## BL SA Account 2 - Full Access
-#export TF_VAR_aws_access_key="AKIAZ5XRCA2UMGNOIJEI"
-#export TF_VAR_aws_secret_key="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"
+export TF_VAR_aws_access_key="AKIAZ5XRCA2UMGNOIJEI"
+export TF_VAR_aws_secret_key="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"
 
 
 export ms=~/bl/personal/eks-development
@@ -115,16 +115,16 @@ export tngo_spec=/home/vagrant/bl/personal/eks-development/users_spec/tngo
 export work_scripts=/home/vagrant/bl/personal/eks-development/work_scripts
 
 function tfmplan() {
-        terraform plan -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars -out tfm.out
+        terraform plan -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars -compact-warnings -out tfm.out
 }
 function tfminit() {
         terraform init -backend-config=${tngo_spec}/user_eu_west_2.hcl
 }
 function tfmdestroy() {
-        terraform destroy -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars
+        terraform destroy -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars -compact-warnings
 }
 function tfmrefresh() {
-        terraform refresh -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars
+        terraform refresh -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars -compact-warnings
 }
 function tfmapply() {
         terraform apply tfm.out
