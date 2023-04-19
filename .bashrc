@@ -53,7 +53,7 @@ export AWS_ACCOUNT_NAME=bl-devops-cloud
 export AWS_ACCOUNT_NUMBER=682331604648
 # END ANSIBLE MANAGED BLOCK AWS_ACCOUNT_NUMBER
 # BEGIN ANSIBLE MANAGED BLOCK AWS_DEFAULT_REGION
-export AWS_DEFAULT_REGION=us-east-2
+export AWS_DEFAULT_REGION=eu-west-2
 # END ANSIBLE MANAGED BLOCK AWS_DEFAULT_REGION
 # BEGIN ANSIBLE MANAGED BLOCK PROJECT_DOMAIN
 export PROJECT_DOMAIN="bylightsdc.bylight.com"
@@ -232,7 +232,7 @@ function amzlnx2 {
 	kubectl run amzlnx2 --image=amazonlinux2:latest -- bash -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
 }
 alias mnkube="minikube start --memory 10240 --cpus 4"
-alias gitadd="cp -rp ~/.bashrc /home/vagrant/bl/personal/eks-development/; git add --all"
+alias gitadd="cp -rp ~/.bashrc ~/.bashrc_eu_west_2 ~/.bashrc_us_east_2 /home/vagrant/bl/personal/eks-development/; git add --all"
 export gitkey=$(kg secret -n kube-system private-github-pat -o=jsonpath={.data.key} | base64 -d)
 alias argocd="argocd --grpc-web"
 export CTX_CLUSTER1=
