@@ -92,7 +92,7 @@ function awsdc() {
 }
 
 ## Terraform
-export TF_VAR_aws_region=us-east-2
+export TF_VAR_aws_region=eu-west-2
 export TF_LOG=TRACE
 export TF_LOG_PATH="/media/sf_vagrantfileshare/terraform.txt"
 export TF_VAR_CIDR_INT="104.0.0.0/16"
@@ -109,22 +109,22 @@ export TF_VAR_aws_secret_key="7rf1rqdkvVkEmQZp3/PPHElQGuLBuxTs4f51rv3g"
 
 
 export ms=~/bl/personal/eks-development
-export eks=~/bl/personal/eks-development/environments/mgmt/services/eks
+export eks=~/bl/personal/eks-development/environments/eumgmt/services/eks
 export mdl=~/bl/personal/eks-development/modules/services/eks
 export tngo_spec=/home/vagrant/bl/personal/eks-development/users_spec/tngo
 export work_scripts=/home/vagrant/bl/personal/eks-development/work_scripts
 
 function tfmplan() {
-        terraform plan -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars -out tfm.out
+        terraform plan -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars -out tfm.out
 }
 function tfminit() {
-        terraform init -backend-config=${tngo_spec}/user.hcl
+        terraform init -backend-config=${tngo_spec}/user_eu_west_2.hcl
 }
 function tfmdestroy() {
-        terraform destroy -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars
+        terraform destroy -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars
 }
 function tfmrefresh() {
-        terraform refresh -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars
+        terraform refresh -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars
 }
 function tfmapply() {
         terraform apply tfm.out
@@ -196,7 +196,7 @@ function addcluster(){
 	then
           sed -i 's/: null/: []/g' ~/.kube/config 
 	fi	  
-        aws eks update-kubeconfig --region us-east-2 --name $1
+        aws eks update-kubeconfig --region eu-west-2 --name $1
 }
 function cfn() {
         for i in ${1}*; do new=$(echo $i | sed "s:${2}:${3}:g" ) ; mv ${i} ${new} ; done
@@ -252,6 +252,7 @@ function scalealldeploy(){
 CLUSTER1=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-rancher-test
 CLUSTER2=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-test
 CLUSTER3=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-2
+CLUSTER4=arn:aws:eks:eu-west-2:682331604648:cluster/project-mgmt-eks-cluster-eu
 
 function viewtls(){
   for i in ca\\.crt ca\\.key tls\\.crt tls\\.key

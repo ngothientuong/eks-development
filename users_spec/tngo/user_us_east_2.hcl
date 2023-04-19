@@ -1,0 +1,10 @@
+bucket = "tim-tf-k8s-state" # c-tf-k8s-state
+#key    = "global/tngo/tngo.terraform.tfstate"
+# By Light
+region = "us-east-2"
+
+# MHV
+#region = "us-gov-west-1"
+
+dynamodb_table = "tim-tf-k8s-state" # tngo-bylightsdc.bylight.com-tf-k8s-state
+encrypt        = true
