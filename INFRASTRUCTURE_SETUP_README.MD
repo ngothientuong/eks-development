@@ -171,8 +171,11 @@ terraform apply tfm.out
 - Run tfminit, tfmplan and tfmapply as usual
 
 ---
-# PEERING BETWEEN 2 VPCS VIA TRANSIT GATEWAY
-## Create a peering connectiong between 2 transit gateway
+# PEERING BETWEEN 2 VPCS VIA PEERING CONNECTION
+>    NOTE: PEERING CONNECTION IS NOT TRANSIT GATEWAY. PEERING CONNECTION IS A ROUTER BETWEEN 2 VPCS IN ITS OWN RIGHT MUCH LIKE NAT GATEWAY, IGW, TGW. 
+
+>    IMPORTANT: DO NOT MESS WITH TRANSIT-GATEWAY ROUTE TABLE FOR CONNECTION OF INSTANCES BETWEEN VPCS TO WORK!!!
+## Create a peering connectiong between 2 VPCs
 - Follow this Link for instruction: https://docs.aws.amazon.com/vpc/latest/peering/create-vpc-peering-connection.html#same-account-different-region
 
 We'll use reggion VPC A of us-east-2 and VPC B of eu-west-2 as an example
@@ -197,7 +200,7 @@ We'll use reggion VPC A of us-east-2 and VPC B of eu-west-2 as an example
 #### VPC Route table
 - VPC -> Route Tables -> Create Route Table 
 - Name "VPC-A-US-EAST-2-VPC-B-EU-WEST-2"
-- Choose CIDR BLOCK of VPC A 
+- Choose VPC A 
 - Create Route Table
 - Go back to VPC -> Route tables -> "VPC-A-US-EAST-2-VPC-B-EU-WEST-2" -> Subnet associations -> Edit Subnet associations
 - Choose subnets from VPC A you want to be connect to subnets of VPC B. In this case, choose the private subnets from VPC A
@@ -208,12 +211,7 @@ We'll use reggion VPC A of us-east-2 and VPC B of eu-west-2 as an example
 - Add route -> Entry 2
     - Destination: CIDR_BLOCK of VPC B or subnet CIDR_BLOCKs of VPC B
     - Target: pcx-XXXX (VPC Peering ID )
-#### Transit-Gateway Route table
-- VPC -> Transit gateway route tables -> The transit gateway associating with VPC Peering Connection -> Routes
-- Create static Route 
-    - CIDR: cidr_block of VPC B or subnet cidr_blocks of VPC B
-    - Type: Active
-    - Choose attachment: The attachment associating with subnets of VPC A. In this case, the attachment is associating with the private subnets of VPC B
+
 
 ### US-WEST-2
 #### VPC Route table
@@ -230,11 +228,12 @@ We'll use reggion VPC A of us-east-2 and VPC B of eu-west-2 as an example
 - Add route -> Entry 2
     - Destination: CIDR_BLOCK of VPC A or subnet CIDR_BLOCKs of VPC A
     - Target: pcx-XXXX (VPC Peering ID )
-#### Transit-Gateway Route table
-- VPC -> Transit gateway route tables -> The transit gateway associating with VPC Peering Connection -> Routes
-- Create static Route 
-    - CIDR: cidr_block of VPC A or subnet cidr_blocks of VPC A
-    - Type: Active
-    - Choose attachment: The attachment associating with subnets of VPC B. In this case, the attachment is associating with the private subnets of VPC B
 
+## Modify SG attached to the instances
+- Ensure SG's Ingress from VPC A allow CIDR Block from VPC B
+- Ensure SG's Ingress from VPC B allow CIDR Block from VPC A.
+- From port 0 - 65535 , protocol: ALL
+- From port 22: protocol: TCP (SSH)
 
+## SSH Key
+- Ensure the SAME public key is configured / attached to instances on both VPCs
