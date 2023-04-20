@@ -50,6 +50,9 @@ tgw = {
     description     = "My TGW peered with other AWS TGW from other region"
     amazon_side_asn = 64513
     enable_auto_accept_shared_attachments  = true
+    ## Disable the next 2 attribute so we can use custom TGW Route Table
+    enable_default_route_table_association = false
+    enable_default_route_table_propagation = false
     enable_mutlicast_support = true
     ram_allow_external_principals = false
     tags = {
@@ -60,6 +63,55 @@ tgw = {
     }
 }
 
+vpc_sg = {
+    name = "eumgmt-default-sg"
+    description = "Default VPC SG for mgmt eu-west-2"
+    create = true
+    #ingress_cidr_blocks = ["0.0.0.0/0"]
+    #ingress_rules            = ["all-all"]  # ["https-443-tcp","ssh-tcp"]
+    ingress_with_cidr_blocks = [
+    {
+      rule        = "ssh-tcp"      
+      cidr_blocks = "103.0.0.0/16"
+    },
+    {
+      rule        = "ssh-tcp"
+      cidr_blocks = "104.0.0.0/16"
+    },
+    {
+      rule        = "ssh-tcp"
+      cidr_blocks = "105.0.0.0/16"
+    },
+    {
+      rule        = "ssh-tcp"
+      cidr_blocks = "111.0.0.0/16"
+    },
+    {
+      rule        = "ssh-tcp"
+      cidr_blocks = "112.0.0.0/16"
+    },
+    {
+      rule        = "ssh-tcp"
+      cidr_blocks = "113.0.0.0/16"
+    },
+    {
+      from_port   = -1
+      to_port     = -1
+      protocol    = -1
+
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 0
+      to_port     = 255
+      protocol    = "icmp"
+      description = "ICMP Protocol"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
+    egress_cidr_blocks = ["0.0.0.0/0"]
+    egress_with_cidr_blocks = [ "all-all" ]
+}
 # EKS Cluster of the environment
 # clusters = [
 #     {

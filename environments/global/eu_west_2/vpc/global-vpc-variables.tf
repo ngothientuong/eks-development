@@ -31,3 +31,8 @@ variable "tgw" {
   default = {}
   //default = "TF_VAR_aws_secret_key"
 }
+variable "vpc_sg" {
+  type = any
+  default = {}
+  //default = "TF_VAR_aws_secret_key"
+}

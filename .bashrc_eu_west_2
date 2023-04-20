@@ -297,3 +297,11 @@ function cc() {
 function cns(){
   python ${work_scripts}/change_namespace.py
 }
+function eu() {
+  cp -rp ~/.bashrc_eu_west_2 ~/.bashrc
+  source ~/.bashrc
+}
+function us(){
+  cp -rp ~/.bashrc_us_east_2 ~/.bashrc
+  source ~/.bashrc
+}

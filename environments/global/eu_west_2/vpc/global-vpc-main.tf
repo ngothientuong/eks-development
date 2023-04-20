@@ -42,6 +42,8 @@ module "transit-gateway" {
   description = var.tgw.description
   amazon_side_asn = var.tgw.amazon_side_asn
   enable_auto_accept_shared_attachments = var.tgw.enable_auto_accept_shared_attachments
+  enable_default_route_table_association = var.tgw.enable_default_route_table_association  # Whether resource attachments are automatically associated with the default association route table
+  enable_default_route_table_propagation = var.tgw.enable_default_route_table_propagation 
   enable_mutlicast_support = var.tgw.enable_mutlicast_support
   tags = var.tgw.tags
   ram_allow_external_principals = var.tgw.ram_allow_external_principals
@@ -52,25 +54,46 @@ module "transit-gateway" {
       dns_support  = true
       ipv6_support = false
 
-      transit_gateway_default_route_table_association = true
-      transit_gateway_default_route_table_propagation = true
+      #transit_gateway_default_route_table_association = false
+      #transit_gateway_default_route_table_propagation = false
 
+      # TGW Routes (or TGW Route Tables) are NOT needed for VPC Peering! VPC Peering does not have attachment concept!
+      # TGW Route Tables contains Associations of TGW attachments (sources VPC) and Propagations of TGW Attachments (Destinations)
+      # TGW is usually used for communication between VPCs in the SAME region!
+      # The example below is VPC cidr_blocks of other VPC in the same region us-west-2
       tgw_routes = [
         {
           destination_cidr_block = module.vpc.vpc_cidr_block
         },
         {
-          destination_cidr_block = "104.0.0.0/16"
+          destination_cidr_block = "111.0.0.0/16"
         },
         {
-          destination_cidr_block = "103.0.0.0/16"
+          destination_cidr_block = "112.0.0.0/16"
         },
         {
-          blackhole              = true
+          destination_cidr_block = "113.0.0.0/16"
+        },
+        {
+          #blackhole              = true
+          blackhole              = false
           destination_cidr_block = "0.0.0.0/0"
         }
       ]
     },
   }
 
+}
+
+module "vpc-security-group" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~>4.17.2"
+  create = var.vpc_sg.create
+  name = var.vpc_sg.name
+  description = var.vpc_sg.description
+  vpc_id      =  module.vpc.vpc_id
+  
+  #ingress_cidr_blocks = var.vpc_sg.ingress_cidr_blocks
+  #ingress_rules = var.vpc_sg.ingress_rules
+  ingress_with_cidr_blocks = var.vpc_sg.ingress_with_cidr_blocks
 }
