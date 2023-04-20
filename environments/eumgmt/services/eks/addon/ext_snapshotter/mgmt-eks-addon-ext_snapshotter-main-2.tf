@@ -1,0 +1,52 @@
+data "aws_eks_cluster_auth" "project-mgmt-eks-cluster-int-2" {
+  name = "project-mgmt-eks-cluster-int-2"
+}
+provider "kubernetes" {  
+  alias = "project-mgmt-eks-cluster-int-2"
+  host                   = "https://4C526CF1C0B090E3D856BB53D73DB87B.gr7.us-east-2.eks.amazonaws.com"
+  cluster_ca_certificate = base64decode("LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvakNDQWVhZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJek1EUXhOekE0TXpVMU5Wb1hEVE16TURReE5EQTRNelUxTlZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTkU0CmJPUWFPVStwL0JNZWR3MDVRUllCOENSVUZ5SzVlUVhNall0S0p3a1d2L2JjWmFla3lrVFpYaFJ5WjlBK2E0S1UKS2NkNlRQTlNMUERNcWpqMUVsUVZra2V4T09rUXg0WWNWR1liaTBVQS9vM09odzA3Y1B3UWV3WHg5VmdZbStPTwoyTjFERlVlT0F2MFRHTkh3dGN3ODV3Z2ZFN0dkZ004alQ0OHphbldmR0s3WHRUYlFPMmtSSmprRGJOaDE5L2pJCjBxUEpSMmZzMGpWOVQvVlFGcEFQeHV2Um9uS2VLb3kxQkVKeWdVTTVYTGgvRmpuNTYwbkF3NnVYd0dkaGJMZmwKN1JrV3I5c3FYNkpWNm9yMlhKSlV1d2JMT2ZtRFZEU0QrRmRXOXdMTmhRNnhCVGFTZnR5UThldWxmNW00eVVVcQp0UjhPbi9CUFY4WVgxOFBmdkRFQ0F3RUFBYU5aTUZjd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZDWXcwOFRRWHJnZmlweXlvQWFYQkFCZWF6OUdNQlVHQTFVZEVRUU8KTUF5Q0NtdDFZbVZ5Ym1WMFpYTXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBSnRnYy8wRlFsTnYrL2g2SVBYbQpoYTJPRDJIYzMvSkZpU2lzYksvTm9QMitOdnhnNGJaV0tzbTh6bWZJSy85RUc4SHpWZ1gwVGlBVEFkclI5K0lkCmNoc3Y4ckY2c29TalJ3VlVsOHBaakkvWnY2SFZnaXp5VVQ0cUxWeTY5eEVRV3FhTEpEem05Q2dVUGlMUGlKSmgKUTBzMlFzWFZ4S0xDaVFLT2RXUEszOWtjUTlKUEhRSnRGL2VWM3pRM2hreDVNQk91aWlhQm1Ba2tzU2YyK0ZtYgp0UC9NYUZucGpMNTY5aUJLdFF0TlZtSFY5bUFOWDlvLzB6WVRxTWg1aTBLZWQ3bDBVWDZPT0lNd0RYRzFyOTNjCm9NTGYvQTJtM2pUbThBQVhQbVM5Yk5YQzcxc1JZZ1Z6SUl5aWsrdkUyRUdyY3VmdTFvbnJMR0tJS01lZ0libzcKRDh3PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==")
+  token                  = data.aws_eks_cluster_auth.project-mgmt-eks-cluster-int-2.token
+   exec {
+    api_version = "client.authentication.k8s.io/v1"
+    command     = "aws"
+    args = ["eks", "get-token", "--cluster-name", "project-mgmt-eks-cluster-int-2"]    
+  }
+}
+
+provider "helm" {
+  alias = "project-mgmt-eks-cluster-int-2"
+  kubernetes {      
+    host                   = "https://4C526CF1C0B090E3D856BB53D73DB87B.gr7.us-east-2.eks.amazonaws.com"
+    cluster_ca_certificate = base64decode("LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvakNDQWVhZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJek1EUXhOekE0TXpVMU5Wb1hEVE16TURReE5EQTRNelUxTlZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTkU0CmJPUWFPVStwL0JNZWR3MDVRUllCOENSVUZ5SzVlUVhNall0S0p3a1d2L2JjWmFla3lrVFpYaFJ5WjlBK2E0S1UKS2NkNlRQTlNMUERNcWpqMUVsUVZra2V4T09rUXg0WWNWR1liaTBVQS9vM09odzA3Y1B3UWV3WHg5VmdZbStPTwoyTjFERlVlT0F2MFRHTkh3dGN3ODV3Z2ZFN0dkZ004alQ0OHphbldmR0s3WHRUYlFPMmtSSmprRGJOaDE5L2pJCjBxUEpSMmZzMGpWOVQvVlFGcEFQeHV2Um9uS2VLb3kxQkVKeWdVTTVYTGgvRmpuNTYwbkF3NnVYd0dkaGJMZmwKN1JrV3I5c3FYNkpWNm9yMlhKSlV1d2JMT2ZtRFZEU0QrRmRXOXdMTmhRNnhCVGFTZnR5UThldWxmNW00eVVVcQp0UjhPbi9CUFY4WVgxOFBmdkRFQ0F3RUFBYU5aTUZjd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZDWXcwOFRRWHJnZmlweXlvQWFYQkFCZWF6OUdNQlVHQTFVZEVRUU8KTUF5Q0NtdDFZbVZ5Ym1WMFpYTXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBSnRnYy8wRlFsTnYrL2g2SVBYbQpoYTJPRDJIYzMvSkZpU2lzYksvTm9QMitOdnhnNGJaV0tzbTh6bWZJSy85RUc4SHpWZ1gwVGlBVEFkclI5K0lkCmNoc3Y4ckY2c29TalJ3VlVsOHBaakkvWnY2SFZnaXp5VVQ0cUxWeTY5eEVRV3FhTEpEem05Q2dVUGlMUGlKSmgKUTBzMlFzWFZ4S0xDaVFLT2RXUEszOWtjUTlKUEhRSnRGL2VWM3pRM2hreDVNQk91aWlhQm1Ba2tzU2YyK0ZtYgp0UC9NYUZucGpMNTY5aUJLdFF0TlZtSFY5bUFOWDlvLzB6WVRxTWg1aTBLZWQ3bDBVWDZPT0lNd0RYRzFyOTNjCm9NTGYvQTJtM2pUbThBQVhQbVM5Yk5YQzcxc1JZZ1Z6SUl5aWsrdkUyRUdyY3VmdTFvbnJMR0tJS01lZ0libzcKRDh3PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==")
+    token                  = data.aws_eks_cluster_auth.project-mgmt-eks-cluster-int-2.token
+    exec {
+      api_version = "client.authentication.k8s.io/v1"
+      command     = "aws"
+      args = ["eks", "get-token", "--cluster-name", "project-mgmt-eks-cluster-int-2"]    
+    }
+  }
+}
+
+resource "null_resource" "module_set_initial_state_2" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+  provisioner "local-exec" {
+    interpreter = ["bash", "-c"]
+    command     = "echo \"0\" > ~/module_count"
+  }
+}
+
+module "ext_snapshotter_2" {
+  source = "../../../../../../modules/services/eks/addon/generic_kubectl"
+  aws_region = "${var.aws_region}"
+  aws_access_key = "${var.aws_access_key}"
+  aws_secret_key = "${var.aws_secret_key}"  
+  aws_caller_identity = data.aws_caller_identity.current.id  
+  clusters = var.clusters
+  clusters_info = local.clusters_info[2]
+  service_account_role_arns = local.service_account_role_arns
+  sub_path = local.sub_path
+  root_depends_on = null_resource.module_set_initial_state_2
+  module_count = 2
+}

@@ -1,0 +1,3 @@
+#!/bin/bash
+aws eks update-kubeconfig --region {{ aws_region }} --name {{ cluster_name }} --kubeconfig ~/.kube/{{ cluster_name }}.config
+kubectl --kubeconfig ~/.kube/{{ cluster_name }}.config -n kube-system apply -f ./{{ cluster_name }}-hubble-ui-alb.yaml
