@@ -24,12 +24,12 @@ terraform {
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = ">= 2.18.1"
-      configuration_aliases = [  kubernetes.project-eumgmt-eks-eu-west-2  ]
+      configuration_aliases = [  kubernetes.project-mgmt-eks-cluster-rancher-test , kubernetes.project-mgmt-eks-cluster-int-test , kubernetes.project-mgmt-eks-cluster-int-2  ]
     }       
     helm = {
       source  = "hashicorp/helm"
       version = ">= 2.9.0"
-      configuration_aliases = [  helm.project-eumgmt-eks-eu-west-2  ]
+      configuration_aliases = [  helm.project-mgmt-eks-cluster-rancher-test , helm.project-mgmt-eks-cluster-int-test , helm.project-mgmt-eks-cluster-int-2  ]
     }    
     null = {
       source  = "hashicorp/null"

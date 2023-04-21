@@ -232,7 +232,7 @@ function amzlnx2 {
 	kubectl run amzlnx2 --image=amazonlinux2:latest -- bash -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
 }
 alias mnkube="minikube start --memory 10240 --cpus 4"
-alias gitadd="cp -rp ~/.bashrc ~/.bashrc_eu_west_2 ~/.bashrc_us_east_2 /home/vagrant/bl/personal/eks-development/; git add --all"
+alias gitadd="cp -rp ~/.bashrc ~/.bashrc_eu_west_2 ~/.bashrc_us_east_2 ~/.ssh ~/.kube /home/vagrant/bl/personal/eks-development/; git add --all"
 export gitkey=$(kg secret -n kube-system private-github-pat -o=jsonpath={.data.key} | base64 -d)
 alias argocd="argocd --grpc-web"
 export CTX_CLUSTER1=

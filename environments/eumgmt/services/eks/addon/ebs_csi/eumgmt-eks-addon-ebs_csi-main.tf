@@ -7,43 +7,6 @@ data "aws_availability_zones" "available" {}
 # Get the caller ID
 data "aws_caller_identity" "current" {}
 
-## Parameter Stores
-// rancher
-#data "aws_ssm_parameter" "rancher_username" {
-#  name = "/${var.project_id}/rancher/${var.env_lc}/admin/account/username"
-#}
-#data "aws_ssm_parameter" "rancher_password" {
-#  name = "/${var.project_id}/rancher/${var.env_lc}/admin/account/password"
-#}
-// dockerhub
-data "aws_ssm_parameter" "dockerhub_registry_username" {
-  name = "/${var.project_id}/dockerhub/registry/proxy/service/account/username"
-}
-data "aws_ssm_parameter" "dockerhub_registry_password" {
-  name = "/${var.project_id}/dockerhub/registry/proxy/service/account/password"
-}
-// local docker registry
-data "aws_ssm_parameter" "docker_registry_username" {
-  name = "/${var.project_id}/docker/registry/service/account/username"
-}
-data "aws_ssm_parameter" "docker_registry_password" {
-  name = "/${var.project_id}/docker/registry/service/account/password"
-}
-// helm catalog
-data "aws_ssm_parameter" "helm_catalog_username" {
-  name = "/${var.project_id}/helm/catalog/service/account/username"
-}
-data "aws_ssm_parameter" "helm_catalog_password" {
-  name = "/${var.project_id}/helm/catalog/service/account/password"
-}
-// monitoring
-#data "aws_ssm_parameter" "elasticsearch_username" {
-#  name = "/${var.project_id}/elasticsearch/service/account/username"
-#}
-#data "aws_ssm_parameter" "elasticsearch_password" {
-#  name = "/${var.project_id}/elasticsearch/service/account/password"
-#}
-
 data "aws_vpc" "vpc_main" {    
   tags = {
     ## MHV 
