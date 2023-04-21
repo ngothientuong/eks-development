@@ -99,7 +99,11 @@ locals {
         {
           name = "hostNetwork"
           value = true
-        },             
+        },       
+        {
+          name = "replicaCount"
+          value = 1
+        },       
       ]
     }], # } is End of the first helm chart ] is End of the list of helm chart of the first cluster
     [{
@@ -147,7 +151,11 @@ locals {
         {
           name = "hostNetwork"
           value = true
-        },      
+        },  
+        {
+          name = "replicaCount"
+          value = 1
+        },     
       ]
     }], # End of the list of the last cluster
     [{
@@ -196,6 +204,10 @@ locals {
           name = "hostNetwork"
           value = true
         },  
+        {
+          name = "replicaCount"
+          value = 1
+        }, 
       ]
     }],
   ]
