@@ -7,27 +7,6 @@ data "aws_availability_zones" "available" {}
 # Get the caller ID
 data "aws_caller_identity" "current" {}
 
-// dockerhub
-data "aws_ssm_parameter" "dockerhub_registry_username" {
-  name = "/${var.project_id}/dockerhub/registry/proxy/service/account/username"
-}
-data "aws_ssm_parameter" "dockerhub_registry_password" {
-  name = "/${var.project_id}/dockerhub/registry/proxy/service/account/password"
-}
-// local docker registry
-data "aws_ssm_parameter" "docker_registry_username" {
-  name = "/${var.project_id}/docker/registry/service/account/username"
-}
-data "aws_ssm_parameter" "docker_registry_password" {
-  name = "/${var.project_id}/docker/registry/service/account/password"
-}
-// helm catalog
-data "aws_ssm_parameter" "helm_catalog_username" {
-  name = "/${var.project_id}/helm/catalog/service/account/username"
-}
-data "aws_ssm_parameter" "helm_catalog_password" {
-  name = "/${var.project_id}/helm/catalog/service/account/password"
-}
 
 data "aws_vpc" "vpc_main" {    
   tags = {
@@ -143,19 +122,6 @@ locals {
           
         EOF
       },    
-      {
-        pre_template_kubectl_command = <<EOF
-          echo # Must have echo at beginnging to avoid bug
-                        
-        EOF        
-      },    
-      {
-        pre_template_kubectl_command = <<EOF
-          echo # Must have echo at beginnging to avoid bug
-                        
-        EOF        
-      }
-      
     ]
     post_template_kubectl_commands = [
       {
@@ -163,16 +129,6 @@ locals {
           echo # Has to have something here or else bash failed          
         EOF
       },    
-      {
-        post_template_kubectl_command = <<EOF
-          echo # Has to have something here or else bash failed  
-        EOF        
-      },    
-      {
-        post_template_kubectl_command = <<EOF
-          echo # Has to have something here or else bash failed  
-        EOF        
-      }
     ]    
     service_account_role_arns = data.terraform_remote_state.clusters.outputs.openid_connect_sa_role_objs
     service_account_roles = data.terraform_remote_state.clusters.outputs.openid_connect_sa_role_objs
