@@ -81,11 +81,11 @@ export PROJECT_ID="tngo"
 # END ANSIBLE MANAGED BLOCK AWS_SECRET_ACCESS_KEY
 
 ### Service Account - bl-service-account-1 - limited access
-#export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UKDCZ7OGM"
-#export AWS_SECRET_ACCESS_KEY="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"
+export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UKDCZ7OGM"
+export AWS_SECRET_ACCESS_KEY="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"
 ## BL SA 2 - full admin access
-export AWS_SECRET_ACCESS_KEY="mTcJUbwDz39lPOunb65bI1woSl1QLAbTbtyNk8sO"
-export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UMGNOIJEI"
+#export AWS_SECRET_ACCESS_KEY="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"
+#export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UMGNOIJEI"
 
 function awsdc() {
         aws sts decode-authorization-message --encoded-message ${1}  | sed 's/\\"/"/g' | sed 's/^"//' | sed 's/"$//'  | sed 's/\,/\n/g'
@@ -101,11 +101,11 @@ export TF_VAR_CIDR_PROD="105.0.0.0/16"
 export TF_VAR_rancher_eks_user_access_key=
 export TF_VAR_rancher_eks_user_secret_key=
 ## BL SA Account 1 - limited access
-#export TF_VAR_aws_access_key="AKIAZ5XRCA2UKDCZ7OGM"
-#export TF_VAR_aws_secret_key="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"
+export TF_VAR_aws_access_key="AKIAZ5XRCA2UKDCZ7OGM"
+export TF_VAR_aws_secret_key="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"
 ## BL SA Account 2 - Full Access
-export TF_VAR_aws_access_key="AKIAZ5XRCA2UMGNOIJEI"
-export TF_VAR_aws_secret_key="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"
+#export TF_VAR_aws_access_key="AKIAZ5XRCA2UMGNOIJEI"
+#export TF_VAR_aws_secret_key="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"
 
 
 export ms=~/bl/personal/eks-development
@@ -252,7 +252,7 @@ function scalealldeploy(){
 CLUSTER1=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-rancher-test
 CLUSTER2=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-test
 CLUSTER3=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-2
-CLUSTER4=arn:aws:eks:eu-west-2:682331604648:cluster/project-mgmt-eks-cluster-eu
+CLUSTER4=arn:aws:eks:eu-west-2:682331604648:cluster/project-eumgmt-eks-eu-west-2
 
 function viewtls(){
   for i in ca\\.crt ca\\.key tls\\.crt tls\\.key

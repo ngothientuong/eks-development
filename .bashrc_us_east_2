@@ -252,6 +252,7 @@ function scalealldeploy(){
 CLUSTER1=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-rancher-test
 CLUSTER2=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-test
 CLUSTER3=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-2
+CLUSTER4=arn:aws:eks:us-east-2:682331604648:cluster/project-eumgmt-eks-eu-west-2
 
 function viewtls(){
   for i in ca\\.crt ca\\.key tls\\.crt tls\\.key
