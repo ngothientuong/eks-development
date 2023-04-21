@@ -295,6 +295,9 @@ Note: You can manually assign subnets to your load balancer using the alb.ingres
 ##          Be sure to annotate those account if the feature doesn't work.
 - ebs_csi
 
+## Create Velero backup bucket prior to running ArgoCD
+- velero/s3_backup
+
 ## ArgoCD
 ## Install manually via the profile
 ## Look at instruction above
