@@ -1,0 +1,60 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            c3:d6:e2:cd:46:cf:bd:4e:30:b9:66:86:eb:e5:1f:f6
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: CN = Cilium CA
+        Validity
+            Not Before: Apr 17 17:42:06 2023 GMT
+            Not After : Apr  9 17:42:06 2053 GMT
+        Subject: CN = Cilium CA
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:ec:9f:38:9e:86:b7:de:70:35:d8:12:f0:bc:8e:
+                    14:3f:ed:17:a1:db:95:e2:9c:b0:a4:48:6e:25:5f:
+                    a7:a0:ab:64:bc:8a:e7:3b:56:d0:07:12:09:ab:00:
+                    60:79:01:9a:84:50:dd:8d:fc:af:e3:54:7f:8b:04:
+                    25:ef:27:42:13:32:44:73:c3:0e:62:77:8c:bd:dd:
+                    da:ad:2f:48:d1:38:0f:68:ab:43:f7:41:e2:a3:cd:
+                    a7:fb:e6:09:f4:f5:ca:ab:19:67:a9:22:da:2c:93:
+                    42:ab:a9:79:d2:e7:32:3b:7a:db:26:4e:fa:a2:51:
+                    03:18:2e:d7:7e:ad:90:da:45:44:c5:a0:6e:b8:d2:
+                    3f:9a:e1:6b:32:00:a1:f6:b5:12:65:5d:18:ff:eb:
+                    c0:6c:59:ba:e1:5a:2d:2e:82:bf:17:ec:b9:f5:11:
+                    b0:dd:ee:0b:d0:1f:63:d7:12:c4:16:e1:b7:cb:b5:
+                    03:5c:ce:3f:0c:f7:7d:91:e1:02:13:32:e8:50:66:
+                    f1:cb:94:d2:a7:e4:ff:cf:08:57:27:90:60:d8:b6:
+                    1d:82:f4:bd:4b:fc:2d:75:9e:b1:fd:02:8a:54:65:
+                    2c:42:fc:21:90:69:1e:73:6d:56:4e:06:85:e7:a8:
+                    ab:12:69:49:b7:0f:2e:58:82:97:69:de:fd:60:06:
+                    e3:47
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment, Certificate Sign
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication, TLS Web Client Authentication
+            X509v3 Basic Constraints: critical
+                CA:TRUE
+            X509v3 Subject Key Identifier: 
+                B7:75:6F:0E:7A:3D:C5:67:07:AF:74:12:10:B3:2C:EE:B2:EB:C0:F4
+    Signature Algorithm: sha256WithRSAEncryption
+    Signature Value:
+        23:83:b9:9a:e9:bf:49:63:ce:0b:c9:0d:d4:54:dc:08:87:ff:
+        da:82:50:15:76:ab:86:66:6f:5c:c9:fb:47:04:af:6b:19:d2:
+        82:dc:63:9d:ba:7a:0e:24:30:54:2a:06:e3:70:43:5e:43:ae:
+        96:eb:81:af:ba:7f:a9:c9:9a:f4:4e:fe:fe:65:6b:c2:bb:c4:
+        a0:b2:b8:80:b1:f0:74:d7:79:f1:ab:19:18:51:8b:6f:8d:13:
+        7f:db:22:92:da:95:26:80:fd:8b:02:8f:38:74:09:c3:7d:89:
+        be:ac:28:7e:f7:c9:f2:f7:77:00:f3:93:1d:fc:f7:e8:47:48:
+        07:44:1e:83:d4:e8:0f:9a:ef:6e:21:3c:0e:56:b6:78:b8:99:
+        3a:ee:89:9b:90:ec:5f:f0:a5:be:d8:4c:10:ef:14:b1:16:d9:
+        fd:13:eb:ca:e0:6e:17:9e:38:0d:72:a9:a2:cd:65:4e:c0:61:
+        46:fd:35:cc:c2:b2:9d:44:2c:6c:b4:51:33:94:4f:70:aa:d0:
+        bc:50:c4:0c:aa:31:f0:aa:01:bf:2f:fd:4d:f6:3c:47:a4:4a:
+        73:a4:3f:ac:39:25:6d:09:87:d0:8d:f1:e0:9f:56:5c:ba:44:
+        b2:05:7f:01:a1:9b:bb:b2:e4:c8:1b:3f:fb:00:57:2e:6f:43:
+        89:cf:af:23
