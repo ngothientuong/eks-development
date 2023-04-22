@@ -36,7 +36,8 @@ bpf:
 # after cilium agent (ds cilium) is ready
 # --kube-proxy-replacement string                           Enable only selected features (will panic if any selected feature cannot be enabled) ("partial"), or enable all features (will panic if any feature cannot be enabled) ("strict"), or completely disable it (ignores any selected feature) ("disabled") (default "partial")
 #extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready','--debug']
-extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready']
+#extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready','--agent-not-ready-taint-key=node.kubernetes.io/not-ready']
+extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready','--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready']
 egressMasqueradeInterfaces: eth0
 
 # Configure common TLS

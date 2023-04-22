@@ -64,8 +64,8 @@ sudo systemctl restart containerd
 #sudo sed -i '$ a [plugins."io.containerd.grpc.v1.cri".registry.configs."registry-1.docker.io".auth] \n username = "'$(aws --region=us-gov-west-1 ssm get-parameter --name "/${project_id}/dockerhub/registry/proxy/service/account/username" --with-decryption --output text --query Parameter.Value)'" \n password = "'$(aws --region=us-gov-west-1 ssm get-parameter --name "/${project_id}/dockerhub/registry/proxy/service/account/password" --with-decryption --output text --query Parameter.Value)'" ' /etc/eks/containerd/containerd-config.toml
 sudo systemctl restart containerd
 
-# Install kubectl - version 1.25.0
-curl -LO https://dl.k8s.io/release/v1.25.0/bin/linux/amd64/kubectl
+# Install kubectl - version 1.26.0
+curl -LO https://dl.k8s.io/release/v1.26.0/bin/linux/amd64/kubectl
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 # Add cluster to kubectl
@@ -82,10 +82,10 @@ Content-Disposition: attachment; filename="post_userdata_cilium.txt"
 #sudo /usr/local/bin/kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}' >> /tmp/kubectl_output.txt
 
 # Flush iptables added by VPC CNI if any
-#iptables -t nat -F AWS-SNAT-CHAIN-0 \\
-#   && iptables -t nat -F AWS-SNAT-CHAIN-1 \\
-#   && iptables -t nat -F AWS-CONNMARK-CHAIN-0 \\
-#   && iptables -t nat -F AWS-CONNMARK-CHAIN-1
+sudo iptables -t nat -F AWS-SNAT-CHAIN-0 \\
+   && iptables -t nat -F AWS-SNAT-CHAIN-1 \\
+   && iptables -t nat -F AWS-CONNMARK-CHAIN-0 \\
+   && iptables -t nat -F AWS-CONNMARK-CHAIN-1
 
 %{ endif ~}
 %{ if length(post_userdata) > 0 ~}

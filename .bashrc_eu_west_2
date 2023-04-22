@@ -305,3 +305,7 @@ function us(){
   cp -rp ~/.bashrc_us_east_2 ~/.bashrc
   source ~/.bashrc
 }
+alias kgt="kubectl get -o wide --sort-by=.metadata.creationTimestamp "
+function watchpo() {
+ while true ; do sleep 1; date; kgt po -A ; kubectl get node -oyaml | grep -iA3 taint; done
+}

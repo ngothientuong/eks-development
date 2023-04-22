@@ -68,7 +68,7 @@ clusters = [
           node_group_name_prefix = "project-rancher-mgmt_ng1"
           ng_subnets = ["subnet-06568ba86bee0eefa"]
           desired_size  = 1
-          max_size      = 5
+          max_size      = 1
           min_size      = 1
           # disk_size     = 100  # Replaced volumes size by LT
           #max_unavailable = 2
@@ -93,12 +93,12 @@ clusters = [
           #     effect = "NO_EXECUTE"
           #   }
           # ]
-          taint=[{}]
+          taint = [{}]
           ng_eks_version = 1.26 
           pre_userdata = ""  
           post_userdata = ""          
           #kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""      # It works BUT no need for 2 node taints at 2 different place
-          kubelet_extra_args = ""
+          kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready=true:NoExecute\""
           bootstrap_extra_args = ""
           lt_config = {
             # name is cluster id + ng name
@@ -163,7 +163,7 @@ clusters = [
           node_group_name_prefix = "project-rancher-int_ng1"
           ng_subnets = ["subnet-0ba654dee6f07a181"]
           desired_size  = 1
-          max_size      = 5
+          max_size      = 1
           min_size      = 1
           #disk_size     = 100            
           #max_unavailable = 2
@@ -188,12 +188,12 @@ clusters = [
           #     effect = "NO_EXECUTE"
           #   }
           # ]
-          taint=[{}]
+          taint = [{}]
           ng_eks_version = 1.26 
           pre_userdata = ""  
           post_userdata = ""
           #kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""      # It works BUT no need for 2 node taints at 2 different place
-          kubelet_extra_args = ""
+          kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready=true:NoExecute\""
           bootstrap_extra_args = ""       
           lt_config = {
             # name is cluster id + ng name
@@ -257,7 +257,7 @@ clusters = [
           node_group_name_prefix = "project-rancher-int-2_ng2"
           ng_subnets = ["subnet-0826eccf3e4f3e11e"]
           desired_size  = 1
-          max_size      = 5
+          max_size      = 1
           min_size      = 1
           #disk_size     = 100            
           #max_unavailable = 2
@@ -282,12 +282,12 @@ clusters = [
           #     effect = "NO_EXECUTE"
           #   }
           # ]
-          taint=[{}]
+          taint = [{}]
           ng_eks_version = 1.26 
           pre_userdata = ""  
           post_userdata = ""
           #kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""      # It works BUT no need for 2 node taints at 2 different place
-          kubelet_extra_args = ""
+          kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready=true:NoExecute\""
           bootstrap_extra_args = ""
           lt_config = {
             # name is cluster id + ng name

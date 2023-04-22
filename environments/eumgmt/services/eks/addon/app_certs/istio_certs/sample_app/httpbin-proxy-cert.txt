@@ -1,0 +1,75 @@
+CONNECTED(00000003)
+---
+Certificate chain
+ 0 s:
+   i:CN = Cilium CA
+   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Apr 21 09:08:36 2023 GMT; NotAfter: Apr 22 09:10:36 2023 GMT
+-----BEGIN CERTIFICATE-----
+MIIDODCCAiCgAwIBAgIQdCZDorqRZ+kpSA8sTSdiYTANBgkqhkiG9w0BAQsFADAU
+MRIwEAYDVQQDEwlDaWxpdW0gQ0EwHhcNMjMwNDIxMDkwODM2WhcNMjMwNDIyMDkx
+MDM2WjAAMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArRDFehDpUHcU
+cvKd/l48gxXRdfSQdFspJ8WjCxOvRHJNhbRvfshzu4227EC3OzhAD+6D9cFTevt3
+xhDQB/0mHNTO0vdaTYizMfn4ADy0aOrVBVYECURiu6xqy+Vb8nzasMYIJGiU9hUA
+qUCZLLmspUazKmQwNaUbIfw0dgkrBHxiCVgcRNBI0XgLI0EK5xSRfLv/mTfDYWdp
+imWsk6svlbeoObSobmOixhi+6zgz0yCPbtLfoSLuNuts+KZYyogq+mjzWgFSO5FK
+utQcQNk50QxVu6/FCD36KCz3UoGxvoBKRoplbfy3bnQQQQb9mx3dPzgzF5qzWZbY
+aqMiNNj4+QIDAQABo4GZMIGWMA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggr
+BgEFBQcDAQYIKwYBBQUHAwIwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBS3dW8O
+ej3FZwevdBIQsyzusuvA9DA2BgNVHREBAf8ELDAqhihzcGlmZmU6Ly9jbHVzdGVy
+LmxvY2FsL25zL2Zvby9zYS9odHRwYmluMA0GCSqGSIb3DQEBCwUAA4IBAQCeImFc
+Ylhd760ViqHrQqwPHjoPXdmi+njC1V+GB8Eycgw3Rlxt2IoSfgtYwyhVPizXujh7
+f4/8Q8ARdkiJDYVsMDTM4bHWovxIXSMM/Hr+co++hkA4V7NNkkf3UODGaBkQi463
+cGCWP+xImtVnljc2hYG5N6fbUqkGr1i8p3y2U5QxKixK1bp6JtTKf39YpgED2hZQ
+864S/yk5QdgyFR8qE5vNN9eAokeLmH2PF82hOMbwu15SKjKnoryN7L7di1scrt6x
+hNuUIEXZ6mkEzR1le0xjazJ0J/x5x8LTw0txxT93PoWK9bkr7IHDN0dPCSdwVaTS
+6PkT4RvDAn511Ksw
+-----END CERTIFICATE-----
+ 1 s:CN = Cilium CA
+   i:CN = Cilium CA
+   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Apr 17 17:42:06 2023 GMT; NotAfter: Apr  9 17:42:06 2053 GMT
+-----BEGIN CERTIFICATE-----
+MIIDFjCCAf6gAwIBAgIRAMPW4s1Gz71OMLlmhuvlH/YwDQYJKoZIhvcNAQELBQAw
+FDESMBAGA1UEAxMJQ2lsaXVtIENBMCAXDTIzMDQxNzE3NDIwNloYDzIwNTMwNDA5
+MTc0MjA2WjAUMRIwEAYDVQQDEwlDaWxpdW0gQ0EwggEiMA0GCSqGSIb3DQEBAQUA
+A4IBDwAwggEKAoIBAQDsnziehrfecDXYEvC8jhQ/7Reh25XinLCkSG4lX6egq2S8
+iuc7VtAHEgmrAGB5AZqEUN2N/K/jVH+LBCXvJ0ITMkRzww5id4y93dqtL0jROA9o
+q0P3QeKjzaf75gn09cqrGWepItosk0KrqXnS5zI7etsmTvqiUQMYLtd+rZDaRUTF
+oG640j+a4WsyAKH2tRJlXRj/68BsWbrhWi0ugr8X7Ln1EbDd7gvQH2PXEsQW4bfL
+tQNczj8M932R4QITMuhQZvHLlNKn5P/PCFcnkGDYth2C9L1L/C11nrH9AopUZSxC
+/CGQaR5zbVZOBoXnqKsSaUm3Dy5Ygpdp3v1gBuNHAgMBAAGjYTBfMA4GA1UdDwEB
+/wQEAwICpDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDwYDVR0TAQH/
+BAUwAwEB/zAdBgNVHQ4EFgQUt3VvDno9xWcHr3QSELMs7rLrwPQwDQYJKoZIhvcN
+AQELBQADggEBACODuZrpv0ljzgvJDdRU3AiH/9qCUBV2q4Zmb1zJ+0cEr2sZ0oLc
+Y526eg4kMFQqBuNwQ15Drpbrga+6f6nJmvRO/v5la8K7xKCyuICx8HTXefGrGRhR
+i2+NE3/bIpLalSaA/YsCjzh0CcN9ib6sKH73yfL3dwDzkx389+hHSAdEHoPU6A+a
+724hPA5Wtni4mTruiZuQ7F/wpb7YTBDvFLEW2f0T68rgbheeOA1yqaLNZU7AYUb9
+NczCsp1ELGy0UTOUT3Cq0LxQxAyqMfCqAb8v/U32PEekSnOkP6w5JW0Jh9CN8eCf
+Vly6RLIFfwGhm7uy5MgbP/sAVy5vQ4nPryM=
+-----END CERTIFICATE-----
+---
+Server certificate
+subject=
+issuer=CN = Cilium CA
+---
+Acceptable client certificate CA names
+CN = Cilium CA
+Requested Signature Algorithms: ECDSA+SHA256:RSA-PSS+SHA256:RSA+SHA256:ECDSA+SHA384:RSA-PSS+SHA384:RSA+SHA384:RSA-PSS+SHA512:RSA+SHA512:RSA+SHA1
+Shared Requested Signature Algorithms: ECDSA+SHA256:RSA-PSS+SHA256:RSA+SHA256:ECDSA+SHA384:RSA-PSS+SHA384:RSA+SHA384:RSA-PSS+SHA512:RSA+SHA512
+Peer signing digest: SHA256
+Peer signature type: RSA-PSS
+Server Temp Key: X25519, 253 bits
+---
+SSL handshake has read 2178 bytes and written 423 bytes
+Verification error: self-signed certificate in certificate chain
+---
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+Server public key is 2048 bit
+Secure Renegotiation IS NOT supported
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 19 (self-signed certificate in certificate chain)
+---

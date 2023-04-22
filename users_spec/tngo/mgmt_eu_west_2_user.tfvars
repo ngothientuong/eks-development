@@ -167,7 +167,7 @@ clusters = [
           node_group_name_prefix = "project-eu-west-2-eumgmt_ng1"
           ng_subnets = ["subnet-09f7de6b8269def0f"]
           desired_size  = 1
-          max_size      = 5
+          max_size      = 1
           min_size      = 1
           # disk_size     = 100  # Replaced volumes size by LT
           #max_unavailable = 2
@@ -197,7 +197,7 @@ clusters = [
           pre_userdata = ""  
           post_userdata = ""          
           #kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready=true:NoExecute\""      # It works BUT no need for 2 node taints at 2 different place
-          kubelet_extra_args = ""
+          kubelet_extra_args = "--register-with-taints=\"ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready=true:NoExecute\""
           bootstrap_extra_args = ""
           lt_config = {
             # name is cluster id + ng name

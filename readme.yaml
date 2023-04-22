@@ -23,7 +23,7 @@
 - external dns: [DONE] https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#deploy-externaldns
 - goldilocks
 - loki
-- metric server
+- metric server  [NEED THIS FOR HPA TO WORK!!]
 - pghero
 - traefik
 - crossplane
