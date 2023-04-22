@@ -5,7 +5,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
-    istio-injection: enabled
+    #istio-injection: enabled
     kubernetes.io/metadata.name: external-dns
   name: external-dns
 spec:
@@ -60,6 +60,7 @@ metadata:
   labels:
     app.kubernetes.io/name: external-dns
 spec:
+  replicas: 1
   strategy:
     type: Recreate
   selector:

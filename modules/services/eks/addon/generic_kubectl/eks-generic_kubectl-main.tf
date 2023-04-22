@@ -120,7 +120,7 @@ resource "null_resource" "template_apply" {
       done   
               
         ## Run kubectl for multiple yaml.tpl files     
-        kubectl apply -f ${local_file.rendered_templates[count.index].filename} --force --grace-period 0                 
+        kubectl replace -f ${local_file.rendered_templates[count.index].filename} --force --grace-period 0                 
         sleep 5              
 
 
