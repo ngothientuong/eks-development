@@ -137,7 +137,7 @@ resource "aws_eks_node_group" "mn_ng" {
   node_group_name_prefix = "${var.managed_ng_contexts[count.index].node_group_name_prefix}"
   #node_role_arn = "arn:aws:iam::682331604648:role/project/project-eks-node-group-ng_role"
   node_role_arn = "${var.managed_ng_contexts[count.index].node_role_arn}"
-  subnet_ids = "${var.managed_ng_contexts[count.index].subnet_ids}"
+  subnet_ids = "${var.managed_ng_contexts[count.index].ng_subnet_ids}"   ## Use dedicated subnet for node group instead of inheriting from control plane
   scaling_config {
     desired_size = "${var.managed_ng_contexts[count.index].desired_size}"
     max_size     = "${var.managed_ng_contexts[count.index].max_size}"
