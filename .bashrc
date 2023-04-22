@@ -252,7 +252,7 @@ function scalealldeploy(){
 CLUSTER1=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-rancher-test
 CLUSTER2=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-test
 CLUSTER3=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-2
-CLUSTER4=arn:aws:eks:us-east-2:682331604648:cluster/project-eumgmt-eks-eu-west-2
+CLUSTER4=arn:aws:eks:eu-west-2:682331604648:cluster/project-eumgmt-eks-eu-west-2
 
 function viewtls(){
   for i in ca\\.crt ca\\.key tls\\.crt tls\\.key
@@ -314,4 +314,7 @@ function us(){
 alias kgt="kubectl get -o wide --sort-by=.metadata.creationTimestamp "
 function watchpo() {
   while true ; do sleep 1; date; kgt po -A ; kubectl get node -oyaml | grep -iA3 taint; done
+}
+function tmesh(){
+        while true; do kubectl exec -ti deployment/x-wing -- curl rebel-base; done
 }

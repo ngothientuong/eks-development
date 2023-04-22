@@ -315,3 +315,6 @@ alias kgt="kubectl get -o wide --sort-by=.metadata.creationTimestamp "
 function watchpo() {
  while true ; do sleep 1; date; kgt po -A ; kubectl get node -oyaml | grep -iA3 taint; done
 }
+function tmesh(){
+	while true; do kubectl exec -ti deployment/x-wing -- curl rebel-base; done
+}
