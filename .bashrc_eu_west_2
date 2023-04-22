@@ -318,3 +318,6 @@ function watchpo() {
 function tmesh(){
 	while true; do kubectl exec -ti deployment/x-wing -- curl rebel-base; done
 }
+function listsvc(){
+  kubectl get svc -A -ojsonpath="{range .items[*]} {.metadata.namespace} {'\t'} {.metadata.name} {'\t'} {@.spec.type} {'\t'}  {'\t'} {range @.spec.ports[*]}{@.name}{'\t'}{'\t'}{@.port} {'\t'} {@.targetPort} {'\t'} {@.nodePort}{'\n'}{'\t'}{'\t'}{end}{'\n'}{end}"
+}
