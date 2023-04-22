@@ -128,7 +128,7 @@ metadata:
   labels:
     app: cluster-autoscaler
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: cluster-autoscaler

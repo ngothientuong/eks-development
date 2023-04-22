@@ -289,6 +289,12 @@ function removeciliumtest(){
   for svc in echo-other-node echo-same-node; do kubectl delete svc/${svc} -n cilium-test; done
   for deploy in echo-same-node echo-other-node client client2; do kubectl delete deploy/${deploy} -n cilium-test; done
 }
+function dmesh() {
+  cilium clustermesh disable --context ${1}
+}
+function emesh() {
+  cilium clustermesh enable --context ${1}
+}
 # Switch cluster or check current namespace via python scripts
 function cc() {
   python ${work_scripts}/change_cluster.py

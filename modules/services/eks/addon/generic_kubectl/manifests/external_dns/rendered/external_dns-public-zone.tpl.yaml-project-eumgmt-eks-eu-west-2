@@ -1,0 +1,106 @@
+## This is just for public zone - internet facing only
+## Do not enable this in the lab
+# comment out sa if it was previously created
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    #istio-injection: enabled
+    kubernetes.io/metadata.name: external-dns
+  name: external-dns
+spec:
+  finalizers:
+  - kubernetes
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: external-dns
+  namespace: external-dns
+  labels:
+    app.kubernetes.io/name: external-dns
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::682331604648:role/project/project-eumgmt-eks-eu-west-2-openid_connect_role"
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: external-dns
+  labels:
+    app.kubernetes.io/name: external-dns
+rules:
+  - apiGroups: [""]
+    resources: ["services","endpoints","pods","nodes"]
+    verbs: ["get","watch","list"]
+  - apiGroups: ["extensions","networking.k8s.io"]
+    resources: ["ingresses"]
+    verbs: ["get","watch","list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: external-dns-viewer
+  labels:
+    app.kubernetes.io/name: external-dns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-dns
+subjects:
+  - kind: ServiceAccount
+    name: external-dns
+    namespace: external-dns # change to desired namespace: external-dns, kube-addons
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns-public
+  namespace: external-dns
+  labels:
+    app.kubernetes.io/name: external-dns
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: external-dns
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: external-dns
+    spec:
+      serviceAccountName: external-dns
+      #hostNetwork: true    # If true for Calico, false for Cilium
+      containers:
+        - name: external-dns
+          image: registry.k8s.io/external-dns/external-dns:v0.13.4
+          args:
+            - --source=service
+            - --source=ingress
+            #- --domain-filter=bylightsdc.bylight.com # will make external-dns see only the hosted zones matching provided domain, omit to process all available hosted zones
+            - --provider=aws   # Name of the right provider
+            - --policy=upsert-only # would prevent external-dns from deleting any records, omit to enable full synchronization
+            - --aws-zone-type=public # only look at public hosted zones (valid values are public, private or no value for both)
+            #- --aws-zone-type=public # only look at public hosted zones (valid values are public, private or no value for both)
+            - --registry=txt
+            - --txt-owner-id=external-dns-public
+            #- --aws-prefer-cname    # Gov Cloud caveat: https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#govcloud-caveats
+            #- --txt-prefix=project-         # Gov Cloud caveat: https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/aws.md#govcloud-caveats
+            - --log-level=info
+            #- --aws-zone-type=private       # Gov Cloud. For public cloud , choose public
+          env:
+            - name: AWS_DEFAULT_REGION
+              value: eu-west-2 # change to region where EKS is installed
+     # # Uncommend below if using static credentials
+     #        - name: AWS_SHARED_CREDENTIALS_FILE
+     #          value: /.aws/credentials
+     #      volumeMounts:
+     #        - name: aws-credentials
+     #          mountPath: /.aws
+     #          readOnly: true
+     #  volumes:
+     #    - name: aws-credentials
+     #      secret:
+     #        secretName: external-dns
