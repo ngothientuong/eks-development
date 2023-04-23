@@ -324,3 +324,6 @@ function listsvc(){
 function listpp(){
   kubectl get po -A -ojsonpath="{range .items[*]} {.metadata.namespace} {'\t'} {.metadata.name} {'\t'} {.status.hostIP} {'\t'} {range @.spec.containers[*]} {'\t'} {@.name} {range @.ports[*]} containerPort:{@.containerPort} - hostPort:{@.hostPort}{'\t'}{end}|{'\t'}{end}{'\n'}{end}"
 }
+function listciliumNode() {
+  kubectl get cn
+}

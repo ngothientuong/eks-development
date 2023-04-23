@@ -21,7 +21,7 @@ ipam:
     clusterPoolIPv4PodCIDR: ""   #  <<< Must be Unique for each cluster!!!!
     # -- IPv4 CIDR list range to delegate to individual nodes for IPAM.
     clusterPoolIPv4PodCIDRList: ["10.204.0.0/15","10.206.0.0/15"]
-    clusterPoolIPv4MaskSize: "15"  # Must match with /number above
+    clusterPoolIPv4MaskSize: "21"  # Must match with /number above
 # Remove taint key ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready
 # and key ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready 
 # from node to allow cluster-autoscaler to scale and only remove taint 
@@ -29,6 +29,10 @@ ipam:
 #extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready','--debug']
 #extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready']
 egressMasqueradeInterfaces: eth0
+
+nodeinit:
+  # -- Enable the node initialization DaemonSet
+  enabled: true
 
 # -- Configure the eBPF-based ip-masq-agent
 ipMasqAgent:
@@ -132,10 +136,14 @@ ingressController:
 # #   # -- Enable support for Gateway API in cilium
 # #   # This will automatically set enable-envoy-config as well.
 # #   enabled: false
-kubeProxyReplacement: partial # Required for Ingress/Gateway API. Partial just in case
+kubeProxyReplacement: disabled # Required for Ingress/Gateway API. Partial just in case
 # # kubeConfigPath: "~/.kube/project-mgmt-eks-cluster-int-2.config"
 # # k8sServiceHost: 5E7A1F7119EC1B3A4AEA414E93D048D8.gr7.us-east-2.eks.amazonaws.com
 # # k8sServicePort: 443
+
+# -- Configure the key of the taint indicating that Cilium is not ready on the node.
+# When set to a value starting with `ignore-taint.cluster-autoscaler.kubernetes.io/`, the Cluster Autoscaler will ignore the taint on its decisions, allowing the cluster to scale up.
+agentNotReadyTaintKey: "node.cilium.io/agent-not-ready"
 
 l7Proxy: false    ## Set to false to enable encryption type wireguard
 tunnel: "vxlan"
