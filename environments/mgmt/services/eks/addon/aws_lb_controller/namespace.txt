@@ -1,6 +1,0 @@
-NAME              STATUS   AGE
-cilium-test       Active   3d7h
-default           Active   3d17h
-kube-node-lease   Active   3d17h
-kube-public       Active   3d17h
-kube-system       Active   3d17h

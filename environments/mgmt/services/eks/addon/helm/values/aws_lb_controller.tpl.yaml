@@ -1,0 +1,10 @@
+serviceAccount:
+  annotations: { "eks.amazonaws.com/role-arn": ${sa_iam_role} }
+
+
+# Change the ports 8080 to 8085 to avoid conflict with istio
+# The address the metric endpoint binds to. (default ":8080")
+metricsBindAddr: ":8085"
+
+# The TCP port the Webhook server binds to. (default 9443)
+webhookBindPort: 10445

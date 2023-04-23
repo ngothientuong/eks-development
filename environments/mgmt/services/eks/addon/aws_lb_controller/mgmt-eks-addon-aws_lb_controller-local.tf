@@ -65,7 +65,7 @@ locals {
       version = ""
       #values = []     
       values = [
-        templatefile("${path.module}/../helm/values/sa_annotation.tpl.yaml", {
+        templatefile("${path.module}/../helm/values/aws_lb_controller.tpl.yaml", {
           sa_iam_role = element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[0].cluster_name,vl.id)) > 0],0)
         }),
         #templatefile("${path.module}/../../helm/values/aws_pca_issuer.tpl.yaml", {})
@@ -116,7 +116,7 @@ locals {
       version = ""
       #values = []     
       values = [
-        templatefile("${path.module}/../helm/values/sa_annotation.tpl.yaml", {
+        templatefile("${path.module}/../helm/values/aws_lb_controller.tpl.yaml", {
           sa_iam_role = element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[1].cluster_name,vl.id)) > 0],0)
         }),
         #templatefile("${path.module}/../../helm/values/aws_pca_issuer.tpl.yaml", {})
@@ -168,7 +168,7 @@ locals {
       version = ""
       #values = []     
       values = [
-        templatefile("${path.module}/../helm/values/sa_annotation.tpl.yaml", {
+        templatefile("${path.module}/../helm/values/aws_lb_controller.tpl.yaml", {
           sa_iam_role = element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if length(regexall(var.clusters[2].cluster_name,vl.id)) > 0],0)
         }),
         #templatefile("${path.module}/../../helm/values/aws_pca_issuer.tpl.yaml", {})
