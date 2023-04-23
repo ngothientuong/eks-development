@@ -322,5 +322,5 @@ function listsvc(){
   kubectl get svc -A -ojsonpath="{range .items[*]} {.metadata.namespace}  {'\t'} {.metadata.name} {'\t'} {@.spec.type} {'\t'}  {'\t'} {range @.spec.ports[*]}{@.name}{'\t'}{'\t'}{@.port} {'\t'} {@.targetPort} {'\t'} {@.nodePort}{'\n'}{'\t'}{'\t'}{end}{'\n'}{end}"
 }
 function listpp(){
-  kubectl get po -A -ojsonpath="{range .items[*]} {.metadata.namespace} {'\t'} {.metadata.name} {'\t'} {range @.spec.containers[*]} {'\t'} {@.name} {range @.ports[*]} containerPort:{@.containerPort} - hostPort:{@.hostPort}{'\t'}{end}|{'\t'}{end}{'\n'}{end}"
+  kubectl get po -A -ojsonpath="{range .items[*]} {.metadata.namespace} {'\t'} {.metadata.name} {'\t'} {.status.hostIP} {'\t'} {range @.spec.containers[*]} {'\t'} {@.name} {range @.ports[*]} containerPort:{@.containerPort} - hostPort:{@.hostPort}{'\t'}{end}|{'\t'}{end}{'\n'}{end}"
 }
