@@ -10,6 +10,15 @@ operator:
   rollOutPods: true
   # -- Number of replicas to run for the cilium-operator deployment
   replicas: 1
+cni:
+  # -- Install the CNI configuration and binary files into the filesystem.
+  install: true
+
+  # -- Remove the CNI configuration and binary files on agent shutdown. Enable this
+  # if you're removing Cilium from the cluster. Disable this to prevent the CNI
+  # configuration file from being removed during agent upgrade, which can cause
+  # nodes to go unmanageable.
+  uninstall: false
 
 ipam:
   # -- Configure IP Address Management mode.
@@ -21,7 +30,11 @@ ipam:
     clusterPoolIPv4PodCIDR: ""   #  <<< Must be Unique for each cluster!!!!
     # -- IPv4 CIDR list range to delegate to individual nodes for IPAM.
     clusterPoolIPv4PodCIDRList: ["10.208.0.0/15","10.210.0.0/15"]
-    clusterPoolIPv4MaskSize: "15"  # Must match with /number above
+    clusterPoolIPv4MaskSize: "21"  # Will divide each into sub cidr_range to give to each node! Extremely important that it has to be larger than the Y in X.X.X.X/Y in clusterPoolIPv4PodCIDRList
+
+nodeinit:
+  # -- Enable the node initialization DaemonSet
+  enabled: true
 
 # -- Configure the eBPF-based ip-masq-agent
 ipMasqAgent:
@@ -38,7 +51,9 @@ bpf:
 #extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready','--debug']
 #extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready','--agent-not-ready-taint-key=node.kubernetes.io/not-ready']
 #extraArgs: ['--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/agent-not-ready','--agent-not-ready-taint-key=ignore-taint.cluster-autoscaler.kubernetes.io/cilium-agent-not-ready']
-egressMasqueradeInterfaces: eth0
+
+## Was enabled
+#egressMasqueradeInterfaces: eth0
 
 # Configure common TLS
 # -- Configure TLS configuration in the agent.
@@ -135,10 +150,14 @@ ingressController:
 # #   # -- Enable support for Gateway API in cilium
 # #   # This will automatically set enable-envoy-config as well.
 # #   enabled: false
-kubeProxyReplacement: partial # Required for Ingress/Gateway API. Partial just in case
+kubeProxyReplacement: disabled # Required for Ingress/Gateway API. Partial just in case
 # # kubeConfigPath: "~/.kube/project-eumgmt-eks-eu-west-2.config"
 # # k8sServiceHost: EE00B7C37FBEFD736D4DCB89D9BF09D7.sk1.us-east-2.eks.amazonaws.com
 # # k8sServicePort: 443
+
+# -- Configure the key of the taint indicating that Cilium is not ready on the node.
+# When set to a value starting with `ignore-taint.cluster-autoscaler.kubernetes.io/`, the Cluster Autoscaler will ignore the taint on its decisions, allowing the cluster to scale up.
+agentNotReadyTaintKey: "node.cilium.io/agent-not-ready"
 
 l7Proxy: false    ## Set to false to enable encryption type wireguard
 tunnel: "vxlan"
