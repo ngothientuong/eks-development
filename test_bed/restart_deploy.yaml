@@ -1,0 +1,16 @@
+kubectl rollout restart deployment.apps/aws-pca-issuer -n aws-pca-issuer
+kubectl rollout restart deployment.apps/cert-manager -n cert-manager
+kubectl rollout restart deployment.apps/cert-manager-cainjector -n cert-manager
+kubectl rollout restart deployment.apps/cert-manager-webhook -n cert-manager
+kubectl rollout restart deployment.apps/external-dns-public -n external-dns
+kubectl rollout restart deployment.apps/external-secrets -n external-secrets
+kubectl rollout restart deployment.apps/external-secrets-cert-controller -n external-secrets
+kubectl rollout restart deployment.apps/external-secrets-webhook -n external-secrets
+kubectl rollout restart deployment.apps/aws-load-balancer-controller $ksn
+kubectl rollout restart deployment.apps/cluster-autoscaler $ksn
+kubectl rollout restart deployment.apps/coredns $ksn
+kubectl rollout restart deployment.apps/ebs-csi-controller $ksn
+kubectl rollout restart deployment.apps/efs-csi-controller $ksn
+kubectl rollout restart deployment.apps/snapshot-controller $ksn
+kubectl rollout restart deployment.apps/snapshot-validation-deployment $ksn
+kubectl rollout restart deployment.apps/vmware-tanzu-velero -n velero
