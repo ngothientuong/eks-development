@@ -4,7 +4,6 @@ metadata:
   annotations:
     meta.helm.sh/release-name: cilium
     meta.helm.sh/release-namespace: kube-system
-  creationTimestamp: "2023-04-17T17:42:12Z"
   labels:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: hubble-ui
@@ -12,8 +11,6 @@ metadata:
     k8s-app: hubble-ui
   name: hubble-ui
   namespace: kube-system
-  resourceVersion: "2947567"
-  uid: c81e1d90-c222-414d-a5d8-281ab4a32f27
 spec:
   clusterIP: 172.17.19.224
   clusterIPs:
