@@ -18,7 +18,8 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-protocol: "HTTP"  # Required
     alb.ingress.kubernetes.io/healthcheck-port: "30049"      # Has to be the same as the (https or status-port?) nodePort. Hardcoded nodePort for Istio-Gateway in service as well
     alb.ingress.kubernetes.io/subnets: 'subnet-0312fb0e0e36c8b49,subnet-0f08d68d1c661395a'   # Required to be in public subnets for internet facing!!  
-
+    # alb.ingress.kubernetes.io/certificate-arn: |
+    #   arn:aws:acm:xxxxxx:999999999999:certificate/xxxxxxxxx
     # Cert Manager
     #cert-manager.io/issuer-name: tngo-eks-ca
     #cert-manager.io/cluster-issuer: tngo-eks-ca
