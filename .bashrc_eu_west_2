@@ -327,3 +327,10 @@ function listpp(){
 function listciliumNode() {
   kubectl get cn
 }
+function generaterootca(){
+  # Valid for 10 years = 3650 days
+  # ${1} is Domain name and ${2} is alternatives name
+  openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+  -keyout ./root-key.pem -out ./root-cert.pem -subj "/CN=${1}" \
+  -addext "subjectAltName=DNS:${2}"
+}
