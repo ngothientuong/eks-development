@@ -229,7 +229,7 @@ function centos() {
         kubectl run centos --image=centos:latest  -- sh -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
 }
 function amzlnx2 {	
-	kubectl run amzlnx2 --image=amazonlinux2:latest -- bash -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
+	kubectl run amzlnx2 --image=blutv/amazonlinux2-python3:latest -- bash -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
 }
 alias mnkube="minikube start --memory 10240 --cpus 4"
 alias gitadd="cp -rp ~/.bashrc ~/.bashrc_eu_west_2 ~/.bashrc_us_east_2 ~/.ssh /home/vagrant/bl/personal/eks-development/; git add --all"
