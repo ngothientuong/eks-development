@@ -235,8 +235,6 @@ alias mnkube="minikube start --memory 10240 --cpus 4"
 alias gitadd="cp -rp ~/.bashrc ~/.bashrc_us_east_2 ~/.bashrc_eu_west_2 ~/.ssh /home/vagrant/bl/personal/eks-development/; git add --all"
 export gitkey=$(kg secret -n kube-system private-github-pat -o=jsonpath={.data.key} | base64 -d)
 alias argocd="argocd --grpc-web"
-export CTX_CLUSTER1=
-export CTX_CLUSTER2=
 alias kzfix="kustomize edit fix"
 function restartdeploy(){
 	for i in $(kg ns --no-headers | awk {'print $1'}); do kubectl config set-context --current --namespace="${i}"; kubectl rollout restart deploy ; done
@@ -249,10 +247,10 @@ function scalealldeploy(){
 	done
 	done
 }
-CLUSTER1=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-rancher-test
-CLUSTER2=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-test
-CLUSTER3=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-2
-CLUSTER4=arn:aws:eks:eu-west-2:682331604648:cluster/project-eumgmt-eks-eu-west-2
+export CLUSTER1=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-rancher-test
+export CLUSTER2=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-test
+export CLUSTER3=arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-2
+export CLUSTER4=arn:aws:eks:eu-west-2:682331604648:cluster/project-eumgmt-eks-eu-west-2
 
 function viewtls(){
   for i in ca\\.crt ca\\.key tls\\.crt tls\\.key
@@ -340,4 +338,23 @@ function generaterootca(){
 function removecrd() {
   kubectl delete customresourcedefinition.apiextensions.k8s.io/${1} &
   kubectl patch customresourcedefinition.apiextensions.k8s.io/${1} -p '{"metadata":{"finalizers":[]}}' --type=merge
+}
+function removeargocdapp() {
+  kubectl patch app ${1} -p '{"metadata": {"finalizers": null}}' --type merge --context $CLUSTER1 -n argocd
+  kubectl delete app ${1} --context $CLUSTER1 -n argocd
+}
+function commitargo(){
+  cd ~/bl/argocd-eks-app
+  git add --all
+  sleep 1;
+  git commit -m "${1}"
+  sleep 1
+  git push
+  cd -
+}
+function base64d (){
+  echo "${1}" | base64 -d
+}
+function base64e (){
+  echo "${1}" | base64
 }
