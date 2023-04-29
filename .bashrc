@@ -226,7 +226,7 @@ function ubuntu() {
 	kubectl run ubuntu --image=ubuntu:latest  -- sh -c "apt update -y; apt install dnsutils curl -y; sleep 5d"
 }
 function centos() {
-        kubectl run centos --image=centos:latest  -- sh -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
+        kubectl run centos --image=centos:latest  -- sh -c "yum update -y ; yum install bind-utils curl nmap wget -y; sleep 5d"
 }
 function amzlnx2 {	
 	kubectl run amzlnx2 --image=blutv/amazonlinux2-python3:latest -- bash -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
@@ -357,4 +357,8 @@ function base64d (){
 }
 function base64e (){
   echo "${1}" | base64
+}
+## Get list of name of resources
+function listname (){
+  kubectl get ${1} -o wide --no-headers | awk '{print $1}'
 }
