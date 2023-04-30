@@ -362,3 +362,13 @@ function base64e (){
 function listname (){
   kubectl get ${1} -o wide --no-headers | awk '{print $1}'
 }
+## Decode key ${2} in a secret ${1}
+function dsecret () {
+  base64d $(kubectl get secret ${1} -ojsonpath={.data.${2}})
+}
+function copysecret() {
+  kubectl get secret ${1} --namespace=${2} -o yaml | sed "s/namespace: .*/namespace: ${3}/" | kubectl apply -f -
+}
+function portfwd() {
+  kubectl port-forward ${1} ${2}:${2}
+}
