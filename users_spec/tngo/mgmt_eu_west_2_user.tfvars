@@ -43,6 +43,8 @@ vpc = {
         Name = "tngo-eumgmt"
         Project = "tngo"
         VPC = "tngo-eumgmt"
+        
+
     }
 }
 tgw = {
@@ -60,6 +62,7 @@ tgw = {
         Name = "tngo-eumgmt-tgwa"
         Project = "tngo"
         VPC = "tngo-eumgmt"
+        
     }
 }
 
@@ -166,7 +169,7 @@ clusters = [
           name          = "project-eu-west-2-eumgmt_ng1"                    
           node_group_name_prefix = "project-eu-west-2-eumgmt_ng1"
           ng_subnets = ["subnet-09f7de6b8269def0f"]
-          desired_size  = 1
+          desired_size  = 4
           max_size      = 5
           min_size      = 1
           # disk_size     = 100  # Replaced volumes size by LT
@@ -231,6 +234,9 @@ clusters = [
               tags = {
                 #"k8s.io/cluster-autoscaler/my-cluster"	= "owned"  # For k8s auto-scaler
                 "k8s.io/cluster-autoscaler/enabled" = true    # For k8s-auto scaler
+                "Automation" = "Yes"
+                "Group" = "eumgmt"            
+                "Project" = "tngo"
               }
             }
             metadata_options = {

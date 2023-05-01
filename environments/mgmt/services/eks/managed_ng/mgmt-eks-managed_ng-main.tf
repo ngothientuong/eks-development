@@ -115,6 +115,7 @@ locals {
             "${format("%s%s","k8s.io/cluster-autoscaler/",each_cluster.cluster_name)}" = "owned"
             #"${format("%s%s","k8s.io/cluster/",each_cluster.cluster_name)}" = "shared"  # This tag is required for the subnets by AWS Load Balancer Controller version 2.1.1 or earlier
             "k8s.io/cluster-autoscaler/enabled" = true
+            "Automation" = "Yes"
             Name = each_mn_ng.node_group_name_prefix
           })    # LT - This is for k8-auto scaler
           #taint = flatten(concat(each_mn_ng.taint , [{}]))

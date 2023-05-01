@@ -131,6 +131,8 @@ clusters = [
               tags = {
                 #"k8s.io/cluster-autoscaler/my-cluster"	= "owned"  # For k8s auto-scaler
                 "k8s.io/cluster-autoscaler/enabled" = true    # For k8s-auto scaler
+                "Automation" = "Yes"
+                "Project" = "tngo"
               }
             }
             metadata_options = {
@@ -225,6 +227,8 @@ clusters = [
               tags = {
                 #"k8s.io/cluster-autoscaler/my-cluster"	= "owned"  # For k8s auto-scaler
                 "k8s.io/cluster-autoscaler/enabled" = true    # For k8s-auto scaler
+                "Automation" = "Yes"
+                "Project" = "tngo"                
               }
             }     
             metadata_options = {
@@ -319,6 +323,8 @@ clusters = [
               tags = {
                 #"k8s.io/cluster-autoscaler/my-cluster"	= "owned"  # For k8s auto-scaler
                 "k8s.io/cluster-autoscaler/enabled" = true    # For k8s-auto scaler
+                "Automation" = "Yes"
+                "Project" = "tngo"                
               }
             }
             metadata_options = {
