@@ -2,10 +2,10 @@
 
 ***Issue: Error acquiring the state lock***
   - **Resolve**:  
-    To release terraform lock, perform the following step:
-    - terraform force-unlock -force {type in some randome string for LOCK_ID}
-    - terraform will then provide error with output of that actual LOCK_ID being used
-    - Rerun the command with the lock_id from output
+    - To release terraform lock, perform the following step:
+      - terraform force-unlock -force {type in some randome string for LOCK_ID}
+      - terraform will then provide error with output of that actual LOCK_ID being used
+      - Rerun the command with the lock_id from output
 
 ***Issue***:
   ```
@@ -18,4 +18,5 @@
     DynamoDB table to the following value: cc88bb023db0b293c342195574f59e9e
   ```
   - **Resolve**:
-    Go to AWS Console -> DynamoDB -> Tables -> Explore items -> Click on the correct tabls -> Find the LockID associating with the S3 bucket -> Check box on it -> Action -> Delete
+    - Go to AWS Console -> DynamoDB -> Tables -> Explore items -> Click on the correct tabls -> Find the LockID associating with the S3 bucket -> Check box on it -> Action -> Delete
+    - Rerun terraform init, plan again to generate new entry in dynamoDB
