@@ -274,6 +274,7 @@ function viewtls(){
 }
 function viewcrt(){
   openssl x509 -in ${1} -text -noout > ${1}.txt
+  openssl x509 -in ${1} -text -noout
 }
 function viewnodeport(){
   kubectl get svc -A -o=jsonpath='{range..items[?(.spec.type=="NodePort")]}{.metadata.name}{"\n"}{end}'
