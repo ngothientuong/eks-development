@@ -80,7 +80,7 @@ locals {
         },
         {
           name = "eks.amazonaws.com/role-arn"
-          value = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if vl.id = var.clusters[0].cluster_name],""))          
+          value = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if vl.id == var.clusters[0].cluster_name],""))          
         }
       ]
     }], # } is End of the first helm chart ] is End of the list of helm chart of the first cluster
@@ -109,7 +109,7 @@ locals {
         },
         {
           name = "eks.amazonaws.com/role-arn"
-          value = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: : vl.arn if vl.id = var.clusters[1].cluster_name],""))          
+          value = format("%q",element([ for vl in data.terraform_remote_state.cluster.outputs.openid_connect_sa_role_objs: vl.arn if vl.id == var.clusters[1].cluster_name],""))          
         }
       ]
     }] # End of the list of the last cluster
