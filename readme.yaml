@@ -2,21 +2,21 @@
 #     TO DO       #
 ###################
 - Configure aws-load-balancer-controller (EKS NLB) to use tls secret 
-	from cert manager at the Ingress level
-- Install EKS ALB, enable certificate
-- Configure cross-zone load balancing
-- Look into AWS Private Link
-- Configure AWS EFS
+	from cert manager at the Ingress level [DONE]
+    - Install EKS ALB, enable certificate  [DONE]
+- Configure cross-zone load balancing [DONE]
+- Look into AWS Private Link [No need for now]
+- Configure AWS EFS [DONE]
 - Configure Horizonal Pod AutoScaler [DONE - k8s built in]
-- Configure External DNS:
+- Configure External DNS: [DONE]
     MUST have 'waf-regional:*' permission or else ALB/NLB will fail
-- Look into AWS Managed Service Prometheus
-- Kiali needs Prometheus to store data
-- Jaeger requires ElasticSearch database
+- Look into AWS Managed Service Prometheus [No Need]
+- Kiali needs Prometheus to store data [DONE]
+- Jaeger requires ElasticSearch database [DONE]
 - traefik
 - argocd:
     Install kubeseal to encrypt secret and store in Git
-    Install argocd CLI
+    Install argocd CLI [DONE]
 - calio   [DONE]
 - datadog agent
 - datadog private location
@@ -24,15 +24,14 @@
 - goldilocks
 - loki
 - metric server  [NEED THIS FOR HPA TO WORK!!]
-- pghero
 - traefik
 - crossplane
-- cert-manager:  add webhook.hostNetwork=true  due to Calico CNI
+- cert-manager:  add webhook.hostNetwork=true  due to Calico CNI  [DONE]
 - Look into fortio (load testing tool such as make 10 concurrent request or whatever)
 - Look into Mutus - multi network interface for pod: https://github.com/aws-samples/eks-install-guide-for-multus/blob/main/README.md
 - Install Seal Secrets: https://github.com/bitnami-labs/sealed-secrets/blob/main/README.md#installation
 - Stakater/Reload: Reload deployment,sts when a resource change such as secret, configmap
-- Learn about kustomize. Example here: https://github.com/codefresh-contrib/gitops-certification-examples/tree/main/kustomize-app
+- Learn about kustomize. Example here: https://github.com/codefresh-contrib/gitops-certification-examples/tree/main/kustomize-app [DONE]
 - kube-router to run BGP routing daemon: required for cilium multi-cluster routing.
 
 #########################
