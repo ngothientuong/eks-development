@@ -373,3 +373,6 @@ function copysecret() {
 function portfwd() {
   kubectl port-forward ${1} ${2}:${2}
 }
+function gacp() {
+  git add --all; sleep 1; git commit -m "${1}"; sleep 1;  git push
+}
