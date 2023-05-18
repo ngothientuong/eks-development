@@ -1,4 +1,16 @@
 #!/bin/bash
+
+# Install kubectl - Must match with server's K8s version
+KUBECTL_VERSION="1.26.2"
+curl -LO https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+chmod 0755 kubectl
+sudo mv kubectl /usr/local/bin
+
+# Install kustomize
+curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
+sudo mv kustomize /usr/local/bin/
+
 aws eks update-kubeconfig --region us-east-2 --name project-mgmt-eks-cluster-int-2
 aws eks update-kubeconfig --region us-east-2 --name project-mgmt-eks-cluster-int-test
 aws eks update-kubeconfig --region us-east-2 --name project-mgmt-eks-cluster-rancher-test
