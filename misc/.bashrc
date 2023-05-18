@@ -377,5 +377,6 @@ function gacp() {
   git add --all; sleep 1; git commit -m "${1}"; sleep 1;  git push
 }
 function htemplate() {
+  helm template ${1} --repo ${2} -n ${3} > ${1}.yaml
   helm template ${1} --repo ${2} -n ${3}
 }
