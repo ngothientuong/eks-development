@@ -1,0 +1,33 @@
+Reference link: https://docs.cilium.io/en/stable/network/clustermesh/services/
+
+Steps: 
+1. Change to the correct cluster and apply the correct clustermesh-cilium file for it:
+
+project-eumgmt-eks-eu-west-2                 01-cluster-eumgmt.yaml
+project-mgmt-eks-cluster-rancher-test        02-cluster-mgmt-us.yaml
+project-mgmt-eks-cluster-int-test            03-cluster-int-test-us.yaml
+
+2. From any of those cluster, execute shared service 
+> while true; do kubectl exec -ti deployment/x-wing -- curl rebel-base ; done
+
+
+3. In cluster project-eumgmt-eks-eu-west-2, add service.cilium.io/shared="false" to existing global service
+> kubectl annotate service rebel-base service.cilium.io/shared="false" --overwrite
+
+
+4. From cluster project-eumgmt-eks-eu-west-2, access the global service one more time:
+> kubectl exec -ti deployment/x-wing -- curl rebel-base
+You will still see replies from pods in both clusters.
+
+5. From cluster project-mgmt-eks-cluster-int-test, access the global service again:
+> kubectl exec -ti deployment/x-wing -- curl rebel-base
+You will see replies from pods only from cluster project-mgmt-eks-cluster-int-test, as the global service in cluster project-eumgmt-eks-eu-west-2 is no longer shared.
+
+6. In cluster project-eumgmt-eks-eu-west-2, remove service.cilium.io/shared annotation of existing global service
+> kubectl annotate service rebel-base service.cilium.io/shared-
+
+From either cluster, access the global service:
+> kubectl exec -ti deployment/x-wing -- curl rebel-base
+
+
+You will see replies from pods in both clusters again.

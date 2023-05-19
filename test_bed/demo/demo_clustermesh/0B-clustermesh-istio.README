@@ -1,0 +1,8 @@
+Reference Link: https://istio.io/latest/docs/setup/install/multicluster/verify/
+
+1. For right now, sleep and helloworld sample app is install in 3 clusters. From cluster EU, execute the following command:
+> while true; do kubectl exec --context="${CTX_CLUSTER1}" -n sample -c sleep     "$(kubectl get pod --context="${CTX_CLUSTER1}" -n sample -l \
+    app=sleep -o jsonpath='{.items[0].metadata.name}')"     -- curl -sS helloworld.sample:5000/hello; done
+
+2. Go to hubble to show traffic between the 3 clusters residing in different regions, i.e EU and US
+
