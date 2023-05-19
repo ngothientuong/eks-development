@@ -314,6 +314,9 @@ function us(){
   source ~/.bashrc
 }
 alias kgt="kubectl get -o wide --sort-by=.metadata.creationTimestamp "
+function podsortby() {
+	kubectl get pod -A -o=custom-columns=NAME:.metadata.name,podIP:.status.podIP,hostIP:.status.hostIP --sort-by=${1}
+}
 function watchpo() {
  while true ; do sleep 1; date; kgt po -A ; kubectl get node -oyaml | grep -iA3 taint; done
 }
@@ -372,6 +375,9 @@ function copysecret() {
 }
 function portfwd() {
   kubectl port-forward ${1} ${2}:${2}
+}
+function kibana() {
+  kubectl port-forward deploy/elastic-kibana -n elastic-system 5601:5601
 }
 function gacp() {
   git add --all; sleep 1; git commit -m "${1}"; sleep 1;  git push

@@ -314,6 +314,9 @@ function us(){
   source ~/.bashrc
 }
 alias kgt="kubectl get -o wide --sort-by=.metadata.creationTimestamp "
+function podsortby() {
+        kubectl get po -A -o=custom-columns=NAME:.metadata.name,podIP:.status.podIP,hostIP:.status.hostIP --sort-by=${1}
+}
 function watchpo() {
   while true ; do sleep 1; date; kgt po -A ; kubectl get node -oyaml | grep -iA3 taint; done
 }

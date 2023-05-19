@@ -1,0 +1,19 @@
+1. Check cilium daemonset for the type of encryption if configured
+> kubectl -n kube-system exec -it ds/cilium -- cilium status | grep Encryption 
+
+You should see something like this:
+Encryption: Wireguard [cilium_wg0 (Pubkey: <snip>, Port: 51871, Peers: 1)]
+
+
+2. Get into cilium daemonset, update, install tcpdump then tcpdump traffic from the encrypted network interface cilium_wg0
+kubectl -n kube-system exec -ti ds/cilium -- bash
+
+apt-get update
+apt-get -y install tcpdump
+tcpdump -n -i cilium_wg0
+
+You should see something like this:
+07:34:33.945206 IP 10.208.17.20.48422 > 10.208.12.3.9300: Flags [P.], seq 17018:17487, ack 4338, win 24576, options [nop,nop,TS val 875348535 ecr 1917918555], length 469
+07:34:33.946041 IP 10.208.12.3.9300 > 10.208.17.20.48422: Flags [P.], seq 4338:4599, ack 17487, win 2286, options [nop,nop,TS val 1917918823 ecr 875348535], length 261
+
+3. Exit daemonset and prove that the pods with IPs above resides in different nodes

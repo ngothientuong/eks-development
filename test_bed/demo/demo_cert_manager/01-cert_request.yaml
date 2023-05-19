@@ -1,0 +1,25 @@
+kind: Certificate
+apiVersion: cert-manager.io/v1
+metadata:
+  name: demo-test-cert
+  namespace: default
+spec:
+  commonName: "demo-test.bylightsdc.bylight.com"
+  dnsNames:
+    - "demo-test.bylightsdc.bylight.com"
+    - "demo-test-1.bylightsdc.bylight.com"      
+    - "*-elb.us-east-2.amazonaws.com"
+  #duration: 2160h0m0s
+  issuerRef:
+    group: awspca.cert-manager.io
+    kind: AWSPCAClusterIssuer
+    name: demo-test-root-issuer
+  renewBefore: 360h0m0s
+  ## Different name than the secret 
+  secretName: demo-test-tls-secret
+  usages:
+    - server auth
+    - client auth
+  privateKey:
+    algorithm: "RSA"
+    size: 2048

@@ -1,0 +1,64 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            d4:0e:38:ff:b4:80:91:79:d2:e4:df:fc:1b:e5:cb:cb
+        Signature Algorithm: sha512WithRSAEncryption
+        Issuer: C = US, O = By Light, OU = MHV Team, ST = Texas, CN = Eks subordinate CA Test MHV By Light, L = Dallas
+        Validity
+            Not Before: May 18 17:07:04 2023 GMT
+            Not After : Jun 17 18:07:04 2023 GMT
+        Subject: CN = demo-test.bylightsdc.bylight.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:c9:a5:a8:1b:c2:5c:44:43:8f:4c:0e:66:b0:8c:
+                    d4:fe:fc:cc:c5:73:86:4f:f8:76:b0:7e:a0:6a:ad:
+                    50:c4:60:00:ac:60:85:ff:51:4c:2c:42:c4:2a:a4:
+                    83:f1:3c:de:c4:e8:e5:fb:ae:56:8a:dd:64:3f:ce:
+                    c2:75:2d:ab:75:94:df:e1:ff:be:37:1b:6c:fd:4d:
+                    bf:1d:c2:b3:a9:b0:68:8a:07:c8:17:b4:7a:8e:34:
+                    b8:46:31:22:f0:98:7d:2e:14:15:91:bf:46:6b:55:
+                    14:94:cb:26:50:c6:ab:d5:45:4c:77:9c:d4:a7:3a:
+                    7d:d0:55:1e:d8:15:c4:19:ed:6c:89:44:a3:03:31:
+                    eb:54:96:ec:ca:25:02:2a:1a:6d:e6:69:3f:bf:b7:
+                    10:b3:3b:03:4c:8b:1b:31:98:91:35:ca:fd:49:e2:
+                    c3:cb:b3:46:11:0a:6f:67:ab:8b:5b:12:f9:74:25:
+                    0e:55:5c:7b:69:8d:c5:1d:1c:e7:19:71:31:33:b2:
+                    6a:3e:ee:2b:8e:61:c3:cc:19:bc:f7:88:32:fe:43:
+                    03:a7:48:9f:87:a4:31:e4:9a:6d:d5:ae:57:f6:85:
+                    cd:76:ac:7f:a6:1b:8f:9d:03:52:f5:f2:03:45:ff:
+                    1d:04:df:51:2b:69:53:87:58:6f:59:3a:e4:a5:be:
+                    5b:db
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Subject Alternative Name: 
+                DNS:demo-test.bylightsdc.bylight.com, DNS:demo-test-1.bylightsdc.bylight.com, DNS:*-elb.us-east-2.amazonaws.com
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Authority Key Identifier: 
+                32:44:7E:17:CD:F3:91:72:58:31:92:0A:E1:00:A5:B7:03:9D:6B:26
+            X509v3 Subject Key Identifier: 
+                84:59:A2:99:10:73:FE:2F:81:F5:1B:BE:86:4B:C3:09:17:52:09:97
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication, TLS Web Client Authentication
+    Signature Algorithm: sha512WithRSAEncryption
+    Signature Value:
+        1f:d2:b1:06:b8:e3:cf:25:d8:f4:b5:4e:0a:c3:2d:38:ed:cf:
+        f8:60:ae:69:1b:d9:1e:2c:53:b0:f1:85:02:06:b4:9d:6b:54:
+        9e:9a:2e:49:7e:10:16:63:22:63:63:71:90:48:83:68:7c:1c:
+        55:7d:9b:4a:89:67:55:89:75:b7:de:fa:b2:bd:57:93:b9:aa:
+        c1:7b:8e:91:2f:e3:a9:9b:55:67:f3:28:b9:f5:4f:58:ea:48:
+        6e:19:e8:f4:94:97:8a:1d:27:55:8b:7e:7e:9b:d1:26:da:61:
+        52:b3:b5:67:27:4c:8f:39:e5:8b:e8:f1:1c:39:e7:77:7e:39:
+        67:65:e1:f6:fd:a3:16:35:1e:67:e0:46:f6:cf:79:8d:0b:0d:
+        cb:b1:2e:e5:40:1b:eb:b5:53:2f:8e:fc:a0:4c:f7:2c:92:ff:
+        27:e1:13:76:33:7b:70:07:12:59:03:64:b1:dc:26:15:2f:9d:
+        23:da:aa:62:48:8b:73:f3:cd:5c:b6:7c:ca:69:af:1d:d8:e9:
+        68:e5:0a:6c:80:4d:9e:3e:a0:90:6b:47:20:03:93:c3:5a:a5:
+        35:42:91:23:a5:e0:a6:d2:d4:43:0a:20:97:78:76:82:b3:8c:
+        2b:3d:37:9c:2f:26:a1:75:e2:a5:7f:5f:a4:fa:75:69:03:23:
+        20:5d:16:d4

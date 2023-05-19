@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+  namespace: traefik
+  labels:
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/instance: traefik-traefik
+    helm.sh/chart: traefik-23.0.1
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    #service.beta.kubernetes.io/aws-load-balancer-type: external
+    #service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip   <<< BAD
+    #service.beta.kubernetes.io/aws-load-balancer-healthcheck-path: "/ping"
+    #ervice.beta.kubernetes.io/aws-load-balancer-healthcheck-port: "9000"
+    #service.beta.kubernetes.io/aws-load-balancer-healthcheck-protocol: "HTTP"
+    #service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-subnets: 'subnet-0831463469784d534,subnet-08b9546ac1fb7221f'
+    external-dns.alpha.kubernetes.io/hostname: v1-w1-demo.bylightsdc.bylight.com, v2-w2-demo.bylightsdc.bylight.com, traefik-dashboard.bylightsdc.bylight.com, whoami.bylightsdc.bylight.com, mainv1-mirrorv2.bylightsdc.bylight.com, sticky-traefik.bylightsdc.bylight.com, nested-healthcheck.bylightsdc.bylight.com
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: traefik
+    app.kubernetes.io/instance: traefik-traefik
+  ports:
+  - port: 80
+    name: "web"
+    targetPort: web
+    protocol: TCP
+  - port: 443
+    name: "websecure"
+    targetPort: websecure
+    protocol: TCP
+  - port: 9000
+    name: "traefik"
+    targetPort: traefik
+    protocol: TCP    

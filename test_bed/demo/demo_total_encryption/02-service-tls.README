@@ -1,0 +1,6 @@
+1. Show certificate on the browser of one of the application, i.e jaeger
+2. Show ALB configuration that force port 80 -> 443 at ALB level
+3. Show ALB configuration that send traffic port 443 to Istio Ingress Gateway
+4. From Ingress Gateway -> Other Services -> Automatic sidecard injection.
+
+5. If services install -> Add sidecard injection to services -> Show in Kiali
