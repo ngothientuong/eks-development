@@ -40,5 +40,5 @@ argocd login tngo-eks-argocd.bylightsdc.bylight.com:443
 argocd cluster add  arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-2
 argocd cluster add arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-int-test
 argocd cluster add arn:aws:eks:us-east-2:682331604648:cluster/project-mgmt-eks-cluster-rancher-test
-
+argocd cluster add arn:aws:eks:eu-west-2:682331604648:cluster/project-eumgmt-eks-eu-west-2
 

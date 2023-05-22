@@ -12,3 +12,4 @@ parameters:
   iopsPerGB: "100"
   type: io2
 reclaimPolicy: Retain
+allowVolumeExpansion: true

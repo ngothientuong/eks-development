@@ -62,3 +62,8 @@ sudo ln -sf ~/.kubectx/completion/kubectx.bash $COMPDIR/kubectx
 # Install fuzzy for interactive kubectx and kubens
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
+
+# ArgoCD install 
+curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+rm argocd-linux-amd64
