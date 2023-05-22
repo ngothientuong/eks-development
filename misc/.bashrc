@@ -53,7 +53,7 @@ export AWS_ACCOUNT_NAME=bl-devops-cloud
 export AWS_ACCOUNT_NUMBER=682331604648
 # END ANSIBLE MANAGED BLOCK AWS_ACCOUNT_NUMBER
 # BEGIN ANSIBLE MANAGED BLOCK AWS_DEFAULT_REGION
-export AWS_DEFAULT_REGION=eu-west-2
+export AWS_DEFAULT_REGION=us-east-2
 # END ANSIBLE MANAGED BLOCK AWS_DEFAULT_REGION
 # BEGIN ANSIBLE MANAGED BLOCK PROJECT_DOMAIN
 export PROJECT_DOMAIN="bylightsdc.bylight.com"
@@ -92,7 +92,7 @@ function awsdc() {
 }
 
 ## Terraform
-export TF_VAR_aws_region=eu-west-2
+export TF_VAR_aws_region=us-east-2
 export TF_LOG=TRACE
 export TF_LOG_PATH="/media/sf_vagrantfileshare/terraform.txt"
 export TF_VAR_CIDR_INT="104.0.0.0/16"
@@ -109,22 +109,22 @@ export TF_VAR_aws_secret_key="7rf1rqdkvVkEmQZp3/PPHElQGuLBuxTs4f51rv3g"
 
 
 export ms=~/bl/personal/eks-development
-export eks=~/bl/personal/eks-development/environments/eumgmt/services/eks
+export eks=~/bl/personal/eks-development/environments/mgmt/services/eks
 export mdl=~/bl/personal/eks-development/modules/services/eks
 export tngo_spec=/home/vagrant/bl/personal/eks-development/users_spec/tngo
 export work_scripts=/home/vagrant/bl/personal/eks-development/work_scripts
 
 function tfmplan() {
-        terraform plan -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars -compact-warnings -out tfm.out
+        terraform plan -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars -out tfm.out
 }
 function tfminit() {
-        terraform init -backend-config=${tngo_spec}/user_eu_west_2.hcl
+        terraform init -backend-config=${tngo_spec}/user.hcl
 }
 function tfmdestroy() {
-        terraform destroy -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars -compact-warnings
+        terraform destroy -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars
 }
 function tfmrefresh() {
-        terraform refresh -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_eu_west_2_user.tfvars -compact-warnings
+        terraform refresh -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars
 }
 function tfmapply() {
         terraform apply tfm.out
@@ -196,7 +196,7 @@ function addcluster(){
 	then
           sed -i 's/: null/: []/g' ~/.kube/config 
 	fi	  
-        aws eks update-kubeconfig --region eu-west-2 --name $1
+        aws eks update-kubeconfig --region us-east-2 --name $1
 }
 function cfn() {
         for i in ${1}*; do new=$(echo $i | sed "s:${2}:${3}:g" ) ; mv ${i} ${new} ; done
@@ -226,13 +226,13 @@ function ubuntu() {
 	kubectl run ubuntu --image=ubuntu:latest  -- sh -c "apt update -y; apt install dnsutils curl -y; sleep 5d"
 }
 function centos() {
-        kubectl run centos --image=centos:latest  -- sh -c "yum update -y ; yum install bind-utils curl nmap wget -y; sleep 5d"
+        kubectl run centos --image=centos:latest  -- sh -c "yum update -y ; yum install bind-utils nmap curl wget -y; sleep 5d"
 }
 function amzlnx2 {	
-	kubectl run amzlnx2 --image=blutv/amazonlinux2-python3:latest -- bash -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
+	kubectl run amzlnx2 --image=amazonlinux2:latest -- bash -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
 }
 alias mnkube="minikube start --memory 10240 --cpus 4"
-alias gitadd="cp -rp ~/.bashrc ~/.bashrc_eu_west_2 ~/.bashrc_us_east_2 ~/.ssh /home/vagrant/bl/personal/eks-development/misc/; git add --all"
+alias gitadd="cp -rp ~/.bashrc ~/.bashrc_us_east_2 ~/.bashrc_eu_west_2 ~/.ssh /home/vagrant/bl/personal/eks-development/misc/; git add --all"
 export gitkey=$(kg secret -n kube-system private-github-pat -o=jsonpath={.data.key} | base64 -d)
 alias argocd="argocd --grpc-web"
 alias kzfix="kustomize edit fix"
@@ -315,16 +315,16 @@ function us(){
 }
 alias kgt="kubectl get -o wide --sort-by=.metadata.creationTimestamp "
 function podsortby() {
-	kubectl get pod -A -o=custom-columns=NAME:.metadata.name,podIP:.status.podIP,hostIP:.status.hostIP --sort-by=${1}
+        kubectl get po -A -o=custom-columns=NAME:.metadata.name,podIP:.status.podIP,hostIP:.status.hostIP --sort-by=${1}
 }
 function watchpo() {
- while true ; do sleep 1; date; kgt po -A ; kubectl get node -oyaml | grep -iA3 taint; done
+  while true ; do sleep 1; date; kgt po -A ; kubectl get node -oyaml | grep -iA3 taint; done
 }
 function tmesh(){
-	while true; do kubectl exec -ti deployment/x-wing -- curl rebel-base; done
+        while true; do kubectl exec -ti deployment/x-wing -- curl rebel-base; done
 }
 function listsvc(){
-  kubectl get svc -A -ojsonpath="{range .items[*]} {.metadata.namespace} {'\t'} {.metadata.name} {'\t'} {@.spec.type} {'\t'}  {'\t'} {range @.spec.ports[*]}{@.name}{'\t'}{'\t'}{@.port} {'\t'} {@.targetPort} {'\t'} {@.nodePort}{'\n'}{'\t'}{'\t'}{end}{'\n'}{end}"
+  kubectl get svc -A -ojsonpath="{range .items[*]} {.metadata.namespace}  {'\t'} {.metadata.name} {'\t'} {@.spec.type} {'\t'}  {'\t'} {range @.spec.ports[*]}{@.name}{'\t'}{'\t'}{@.port} {'\t'} {@.targetPort} {'\t'} {@.nodePort}{'\n'}{'\t'}{'\t'}{end}{'\n'}{end}"
 }
 function listpp(){
   kubectl get po -A -ojsonpath="{range .items[*]} {.metadata.namespace} {'\t'} {.metadata.name} {'\t'} {.status.hostIP} {'\t'} {range @.spec.containers[*]} {'\t'} {@.name} {range @.ports[*]} containerPort:{@.containerPort} - hostPort:{@.hostPort}{'\t'}{end}|{'\t'}{end}{'\n'}{end}"
@@ -336,7 +336,7 @@ function generaterootca(){
   # Valid for 10 years = 3650 days
   # ${1} is Domain name and ${2} is alternatives name
   openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
-  -keyout ./root-key.pem -out ./root-cert.pem -subj "/CN=${1}" \
+  -keyout root-key.pem -out root-cert.pem -subj "/CN=${1}" \
   -addext "subjectAltName=DNS:${2}"
 }
 function removecrd() {
@@ -376,13 +376,19 @@ function copysecret() {
 function portfwd() {
   kubectl port-forward ${1} ${2}:${2}
 }
-function kibana() {
-  kubectl port-forward deploy/elastic-kibana -n elastic-system 5601:5601
-}
 function gacp() {
   git add --all; sleep 1; git commit -m "${1}"; sleep 1;  git push
 }
 function htemplate() {
   helm template ${1} --repo ${2} -n ${3} > ${1}.yaml
   helm template ${1} --repo ${2} -n ${3}
+}
+
+#kubectx and kubens
+export PATH=~/.kubectx:$PATH
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+function pnull() {
+  kubectl patch ${1}/${2} -p '{"metadata": {"finalizers": null}}' --type merge
 }

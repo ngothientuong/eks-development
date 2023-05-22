@@ -43,3 +43,22 @@ rm -rf istio-1.17.2
 wget https://github.com/vmware-tanzu/velero/releases/download/v1.10.2/velero-v1.10.2-linux-amd64.tar.gz && tar -xf velero-v1.10.2-linux-amd64.tar.gz velero-v1.10.2-linux-amd64/velero ;
 sudo mv velero-v1.10.2-linux-amd64/velero /usr/local/bin
 rm -rf velero-v1.10.2-linux-amd64*
+
+# kubectx & kubens
+sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
+sudo cp -rp /opt/kubectx/kubectx /usr/local/bin/kubectx
+sudo cp -rp /opt/kubectx/kubens /usr/local/bin/kubens
+sudo rm -rf /opt/kubectx
+
+# Completion for kubectx and kubens in bash
+if [ ! -d ~/.kubectx ]
+then
+    git clone https://github.com/ahmetb/kubectx.git ~/.kubectx
+fi
+COMPDIR=$(pkg-config --variable=completionsdir bash-completion)
+sudo ln -sf ~/.kubectx/completion/kubens.bash $COMPDIR/kubens
+sudo ln -sf ~/.kubectx/completion/kubectx.bash $COMPDIR/kubectx
+
+# Install fuzzy for interactive kubectx and kubens
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
