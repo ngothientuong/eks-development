@@ -1,0 +1,64 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            3e:a7:e0:62:c4:51:75:aa:7e:56:1e:6b:b4:11:02:00
+        Signature Algorithm: sha512WithRSAEncryption
+        Issuer: C = US, O = By Light, OU = MHV Team, ST = Texas, CN = Eks subordinate CA Test MHV By Light, L = Dallas
+        Validity
+            Not Before: May 22 09:52:32 2023 GMT
+            Not After : Jun 21 10:52:32 2023 GMT
+        Subject: CN = tngo-eks-booking-eu.bylightsdc.bylight.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:a0:8a:f4:e8:fe:ad:4d:e0:9f:93:3a:ed:a3:24:
+                    33:0d:9e:db:6e:c8:b9:cf:88:ff:d9:a8:6b:5e:3e:
+                    ec:9b:7d:a2:81:6e:a3:7b:d9:2b:c8:fa:44:b9:82:
+                    1a:d2:c4:f5:ad:f8:83:01:02:f0:09:ac:3f:30:e3:
+                    80:6b:f5:f4:96:6e:30:7c:d3:5e:83:0a:e2:88:17:
+                    38:e5:44:5b:1d:2f:0b:19:bf:10:eb:69:23:09:9f:
+                    17:ba:fa:9d:92:fe:91:0b:af:86:70:5b:b5:34:a2:
+                    07:c2:c3:b9:d3:92:9c:3e:71:c6:65:59:2d:6f:34:
+                    3d:a7:e4:6c:62:43:f3:76:eb:06:ae:d9:c6:c9:ff:
+                    e9:fa:cf:5d:6a:90:b7:66:c2:cf:f2:52:55:59:62:
+                    01:15:5a:eb:f7:54:59:60:6b:8b:29:51:e2:68:04:
+                    66:df:cf:15:f3:5f:51:ae:d7:c3:02:0f:77:9f:01:
+                    fd:bc:d7:d5:fb:1e:ac:98:b0:e8:7c:bc:f7:97:a1:
+                    6d:02:5c:14:da:aa:a3:4f:9c:43:73:2a:9c:e8:66:
+                    63:c5:5c:53:a8:d4:93:c6:7a:1c:c8:f2:bd:e2:8d:
+                    ca:59:33:33:9f:ff:ff:fe:b8:d2:46:99:36:c2:b3:
+                    41:02:ee:4b:19:0f:8d:d2:af:88:16:65:f8:cd:5e:
+                    b5:c1
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Subject Alternative Name: 
+                DNS:tngo-eks-booking-eu.bylightsdc.bylight.com
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Authority Key Identifier: 
+                32:44:7E:17:CD:F3:91:72:58:31:92:0A:E1:00:A5:B7:03:9D:6B:26
+            X509v3 Subject Key Identifier: 
+                3A:08:E5:62:90:E8:EB:BA:65:72:32:9A:4D:E8:A3:0B:5A:B1:6C:B7
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication, TLS Web Client Authentication
+    Signature Algorithm: sha512WithRSAEncryption
+    Signature Value:
+        2d:fa:bd:05:e7:65:2a:cc:cd:3f:41:5f:35:58:da:98:d5:4c:
+        88:49:ae:9b:35:00:b5:0d:c3:c5:f8:8d:1c:27:37:77:01:00:
+        3b:84:9c:5b:6d:5a:81:57:ce:17:a1:db:f8:e5:fe:5b:73:c5:
+        bc:da:3b:9c:9f:18:78:1a:24:1c:d7:a3:4f:42:d9:b1:c1:0a:
+        0f:5c:67:41:c5:23:60:72:16:cf:c3:c1:68:95:8e:6f:a0:34:
+        4c:27:1e:b1:35:95:d0:14:91:0b:00:6e:45:d7:cf:b6:76:29:
+        f3:05:db:72:f5:a0:81:1e:d2:d3:8c:4f:b2:63:4c:8c:14:05:
+        a0:94:ed:6b:c8:c1:a9:37:94:83:dc:46:0d:e0:65:34:1e:10:
+        04:06:61:85:71:d1:d0:34:23:59:70:2e:03:b9:8b:f0:ae:9f:
+        83:3d:59:81:49:8e:06:a0:57:f7:b5:8d:14:2e:4b:ce:5b:c5:
+        a7:85:ad:35:74:f2:d9:f3:0a:2c:0c:fb:3d:66:06:43:eb:87:
+        e1:7a:df:de:1c:1c:06:4a:09:00:9c:24:d5:62:39:2d:ee:7e:
+        c0:ff:e5:6f:ab:28:72:ca:c9:df:44:82:ac:f9:c0:50:63:83:
+        90:72:40:8e:d5:79:94:37:29:dc:ad:fa:19:3d:f2:22:d8:e4:
+        18:c8:4d:bf
