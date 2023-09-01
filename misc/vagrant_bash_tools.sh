@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install kubectl - Must match with server's K8s version
-KUBECTL_VERSION="1.26.2"
+KUBECTL_VERSION="1.28.1"
 curl -LO https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 chmod 0755 kubectl
@@ -11,10 +11,11 @@ sudo mv kubectl /usr/local/bin
 curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
 sudo mv kustomize /usr/local/bin/
 
-aws eks update-kubeconfig --region us-east-2 --name project-mgmt-eks-cluster-int-2
-aws eks update-kubeconfig --region us-east-2 --name project-mgmt-eks-cluster-int-test
-aws eks update-kubeconfig --region us-east-2 --name project-mgmt-eks-cluster-rancher-test
-aws eks update-kubeconfig --region eu-west-2 --name project-eumgmt-eks-eu-west-2
+## Disable due to no access to aws
+# aws eks update-kubeconfig --region us-east-2 --name project-mgmt-eks-cluster-int-2
+# aws eks update-kubeconfig --region us-east-2 --name project-mgmt-eks-cluster-int-test
+# aws eks update-kubeconfig --region us-east-2 --name project-mgmt-eks-cluster-rancher-test
+# aws eks update-kubeconfig --region eu-west-2 --name project-eumgmt-eks-eu-west-2
 
 # Python Package
 pip install numpy
@@ -67,3 +68,32 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
 sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
 rm argocd-linux-amd64
+
+# Install Go 1.21
+export GO_VERSION=1.21.0
+mkdir -p /ngo/misc/packages
+cd /ngo/misc/packages
+rm -rf go${GO_VERSION}.linux-amd64.tar.gz
+wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+
+# Install minikube for learning
+mkdir -p /ngo/misc/packages
+cd /ngo/misc/packages
+rm -rf minikube-linux-amd64
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+
+# Install Docker
+# Follow the doc here: https://docs.docker.com/engine/install/ubuntu/#install-from-a-package
+# Run the below before adding running minikube
+# sudo chmod 666 /var/run/docker.sock
+# sudo adduser ${YOUR_USER} docker
+
+# Install python3
+sudo apt update
+sudo apt -y upgrade
+python3 -V
+sudo apt install python3-pip
+pip3 install numpy
