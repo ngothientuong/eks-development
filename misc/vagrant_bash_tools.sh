@@ -70,13 +70,15 @@ sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
 rm argocd-linux-amd64
 
 # Install Go 1.21
-export GO_VERSION=1.21.0
+export GO_VERSION=1.21.4
 mkdir -p /ngo/misc/packages
 cd /ngo/misc/packages
-rm -rf go${GO_VERSION}.linux-amd64.tar.gz
+#rm -rf go${GO_VERSION}.linux-amd64.tar.gz
+rm -rf go*.linux-amd64.tar.gz
 wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
 sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+# Find package of a type
 
 # Install minikube for learning
 mkdir -p /ngo/misc/packages
@@ -97,3 +99,4 @@ sudo apt -y upgrade
 python3 -V
 sudo apt install python3-pip
 pip3 install numpy
+

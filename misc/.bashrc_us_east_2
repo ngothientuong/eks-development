@@ -392,3 +392,13 @@ export PATH=~/.kubectx:$PATH
 function pnull() {
   kubectl patch ${1}/${2} -p '{"metadata": {"finalizers": null}}' --type merge
 }
+# Find type implement which interfaces
+function gotypewithfunc () {
+        egrep -nr '^func (.*) ${1}\(' *
+        # Example: egrep -nr '^func (.*) ReadByte\(' *
+}
+function srcgotypewithfunc () {
+        cd /usr/local/go/src
+        egrep -nr '^func (.*) ${1}\(' /usr/local/go/src
+        # Example: egrep -nr '^func (.*) ReadByte\(' *
+}
