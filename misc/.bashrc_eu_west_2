@@ -398,11 +398,11 @@ function pnull() {
 }
 
 # Find type implement which interfaces
-function gotypewithfunc () {
+function gotypewithmethod () {
 	egrep -nr '^func (.*) ${1}\(' *
 	# Example: egrep -nr '^func (.*) ReadByte\(' *
 }
-function srcgotypewithfunc () {
+function srcgotypewithmethod () {
 	cd /usr/local/go/src
         egrep -nr '^func (.*) ${1}\(' *
         # Example: egrep -nr '^func (.*) ReadByte\(' *

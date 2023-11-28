@@ -1,4 +1,14 @@
-# .bashrc
+
+# Find type implement which interfaces
+function gotypewithmethod () {
+        egrep -nr '^func (.*) ${1}\(' *
+        # Example: egrep -nr '^func (.*) ReadByte\(' *
+}
+function srcgotypewithmethod () {
+        cd /usr/local/go/src
+        egrep -nr '^func (.*) ${1}\(' *
+        # Example: egrep -nr '^func (.*) ReadByte\(' *
+}# .bashrc
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
@@ -391,4 +401,16 @@ export PATH=~/.kubectx:$PATH
 
 function pnull() {
   kubectl patch ${1}/${2} -p '{"metadata": {"finalizers": null}}' --type merge
+}
+
+
+# Find type implement which interfaces
+function gotypewithmethod () {
+        egrep -nr '^func (.*) ${1}\(' *
+        # Example: egrep -nr '^func (.*) ReadByte\(' *
+}
+function srcgotypewithmethod () {
+        cd /usr/local/go/src
+        egrep -nr '^func (.*) ${1}\(' *
+        # Example: egrep -nr '^func (.*) ReadByte\(' *
 }
