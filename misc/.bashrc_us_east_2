@@ -34,6 +34,84 @@ source <(kubectl completion bash)
 alias k=kubectl
 complete -o default -F __start_kubectl k
 
+######################
+## COLOR SECTION######
+#######################
+## Color for grep
+GREP_OPTS='--color=auto'      # for aliases since $GREP_OPTIONS is deprecated
+GREP_COLOR='1;32'             # (legacy) bright green rather than default red
+# (new) Matching text in Selected line = green, line numbers dark yellow
+GREP_COLORS="ms=${GREP_COLOR}:mc=${GREP_COLOR}:ln=33"
+alias grep='grep $GREP_OPTS'
+alias egrep='grep -E $GREP_OPTS'
+alias fgrep='LC_ALL=C grep -F $GREP_OPTS'
+vexport LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33'
+alias ls="ls --color=always"
+alias ll="ls -l --color=always"
+
+# use the config at ~/.dircolors if it exists, otherwise generate anew
+eval "$( dircolors --sh $(find ~/.dircolors -size +0 2>/dev/null) )"
+
+# Usage: _ls_colors_add BASE NEW [NEW...]
+# Have LS color given NEW extensions the way BASE extension is colored
+_ls_colors_add() {
+  local BASE_COLOR="${LS_COLORS##*:?.$1=}" NEW
+  if [ "$LS_COLORS" != "$BASE_COLOR" ]; then
+    BASE_COLOR="${BASE_COLOR%%:*}"
+    shift
+    for NEW in "$@"; do
+      if [ "$LS_COLORS" = "${LS_COLORS#*.$NEW=}" ]; then
+        LS_COLORS="${LS_COLORS%%:}:*.$NEW=$BASE_COLOR:"
+      fi
+    done
+  fi
+  export LS_COLORS
+}
+
+_ls_colors_add zip jar xpi            # archives
+_ls_colors_add jpg ico JPG PNG webp   # images
+_ls_colors_add ogg opus               # audio (opus now included by default)
+
+export CLICOLOR=1   # BSD auto-color trigger (like  ls -G  but for everything)
+if ls -ld --color=auto / >/dev/null 2>&1
+  then alias ls="ls -ph --color=auto"
+  else alias ls="ls -ph"
+fi
+
+# Shorten home dir, Cygwin drives, paths that are too long
+function PSWD() {
+  local p="$*" space A B cols="${COLUMNS:-`tput cols 2>/dev/null || echo 80`}"
+  p="${p/$HOME/\~}"         # shrink home down to a tilde
+  if [ -d /cygdrive ] && [ "${p#/cygdrive/?/}" != "$p" ]; then
+    p="${p:10:1}:${p:11}"   # /cygdrive/c/hi -> c:/hi
+  fi
+  space="$((${#USER}+${#HOSTNAME}+6))"  # width w/out the path
+  if [ "$cols" -lt 60 ]; then echo -n "$N "; space=-29; p="$p$N\b"; fi
+  if [ "$cols" -lt "$((space+${#p}+20))" ]; then # < 20 chars for the command
+    A=$(( (cols-20-space)/4 ))      # a quarter of the space (-20 for cmd)
+    if [ $A -lt 4 ]; then A=4; fi   # 4+ chars from beginning
+    B=$(( cols-20-space-A*2 ))      # half (plus rounding) of the space
+    if [ $B -lt 8 ]; then B=8; fi   # 8+ chars from end
+    p="${p:0:$A}..${p: -$B}"
+  fi
+  echo "$p"
+}
+
+PSC() { printf $'\[\e[%sm\]' "${*:-0;0}"; }
+PR="0;32"       # default color used in prompt is green
+if [ "$(id -u)" = 0 ]; then
+    sudo=41     # root is red background
+  elif [ "$USER" != "${SUDO_USER:-$USER}" ]; then
+    sudo=31     # not root, not self: red text
+  else sudo="$PR"   # standard user color
+fi
+PROMPT_COMMAND='[ $? = 0 ] && PS1=${PS1[1]} || PS1=${PS1[2]}'
+PSbase="$(PSC $sudo)\u$(PSC $PR)@\h $(PSC 33)\$(PSWD \w)"
+PS1[1]="$PSbase$(PSC $PR)\$ $(PSC)"
+PS1[2]="$PSbase$(PSC  31)\$ $(PSC)"
+PS1="${PS1[1]}"
+unset sudo PR PSbase
+
 ## BL SA 1 - mhv like restricted access
 #export AWS_SECRET_ACCESS_KEY="7rf1rqdkvVkEmQZp3/PPHElQGuLBuxTs4f51rv3g"
 #export AWS_ACCESS_KEY_ID="AKIAZ5XRCA2UKDCZ7OGM"
