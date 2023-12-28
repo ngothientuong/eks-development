@@ -186,23 +186,23 @@ export TF_VAR_aws_secret_key="7rf1rqdkvVkEmQZp3/PPHElQGuLBuxTs4f51rv3g"
 #export TF_VAR_aws_secret_key="mTcJUbwDz39lPOunb65bI1woSl1QLAbTbtyNk8sO"
 
 
-export ms=~/bl/personal/eks-development
-export eks=~/bl/personal/eks-development/environments/mgmt/services/eks
-export mdl=~/bl/personal/eks-development/modules/services/eks
-export tngo_spec=/home/vagrant/bl/personal/eks-development/users_spec/tngo
-export work_scripts=/home/vagrant/bl/personal/eks-development/work_scripts
+export ms=/ngo/projects/eks-development
+export eks=/ngo/projects/eks-development/environments/mgmt/services/eks
+export mdl=/ngo/projects/eks-development/modules/services/eks
+export tngo_spec=/ngo/projects/eks-development/users_spec/tngo
+export work_scripts=/ngo/projects/eks-development/work_scripts
 
 function tfmplan() {
-        terraform plan -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars -out tfm.out
+        terraform plan -var-file=/ngo/projects/eks-development/users_spec/tngo/mgmt_user.tfvars -out tfm.out
 }
 function tfminit() {
         terraform init -backend-config=${tngo_spec}/user.hcl
 }
 function tfmdestroy() {
-        terraform destroy -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars
+        terraform destroy -var-file=/ngo/projects/eks-development/users_spec/tngo/mgmt_user.tfvars
 }
 function tfmrefresh() {
-        terraform refresh -var-file=/home/vagrant/bl/personal/eks-development/users_spec/tngo/mgmt_user.tfvars
+        terraform refresh -var-file=/ngo/projects/eks-development/users_spec/tngo/mgmt_user.tfvars
 }
 function tfmapply() {
         terraform apply tfm.out
@@ -291,7 +291,7 @@ function mhtpl() {
 }
 function s3bk() {
 	DATE=$(date +%Y%m%d%H%M%S)
-	root_path=/home/vagrant/bl/personal/eks-development
+	root_path=/ngo/projects/eks-development
 	local_sync_folder="mhv-ms"
 	local_sync_src=$(echo ${root_path}/${local_sync_folder})
 	cp -rp ~/.bashrc ${local_sync_src}/
@@ -310,7 +310,7 @@ function amzlnx2 {
 	kubectl run amzlnx2 --image=amazonlinux2:latest -- bash -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
 }
 alias mnkube="minikube start --memory 10240 --cpus 4"
-alias gitadd="cp -rp ~/.bashrc ~/.bashrc_us_east_2 ~/.bashrc_eu_west_2 ~/.ssh /home/vagrant/bl/personal/eks-development/misc/; git add --all"
+alias gitadd="cp -rp ~/.bashrc ~/.bashrc_us_east_2 ~/.bashrc_eu_west_2 ~/.ssh /ngo/projects/eks-development/misc/; git add --all"
 export gitkey=$(kg secret -n kube-system private-github-pat -o=jsonpath={.data.key} | base64 -d)
 alias argocd="argocd --grpc-web"
 alias kzfix="kustomize edit fix"
@@ -426,7 +426,7 @@ function removeargocdapp() {
   kubectl delete app ${1} --context $CLUSTER1 -n argocd
 }
 function commitargo(){
-  cd ~/bl/argocd-eks-app
+  cd /ngo/projects/argocd-eks-app
   git add --all
   sleep 1;
   git commit -m "${1}"
