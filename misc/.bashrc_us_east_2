@@ -480,3 +480,8 @@ function srcgotypewithmethod () {
         egrep -nr '^func (.*) ${1}\(' /usr/local/go/src
         # Example: egrep -nr '^func (.*) ReadByte\(' *
 }
+
+# pass Tranan11!
+function dockerlogin() {
+  docker login -u tuongdevops1 -p "${1}"
+}

@@ -492,3 +492,8 @@ function srcgotypewithmethod () {
         egrep -nr '^func (.*) ${1}\(' *
         # Example: egrep -nr '^func (.*) ReadByte\(' *
 }
+
+# pass Tranan11!
+function dockerlogin() {
+  docker login -u tuongdevops1 -p "${1}"
+}
