@@ -8,8 +8,7 @@ function srcgotypewithmethod () {
         cd /usr/local/go/src
         egrep -nr '^func (.*) ${1}\(' *
         # Example: egrep -nr '^func (.*) ReadByte\(' *
-}# .bashrc
-
+} 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
