@@ -8,7 +8,7 @@ function srcgotypewithmethod () {
         cd /usr/local/go/src
         egrep -nr '^func (.*) ${1}\(' *
         # Example: egrep -nr '^func (.*) ReadByte\(' *
-} 
+}
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
@@ -238,9 +238,36 @@ alias kgc="kubectl config get-contexts "
 alias kuc="kubectl config user-context "
 alias klo="kubectl logs -f "
 alias kdel="kubectl delete --grace-period 0 --force -f"
+
+# - yaml line examples of key resources of interested such as affinity: , env: , ...
+# - Usage: rex env:  - to find yaml entries relating to env
+function rex() {
+  kubectl get ds kube-proxy -n kube-system -oyaml | grep -iA10 $1
+  kubectl get deploy coredns -n kube-system -oyaml | grep -iA10 $1
+  kubectl get ds weave-net -n kube-system -oyaml | grep -iA10 $1
+}
+# - Keywords in system resource pods such as kube-scheduler , kube-apiserver, etcd-controlplane
+# - Usage:   srex apiserver cidr  - to find settings with cidr in it
+function srex() {
+  mypod=$(kubectl get pod -n kube-system | grep $1 | awk '{print $1}')
+  kubectl get pod $mypod -o yaml -n kube-system | grep -i $2
+}
+# - yaml line example for node to show for node, such as checking taint
+function nex() {
+  mynode=$(kubectl get node | grep control | awk '{print $1}')
+  kubectl get $mynode -oyaml | grep -iA5 $1
+}
+
+# Delete a resource
+function pdelete() {
+  kubectl patch ${1}/${2} -p '{"metadata":{"finalizers":null}}' --type=merge
+  kubectl delete --grace-period 0 --force ${1} ${2}
+}
+# List name of a resource type
 function kjn() {
   kubectl get $1 -o=jsonpath={.items[*].metadata.name}
 }
+# List all resources in a namespace
 function kgall {
     for i in $(kubectl api-resources -o name --namespaced)
     do
@@ -248,7 +275,7 @@ function kgall {
         then
             for item in $(kubectl get --show-labels -n ${1} --ignore-not-found ${i} | awk '{print $1}' | tail -n +2 )
             do
-                   echo ${i}/${item} 
+                   echo ${i}/${item}
            done
         fi
     done
@@ -263,7 +290,7 @@ function destroyall {
 		   if [ "$(echo ${1} )" != "kube-system" ]
 		   then
                      kubectl delete -n ${1} ${i}/${item} --grace-period 0 --force
-                   else 
+                   else
 			   echo "Can't destroy kube-system"
 		   fi
            done
@@ -281,8 +308,8 @@ function removecluster() {
 function addcluster(){
 	if [ -f ~/.kube/config ]
 	then
-          sed -i 's/: null/: []/g' ~/.kube/config 
-	fi	  
+          sed -i 's/: null/: []/g' ~/.kube/config
+	fi
         aws eks update-kubeconfig --region us-east-2 --name $1
 }
 function cfn() {
@@ -294,7 +321,7 @@ function mtpl() {
 	cd -
 }
 function mhtpl() {
-        cd ${eks}/local-exec/jinja2_templates        
+        cd ${eks}/local-exec/jinja2_templates
 	for i in "eks-addon-aws_lb_controller"* ; do new=$(echo $i | sed "s:aws_lb_controller:${1}:g" ) ; cp -rp ${i} ${new}; sed -i "s:aws_lb_controller:${1}:g" ${new} ; done
         cd -
 }
@@ -315,22 +342,22 @@ function ubuntu() {
 function centos() {
         kubectl run centos --image=centos:latest  -- sh -c "yum update -y ; yum install bind-utils nmap curl wget -y; sleep 5d"
 }
-function amzlnx2 {	
+function amzlnx2 {
 	kubectl run amzlnx2 --image=amazonlinux2:latest -- bash -c "yum update -y ; yum install dnsutils curl wget -y; sleep 5d"
 }
 alias mnkube="minikube start --memory 10240 --cpus 4"
 alias gitadd="cp -rp ~/.bashrc ~/.bashrc_us_east_2 ~/.bashrc_eu_west_2 ~/.ssh /ngo/projects/eks-development/misc/; git add --all"
-export gitkey=$(kg secret -n kube-system private-github-pat -o=jsonpath={.data.key} | base64 -d)
+# export gitkey=$(kg secret -n kube-system private-github-pat -o=jsonpath={.data.key} | base64 -d)
 alias argocd="argocd --grpc-web"
 alias kzfix="kustomize edit fix"
 function restartdeploy(){
 	for i in $(kg ns --no-headers | awk {'print $1'}); do kubectl config set-context --current --namespace="${i}"; kubectl rollout restart deploy ; done
 }
 function scalealldeploy(){
-        for i in $(kg ns --no-headers | awk {'print $1'}); do kubectl config set-context --current --namespace="${i}"; 
+        for i in $(kg ns --no-headers | awk {'print $1'}); do kubectl config set-context --current --namespace="${i}";
 	for dpl in $(kg deploy --no-headers | awk {'print $1'});
-	do	
-	kubectl scale deploy $dpl --replicas=${1}; 
+	do
+	kubectl scale deploy $dpl --replicas=${1};
 	done
 	done
 }
@@ -344,11 +371,11 @@ function viewtls(){
   do
 	  TMP=$(kubectl get secret ${1} -oyaml -ojsonpath={.data.${i}})
 	  if [ "$(echo $TMP)" != "" ]
-	  then	  
-            echo "==== ${i} base64 ====:"  
+	  then
+            echo "==== ${i} base64 ====:"
             echo $TMP
 	    echo "==== ${i} base64 DECODE ====:"
-	    echo $TMP | base64 -d 
+	    echo $TMP | base64 -d
 	    echo "==== ${i} cert content ====:"
 	    echo $TMP | base64 -d > ./${1}-$(echo ${i} | sed -e 's:\\::g')
 	    chmod 644 ./${1}-$(echo ${i} | sed -e 's:\\::g')
@@ -356,8 +383,8 @@ function viewtls(){
               then
 	       openssl x509 -in ./${1}-$(echo ${i} | sed -e 's:\\::g') -text -noout
 	      fi
-          fi  
-  done	  
+          fi
+  done
 }
 function viewcrt(){
   openssl x509 -in ${1} -text -noout > ${1}.txt
@@ -497,3 +524,17 @@ function dockerlogin() {
   docker login -u tuongdevops1 -p "${1}"
 }
 export PATH=$PATH:/usr/local/go/bin
+
+# Prompt for copilot to explain in markdown
+function copilotmd() {
+  echo "Highly important, do not miss this: Write everything in markdown format where everyline must start with \`    \`"
+}
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+export PYTHON_VERSION=3.12.2
+pyenv activate venv${PYTHON_VERSION}

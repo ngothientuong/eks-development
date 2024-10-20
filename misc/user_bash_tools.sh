@@ -64,6 +64,10 @@ sudo ln -sf ~/.kubectx/completion/kubectx.bash $COMPDIR/kubectx
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 
+# Copy .bashrc and .vimrc to home directory
+cp -rp ./.bashrc ~/.bashrc
+cp -rp ./.vimrc ~/.vimrc
+
 # ArgoCD install
 curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
 sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
@@ -95,11 +99,14 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 ./docker_install.sh
 
 # Install python3
-sudo apt update
-sudo apt -y upgrade
-python3 -V
-sudo apt install python3-pip
-pip3 install numpy
+# sudo apt update
+# sudo apt -y upgrade
+# python3 -V
+# sudo apt install python3-pip
+# pip3 install numpy
+
+# Install python3 via pyenv
+./install_pyenv.sh
 
 # Install kubebuilder
 # download kubebuilder and install locally.
