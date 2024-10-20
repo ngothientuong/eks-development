@@ -496,3 +496,4 @@ function srcgotypewithmethod () {
 function dockerlogin() {
   docker login -u tuongdevops1 -p "${1}"
 }
+export PATH=$PATH:/usr/local/go/bin

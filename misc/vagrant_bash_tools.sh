@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install kubectl - Must match with server's K8s version
-KUBECTL_VERSION="1.28.1"
+KUBECTL_VERSION="1.31.1"
 curl -LO https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 chmod 0755 kubectl
@@ -36,14 +36,14 @@ rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
 
 # Istioctl
 #curl -L https://istio.io/downloadIstio | sh -
-curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.17.2 TARGET_ARCH=x86_64 sh -
-sudo cp -rp istio-1.17.2/bin/istioctl /usr/local/bin/
-rm -rf istio-1.17.2
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.23.2 TARGET_ARCH=x86_64 sh -
+sudo cp -rp istio-1.23.2/bin/istioctl /usr/local/bin/
+rm -rf istio-1.23.2
 
 # Velerocli
-wget https://github.com/vmware-tanzu/velero/releases/download/v1.10.2/velero-v1.10.2-linux-amd64.tar.gz && tar -xf velero-v1.10.2-linux-amd64.tar.gz velero-v1.10.2-linux-amd64/velero ;
-sudo mv velero-v1.10.2-linux-amd64/velero /usr/local/bin
-rm -rf velero-v1.10.2-linux-amd64*
+wget https://github.com/vmware-tanzu/velero/releases/download/v1.14.0/velero-v1.14.0-linux-amd64.tar.gz && tar -xf velero-v1.14.0-linux-amd64.tar.gz velero-v1.14.0-linux-amd64/velero ;
+sudo mv velero-v1.14.0-linux-amd64/velero /usr/local/bin
+rm -rf velero-v1.14.0-linux-amd64*
 
 # kubectx & kubens
 sudo git clone https://github.com/ahmetb/kubectx /opt/kubectx
@@ -64,13 +64,13 @@ sudo ln -sf ~/.kubectx/completion/kubectx.bash $COMPDIR/kubectx
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 
-# ArgoCD install 
+# ArgoCD install
 curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
 sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
 rm argocd-linux-amd64
 
 # Install Go 1.21
-export GO_VERSION=1.21.4
+export GO_VERSION=1.23.1
 mkdir -p /ngo/misc/packages
 cd /ngo/misc/packages
 #rm -rf go${GO_VERSION}.linux-amd64.tar.gz
@@ -92,6 +92,7 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 # Run the below before adding running minikube
 # sudo chmod 666 /var/run/docker.sock
 # sudo adduser ${YOUR_USER} docker
+./docker_install.sh
 
 # Install python3
 sudo apt update
