@@ -536,5 +536,5 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
-export PYTHON_VERSION=3.12.2
+export PYTHON_VERSION=3.13.0
 pyenv activate venv${PYTHON_VERSION}

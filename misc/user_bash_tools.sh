@@ -94,19 +94,15 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 # Install Docker
 # Follow the doc here: https://docs.docker.com/engine/install/ubuntu/#install-from-a-package
 # Run the below before adding running minikube
-# sudo chmod 666 /var/run/docker.sock
-# sudo adduser ${YOUR_USER} docker
+# Restart Windows OS if used in WSL
 ./docker_install.sh
-
-# Install python3
-# sudo apt update
-# sudo apt -y upgrade
-# python3 -V
-# sudo apt install python3-pip
-# pip3 install numpy
 
 # Install python3 via pyenv
 ./install_pyenv.sh
+
+# Install critctl
+./install_crictl.sh
+
 
 # Install kubebuilder
 # download kubebuilder and install locally.
