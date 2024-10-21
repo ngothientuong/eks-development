@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Get script dir
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+sudo ln -s ~/ngo /ngo
+mkdir -p /ngo/misc/packages
+cd /ngo/misc/packages
+
 # Install kubectl - Must match with server's K8s version
 KUBECTL_VERSION="1.31.1"
 curl -LO https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
@@ -16,9 +23,6 @@ sudo mv kustomize /usr/local/bin/
 # aws eks update-kubeconfig --region us-east-2 --name project-mgmt-eks-cluster-int-test
 # aws eks update-kubeconfig --region us-east-2 --name project-mgmt-eks-cluster-rancher-test
 # aws eks update-kubeconfig --region eu-west-2 --name project-eumgmt-eks-eu-west-2
-
-# Python Package
-pip install numpy
 
 # Helm
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -91,18 +95,6 @@ rm -rf minikube-linux-amd64
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
-# Install Docker
-# Follow the doc here: https://docs.docker.com/engine/install/ubuntu/#install-from-a-package
-# Run the below before adding running minikube
-# Restart Windows OS if used in WSL
-./docker_install.sh
-
-# Install python3 via pyenv
-./install_pyenv.sh
-
-# Install critctl
-./install_crictl.sh
-
 
 # Install kubebuilder
 # download kubebuilder and install locally.
@@ -119,3 +111,22 @@ curl -LO ${OPERATOR_SDK_DL_URL}/checksums.txt
 curl -LO ${OPERATOR_SDK_DL_URL}/checksums.txt.asc
 gpg -u "Operator SDK (release) <cncf-operator-sdk@cncf.io>" --verify checksums.txt.asc
 grep operator-sdk_${OS}_${ARCH} checksums.txt | sha256sum -c -
+
+
+cd $SCRIPT_DIR
+# Install Docker
+# Follow the doc here: https://docs.docker.com/engine/install/ubuntu/#install-from-a-package
+# Run the below before adding running minikube
+# Restart Windows OS if used in WSL
+./docker_install.sh
+# Install python3 via pyenv
+./install_pyenv.sh
+# Configure git profile
+./configure_git_profile.sh
+
+
+# Python Package
+pip install numpy
+
+# Clean up
+rm -rf /ngo/misc/packages/*
