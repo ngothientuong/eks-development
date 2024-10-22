@@ -519,6 +519,31 @@ function srcgotypewithmethod () {
         # Example: egrep -nr '^func (.*) ReadByte\(' *
 }
 
+# DOCKER
+function dksearch(){
+  if [ -z "${3}" ] || [ -z "${4}" ]; then
+    echo "Usage: dksearch <image-name> <registry> <username> <password>"
+    return 1
+  fi
+  echo "USER: ${3}"
+  echo "PASS: \${4}"
+
+  IMG=$(curl -s -X GET -u ${3}:${4} https://${2}/v2/_catalog | sed -e 's|,\ |\n|g' -e 's|\"||g' | grep ${1})
+  echo "IMAGE: ${IMG}"
+  if [ "${IMG}" != "" ]
+  then
+    for image in $(echo ${IMAGE})
+    do
+      echo "=================="
+      echo "Registry: ${2}"
+      echo "Full image location: ${2}/${image}"
+      curl -s -X GET -u ${3}:${4} https://${2}/v2/${image}/tags/list
+      echo
+    done
+  fi
+
+}
+
 # pass Tranan11!
 function dockerlogin() {
   docker login -u tuongdevops1 -p "${1}"
@@ -526,7 +551,7 @@ function dockerlogin() {
 export PATH=$PATH:/usr/local/go/bin
 
 # Prompt for copilot to explain in markdown
-function copilotmd() {
+function md() {
   echo "Highly important, do not miss this: Write everything in markdown format where everyline must start with \`    \`"
 }
 
@@ -538,3 +563,4 @@ eval "$(pyenv virtualenv-init -)"
 
 export PYTHON_VERSION=3.13.0
 pyenv activate venv${PYTHON_VERSION}
+

@@ -7,6 +7,9 @@ sudo ln -s ~/ngo /ngo
 mkdir -p /ngo/misc/packages
 cd /ngo/misc/packages
 
+sudo apt-get update
+sudo apt install -y htop tmux tree ncdu iftop nmap traceroute tcpdump netcat telnet screen rsync jq yq stern k9s nodejs npm awscli azure-cli
+
 # Install kubectl - Must match with server's K8s version
 KUBECTL_VERSION="1.31.1"
 curl -LO https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
