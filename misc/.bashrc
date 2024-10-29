@@ -555,6 +555,11 @@ function md() {
   echo "Highly important, do not miss this: Write everything in markdown format where everyline must start with \`    \`"
 }
 
+# Print h1, bold, cursive, center
+function ghtitle() {
+  echo '<h1 style="color:pink; font-family:cursive; font-weight:bold; text-align:center;">Types of K8s token</h1>'
+}
+
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
