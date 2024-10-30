@@ -560,6 +560,11 @@ function ghtitle() {
   echo '<h1 style="color:pink; font-family:cursive; font-weight:bold; text-align:center;">Types of K8s token</h1>'
 }
 
+# Tell Copilot to focus on answering the question for the highlighted
+function focus() {
+  echo "Complete the highlighted, do not prompt for other things or just answer the questions directly without prompting other things"
+}
+
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
