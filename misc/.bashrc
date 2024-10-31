@@ -471,29 +471,68 @@ function commitargo(){
   cd -
 }
 function base64d (){
+  if [ -z "${1}" ]; then
+    echo "Usage: base64d <string>"
+    return 1
+  fi
   echo "${1}" | base64 -d
 }
+
 function base64e (){
+  if [ -z "${1}" ]; then
+    echo "Usage: base64e <string>"
+    return 1
+  fi
   echo "${1}" | base64
 }
+
 ## Get list of name of resources
 function listname (){
+  if [ -z "${1}" ]; then
+    echo "Usage: listname <resource-type>"
+    return 1
+  fi
   kubectl get ${1} -o wide --no-headers | awk '{print $1}'
 }
+
 ## Decode key ${2} in a secret ${1}
 function dsecret () {
+  if [ -z "${1}" ] || [ -z "${2}" ]; then
+    echo "Usage: dsecret <secret-name> <key>"
+    return 1
+  fi
   base64d $(kubectl get secret ${1} -ojsonpath={.data.${2}})
 }
+
 function copysecret() {
+  if [ -z "${1}" ] || [ -z "${2}" ] || [ -z "${3}" ]; then
+    echo "Usage: copysecret <secret-name> <source-namespace> <target-namespace>"
+    return 1
+  fi
   kubectl get secret ${1} --namespace=${2} -o yaml | sed "s/namespace: .*/namespace: ${3}/" | kubectl apply -f -
 }
+
 function portfwd() {
+  if [ -z "${1}" ] || [ -z "${2}" ]; then
+    echo "Usage: portfwd <pod-name> <port>"
+    return 1
+  fi
   kubectl port-forward ${1} ${2}:${2}
 }
+
 function gacp() {
-  git add --all; sleep 1; git commit -m "${1}"; sleep 1;  git push
+  if [ -z "${1}" ]; then
+    echo "Usage: gacp <commit-message>"
+    return 1
+  fi
+  git add --all; sleep 1; git commit -m "${1}"; sleep 1; git push
 }
+
 function htemplate() {
+  if [ -z "${1}" ] || [ -z "${2}" ] || [ -z "${3}" ]; then
+    echo "Usage: htemplate <chart-name> <repo-url> <namespace>"
+    return 1
+  fi
   helm template ${1} --repo ${2} -n ${3} > ${1}.yaml
   helm template ${1} --repo ${2} -n ${3}
 }
@@ -572,5 +611,7 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 export PYTHON_VERSION=3.13.0
-pyenv activate venv${PYTHON_VERSION}
-
+# Check if the virtual environment is already activated
+if [[ "$VIRTUAL_ENV" != *"venv${PYTHON_VERSION}"* ]]; then
+  pyenv activate venv${PYTHON_VERSION}
+fi
