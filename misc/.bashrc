@@ -615,3 +615,9 @@ export PYTHON_VERSION=3.13.0
 if [[ "$VIRTUAL_ENV" != *"venv${PYTHON_VERSION}"* ]]; then
   pyenv activate venv${PYTHON_VERSION}
 fi
+
+
+## Azure login - personal account
+func azurelogin() {
+  az login --service-principal --username 40ae7223-089b-4da0-9345-6752b036329d --password "klk8Q~1UYPXE0hLQQkx1twkSLU1bSjraHCNnBa~D" --tenant "5a7410d2-cfe9-4713-a4b3-6ec6c462b579"
+}

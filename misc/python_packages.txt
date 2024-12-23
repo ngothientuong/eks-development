@@ -1,0 +1,10 @@
+azure-cli==2.50.0
+azure-identity~=1.13.0
+azure-mgmt-resource==23.1.0b2
+azure-mgmt-compute~=29.1.0
+azure-mgmt-network~=23.0.0
+azure-mgmt-storage~=21.0.0
+azure-keyvault-secrets~=4.7.0
+azure-keyvault-keys==4.8.0b2
+azure-keyvault-certificates~=4.7.0
+openai
