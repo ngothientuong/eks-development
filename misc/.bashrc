@@ -619,5 +619,5 @@ fi
 
 ## Azure login - personal account
 function azurelogin() {
-  az login --service-principal --username 40ae7223-089b-4da0-9345-6752b036329d --password "klk8Q~1UYPXE0hLQQkx1twkSLU1bSjraHCNnBa~D" --tenant "5a7410d2-cfe9-4713-a4b3-6ec6c462b579"
+  az login --service-principal --username ${AZURE_SVC_PRINCIPAL_APP_ID} --password ${AZURE_SVC_PRINCIPAL_APP_PASSWORD} --tenant ${AZURE_SVC_PRINCIPAL_TENANT_ID}
 }
