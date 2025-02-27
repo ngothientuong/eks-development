@@ -616,8 +616,55 @@ if [[ "$VIRTUAL_ENV" != *"venv${PYTHON_VERSION}"* ]]; then
   pyenv activate venv${PYTHON_VERSION}
 fi
 
-
+###############
+### AZURE #####
+###############
 ## Azure login - personal account
 function azurelogin() {
   az login --service-principal --username ${AZURE_SVC_PRINCIPAL_APP_ID} --password ${AZURE_SVC_PRINCIPAL_APP_PASSWORD} --tenant ${AZURE_SVC_PRINCIPAL_TENANT_ID}
 }
+## List managed identities
+function azmsi() {
+    az identity list --output table
+}
+## Get info of current App's SP Logged in
+function azself() {
+    az ad sp show --id $(az account show --query "user.name" -o tsv) -o table
+}
+## Get Object ID of current App's SP Logged in
+function azselfobjectid() {
+    az ad sp show --id $(az account show --query "user.name" -o tsv) --query "id" -o tsv
+}
+## Get role assignment of current App's SP Logged in
+function azselfroles() {
+    az role assignment list --all --assignee $(az ad sp list --filter "appId eq '$(az account show --query user.name -o tsv)'" --query "[].id" -o tsv) --query "[].{ObjectID_OR_PrincipalID:principalId, PrincipalType:principalType, Role:roleDefinitionName, Scope:scope}" -o table
+}
+## Get role assignment of managed identity by name
+function azmsiroles() {
+    az role assignment list --assignee $(az identity show --ids $(az identity list --query "[?name=='${1}'].id" -o tsv) --query "principalId" -o tsv) --all --query "[].{ObjectID_OR_PrincipalID:principalId, PrincipalType:principalType, Role:roleDefinitionName, Scope:scope}" -o table
+}
+## Combine both commands in azmsi and azmsiroles to add column "Name" to the output of azmsiroles but for all roles found in azmsi command
+function azallmsiroles() {
+    for i in $(az identity list --query "[].name" -o tsv); do az role assignment list --assignee $(az identity show --ids $(az identity list --query "[?name=='${i}'].id" -o tsv) --query "principalId" -o tsv) --all --query "[].{Name:'${i}', ObjectID_OR_PrincipalID:principalId, PrincipalType:principalType, Role:roleDefinitionName, Scope:scope}" -o table; done
+}
+
+
+## Copy .env to tngo-ai-svcs folder
+cp -rp ${HOME}/ngo/projects/personal/.env_tngo-ai-svcs ${HOME}/ngo/projects/tngo-ai-svcs/.env
+
+export SPEECHSDK_ROOT=/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0
+export LD_LIBRARY_PATH=/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/lib/x64:$LD_LIBRARY_PATH
+export C_INCLUDE_PATH=/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/include/c_api:$C_INCLUDE_PATH
+export CGO_CFLAGS="-I/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/include/c_api"
+export CGO_LDFLAGS="-L/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/lib/x64 -lMicrosoft.CognitiveServices.Speech.core"
+
+export SPEECHSDK_ROOT=/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0
+export LD_LIBRARY_PATH=/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/lib/x64:$LD_LIBRARY_PATH
+export C_INCLUDE_PATH=/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/include/c_api:$C_INCLUDE_PATH
+export CGO_CFLAGS="-I/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/include/c_api"
+export CGO_LDFLAGS="-L/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/lib/x64 -lMicrosoft.CognitiveServices.Speech.core"
+export SPEECHSDK_ROOT=/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0
+export LD_LIBRARY_PATH=/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/lib/x64:$LD_LIBRARY_PATH
+export C_INCLUDE_PATH=/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/include/c_api:$C_INCLUDE_PATH
+export CGO_CFLAGS="-I/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/include/c_api"
+export CGO_LDFLAGS="-L/home/tngo/ngo/projects/tngo-ai-svcs/sdk/azure_speech_sdk/SpeechSDK-Linux-1.42.0/lib/x64 -lMicrosoft.CognitiveServices.Speech.core"
